@@ -59,16 +59,15 @@
   </div>
 
 
-<%
-=begin %> 
-  <div class="field">
+
+  <div class="field hidden">
     <%= form.label :start_date %>
     <%= form.date_select :start_date, id: :reservation_start_date %>
   </div>
-  <%= render 'reserveAheadInfo', reservation: @reservation, form: form%>
 
-<%
-=end %>
+  <%#render 'reserveAheadInfo', reservation: @reservation, form: form%>
+
+
 
 
 
