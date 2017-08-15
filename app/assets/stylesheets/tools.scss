@@ -1,0 +1,140 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+$dark-blue: #0A1725;
+$light-blue: #55A2B3;
+$orange: #ffd400;
+
+body{
+    margin: 0;
+    padding: 0;
+    background-image: url('/assets/toolsBG.png');
+    background-size: cover;
+}
+
+#notice{
+    width: 100%;
+    text-align: center;
+    font-size: 1.2em;
+    background-color: rgba(0, 200, 0, 0.6);
+    border: 1px solid #00c800;
+    padding: 15px;
+    margin: 60px 0px;
+}
+
+
+.appTitle{
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    color: $light-blue;
+
+
+    h1{
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    }
+
+    h4{
+        font-weight: normal;
+        color: $dark-blue;
+    }
+
+}
+
+.mainContent{
+   background-color:rgba(255,212,0,.8);
+   padding: 20px;
+   box-shadow: 3px 2px 7px -2px #000;
+}
+.topText{
+    text-align: center;
+}
+.reserveLink{
+    font-size: .5em;
+}
+.row-eq-height{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.field_with_errors{
+    padding: 0px;
+    background-color: unset;
+    display: block;
+
+    input{
+        box-shadow: 0 0 2px 1px #f00;
+    }
+
+}
+
+#error_explanation {
+    border: 1px solid red;
+    margin: 20px auto;
+}
+
+.optionBox{
+    overflow: hidden;
+    position: relative;
+    background:#fff;
+
+    img{
+        object-fit: contain;
+        width: 100%;
+        height: 100px;
+    }
+
+    .optionTitle{
+        width: 100%;
+        position: relative;
+        top: -16px;
+        text-align: center;
+        color: #000;
+        font-size: 1.3em;
+        text-shadow: 1px 1px 1px 1px #000;
+        line-height: 1em;
+    }
+    input{
+        position: absolute;
+        bottom: 5px;
+        right: 5px
+    }
+
+}
+
+.inputField{
+    margin-top:15px;
+    width: 100%;
+    text-align: center;
+
+    input{
+        width: 50%;
+    }
+}
+.termsOfService{
+    width: 100%;
+    text-align: center;
+    margin: 10px 0px;
+    font-size: .9em;
+}
+.submitWrapper{
+    width: 100%;
+    text-align: center;
+}
+
+.quote{
+    font-size: 1.5em;
+    line-height: 1.2em;
+    font-weight: bold;
+    margin-top: 50px;
+}
+.quoteByLine{
+    font-weight: normal;
+    font-size: 1em;
+    float: right;
+    margin-right: 25px;
+}

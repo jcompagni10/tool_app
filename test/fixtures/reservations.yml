@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  email: MyString
+  tos: false
+  start_date: 2017-08-14
+  ladder: false
+  light: false
+  stripe: MyString
+  address: MyString
+  instructions: MyString
+  delivery_time: 1
+
+two:
+  email: MyString
+  tos: false
+  start_date: 2017-08-14
+  ladder: false
+  light: false
+  stripe: MyString
+  address: MyString
+  instructions: MyString
+  delivery_time: 1

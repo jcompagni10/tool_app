@@ -1,0 +1,76 @@
+<%= form_with(model: reservation, local: true) do |form| %>
+  <% if reservation.errors.any? %>
+    <div id="error_explanation">
+      <h2>Incorrect info for <%= pluralize(reservation.errors.count, "section") %>: </h2>
+
+      <ul>
+      <% reservation.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="row optionRow row-eq-height">
+    <div class="col-xs-3">
+      <div class="optionBox">
+        <%= image_tag("toolsIcon.jpg", alt: "tools") %>
+        <div class="optionTitle">Toolbox</div><br>
+        <input type="checkbox" checked onclick="return false">
+      </div>
+    </div>
+    <div class="col-xs-3">
+      <div class="optionBox">
+        <%= image_tag("ladderIcon.jpg", alt: "tools") %>
+        <div class="optionTitle">Add a Ladder ($15)</div>
+        <%= form.check_box :ladder, id: :reservation_ladder%>
+      </div>
+    </div>
+    <div class="col-xs-3">
+      <div class="optionBox">
+        <%= image_tag("lightIcon.jpg", alt: "tools") %>
+        <div class="optionTitle">Add a Work Lamp ($10)</div>
+        <%= form.check_box :light, id: :reservation_light %>
+      </div>
+    </div>
+    <div class="col-xs-3">
+        <div class="optionBox">
+          <%= image_tag("deliveryIcon.jpg", alt: "tools") %>
+          <div class="optionTitle">Delivery ($10)</div><br>
+          <input type="checkbox">
+        </div>
+    </div>
+  </div>
+  <div class="bottomInfo">
+    <div class="inputField">
+      <%= form.label :email, "Email: " %>
+      <%= form.email_field :email, id: :reservation_email %>
+    </div>
+    <div class="inputField">
+      <%= form.label :Card, "Card: " %>
+      <%= form.text_field :stripe, id: :reservation_stripe %>
+    </div>
+    <div class="termsOfService">
+      <span>I agree to the terms serivce</span>
+      <%= form.check_box :tos, id: :reservation_tos %>
+    </div>
+    <div class="actions submitWrapper">
+      <%= form.submit "Reserve Now",  :class=>'btn btn-primary' %>
+    </div>
+  </div>
+
+
+<%
+=begin %> 
+  <div class="field">
+    <%= form.label :start_date %>
+    <%= form.date_select :start_date, id: :reservation_start_date %>
+  </div>
+  <%= render 'reserveAheadInfo', reservation: @reservation, form: form%>
+
+<%
+=end %>
+
+
+
+
+<% end %>

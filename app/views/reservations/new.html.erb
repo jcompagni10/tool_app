@@ -1,0 +1,34 @@
+<div class="row">
+    <div class ="col appTitle">
+        <h1> Drill Me Now </h1>
+        <h4> Rent an electric drill & all the tools you need
+        for your home improvement projects. </h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-7 col-md-offset-2 mainContent">
+        <div class="row topText">
+            <h2> Get it Today <span class="reserveLink">(Reserve for Later)</span></h2>
+            <h4> 9am-9pm pickup at 3156 24th St. <br>
+            or <br>
+            <u>Same day delivery </u> at your convenience. </h4>
+        </div>
+        <% if flash[:notice] %>
+            <div id="notice"><%= flash[:success] %></div>
+        <% else %>
+            <%= render 'form', reservation: @reservation %> 
+        <%end %>          
+    </div>
+    <div class="col-md-3 sideBar">
+        <div class="quote pull-left">
+            <span class="quoteBody">
+                "I rented a toolbox from <i>Drill Me Now</i> and I 
+                built a new dog house for FiFi"
+            </span><br>
+            <div class="quoteByLine">-Jon McFixit</div>
+        </div>
+    </div>    
+</div>
+
+        
+        

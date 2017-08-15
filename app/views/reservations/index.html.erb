@@ -1,0 +1,44 @@
+<% if flash[:notice] %>
+  <p id="notice"><%= notice %></p>
+<% end %>
+<h1>Reservations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Tos</th>
+      <th>Start date</th>
+      <th>Ladder</th>
+      <th>Light</th>
+      <th>Stripe</th>
+      <th>Address</th>
+      <th>Instructions</th>
+      <th>Delivery time</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @reservations.each do |reservation| %>
+      <tr>
+        <td><%= reservation.email %></td>
+        <td><%= reservation.tos %></td>
+        <td><%= reservation.start_date %></td>
+        <td><%= reservation.ladder %></td>
+        <td><%= reservation.light %></td>
+        <td><%= reservation.stripe %></td>
+        <td><%= reservation.address %></td>
+        <td><%= reservation.instructions %></td>
+        <td><%= reservation.delivery_time %></td>
+        <td><%= link_to 'Show', reservation %></td>
+        <td><%= link_to 'Edit', edit_reservation_path(reservation) %></td>
+        <td><%= link_to 'Destroy', reservation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Reservation', new_reservation_path %>
