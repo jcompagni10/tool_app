@@ -15,7 +15,7 @@ class ReservationsController < ApplicationController
   # GET /reservations/new
   def new
     @reservedDates = get_reserved_dates
-    @availableToday = !@reservedDates[Date.today.month].include?(Date.today.day)
+    @availableToday = !(!!@reservedDates[Date.today.month] && !@reservedDates[Date.today.month].include?(Date.today.day))
     @reservation = Reservation.new
   end
 
