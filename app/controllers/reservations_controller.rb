@@ -66,12 +66,14 @@ class ReservationsController < ApplicationController
   # get all reserved dates from database
   def get_reserved_dates
     reserved_dates = {}
-    Reservation.pluck(:start_date).each {|date|
-        (date..date + 2.days).each {|d| 
-            reserved_dates[d.month] ||= []
-            reserved_dates[d.month].push(d.day).uniq!
-        }
-    }
+    if !Reservation.count
+      Reservation.pluck(:start_date).each {|date|
+          (date..date + 2.days).each {|d| 
+              reserved_dates[d.month] ||= []
+              reserved_dates[d.month].push(d.day).uniq!
+          }
+      }
+    end
     #reserve all prior days in month
    # reserved_dates[Date.today.month] ||= []
    # (reserved_dates[Date.today.month] += (1..Date.yesterday.day).to_a).uniq!
