@@ -5,6 +5,8 @@ class ReservationsController < ApplicationController
   # GET /reservations.json
   def index
     @reservations = Reservation.all
+    @reservedDates = get_reserved_dates
+    @availableToday = !@reservedDates[Date.today.month].include?(Date.today.day)
   end
 
   # GET /reservations/1
