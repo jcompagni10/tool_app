@@ -15,7 +15,8 @@ class ReservationsController < ApplicationController
   # GET /reservations/new
   def new
     @reservedDates = get_reserved_dates
-    @availableToday = !(!!@reservedDates[Date.today.month] && !@reservedDates[Date.today.month].include?(Date.today.day))
+    @reservedDates[Date.today.month] ||= []
+    @availableToday = !@reservedDates[Date.today.month].include?(Date.today.day)
     @reservation = Reservation.new
   end
 
@@ -66,7 +67,7 @@ class ReservationsController < ApplicationController
   # get all reserved dates from database
   def get_reserved_dates
     reserved_dates = {}
-    if !Reservation.count
+    if Reservation.count
       Reservation.pluck(:start_date).each {|date|
           (date..date + 2.days).each {|d| 
               reserved_dates[d.month] ||= []
@@ -75,8 +76,8 @@ class ReservationsController < ApplicationController
       }
     end
     #reserve all prior days in month
-   # reserved_dates[Date.today.month] ||= []
-   # (reserved_dates[Date.today.month] += (1..Date.yesterday.day).to_a).uniq!
+    reserved_dates[Date.today.month] ||= []
+    (reserved_dates[Date.today.month] += (1..Date.yesterday.day).to_a).uniq!
     reserved_dates
   end
 
