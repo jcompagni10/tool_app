@@ -67,7 +67,7 @@ class ReservationsController < ApplicationController
   # get all reserved dates from database
   def get_reserved_dates
     reserved_dates = {}
-    if Reservation.count
+    if(Reservation.count != 0 )
       Reservation.pluck(:start_date).each {|date|
           (date..date + 2.days).each {|d| 
               reserved_dates[d.month] ||= []
