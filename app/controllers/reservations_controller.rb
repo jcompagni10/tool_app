@@ -5,8 +5,6 @@ class ReservationsController < ApplicationController
   # GET /reservations.json
   def index
     @reservations = Reservation.all
-    @reservedDates = get_reserved_dates
-    @availableToday = !@reservedDates[Date.today.month].include?(Date.today.day)
   end
 
   # GET /reservations/1
@@ -75,8 +73,8 @@ class ReservationsController < ApplicationController
         }
     }
     #reserve all prior days in month
-    reserved_dates[Date.today.month] ||= []
-    (reserved_dates[Date.today.month] += (1..Date.yesterday.day).to_a).uniq!
+   # reserved_dates[Date.today.month] ||= []
+   # (reserved_dates[Date.today.month] += (1..Date.yesterday.day).to_a).uniq!
     reserved_dates
   end
 
