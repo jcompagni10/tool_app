@@ -5,6 +5,7 @@ $dark-blue: #0A1725;
 $light-blue: #55A2B3;
 $orange: #ffd400;
 
+
 body{
     margin: 0;
     padding: 0;
@@ -47,6 +48,7 @@ body{
    background-color:rgba(255,212,0,.8);
    padding: 20px;
    box-shadow: 3px 2px 7px -2px #000;
+   margin-bottom: 30px;
 }
 .topText{
     text-align: center;
@@ -106,24 +108,38 @@ body{
 
 }
 
+.initHidden{
+    display: none
+}
+
 .inputField{
     margin-top:15px;
     width: 100%;
-    text-align: center;
 
     input{
-        width: 50%;
+        width: 100%;
     }
 }
 .termsOfService{
     width: 100%;
-    text-align: center;
     margin: 10px 0px;
     font-size: .9em;
 }
 .submitWrapper{
     width: 100%;
     text-align: center;
+}
+
+.submitWrapper .btn-primary{
+    width: 100%
+}
+
+.bottomText{
+text-align:center;
+
+    .dueDate{
+        font-weight:bold;
+    }
 }
 
 .quote{
@@ -137,4 +153,59 @@ body{
     font-size: 1em;
     float: right;
     margin-right: 25px;
+}
+
+
+//Modal Stuff
+
+.modal-backdrop.in{
+    opacity: .9
+}
+
+.modal-open .container-fluid{
+    filter: blur(2px)
+}
+
+#reserveLaterModal{
+    .modal-content{
+        background: $orange;
+    }
+
+    .modal-header{
+        border-bottom: 1px solid $dark-blue;
+    }
+}
+
+//Unavailable
+
+.unavailableCover{
+position: absolute;
+height: 100%;
+width: 100%;
+z-index: 100;
+top: 0px;
+left: 0;
+opacity: .9;
+background-image: url("/assets/bars.jpeg")
+}
+
+.unavailableWrapper{
+position: absolute;
+height: 100%;
+width: 100%;
+z-index: 100;
+top: 0px;
+left: 0;  
+text-align: center;
+padding-top: 150px;
+color: white;
+
+    .btn-primary{
+        margin-top: 50px;
+        width: 39%;
+        padding: 10px;
+        font-size: 19px;
+        border-radius: 11px;
+
+    }
 }

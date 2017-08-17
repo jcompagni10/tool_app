@@ -14,6 +14,8 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/new
   def new
+    @reservedDates = get_reserved_dates
+    @availableToday = !@reservedDates[Date.today.month].include?(Date.today.day)
     @reservation = Reservation.new
   end
 
@@ -31,7 +33,7 @@ class ReservationsController < ApplicationController
         format.html { redirect_to '/', notice: 'Reservation was successfully created.' }
         flash[:success] = "Reservation succesful, a confirmation email has been sent to #{@reservation.email}."
       else
-        format.html { render :new }
+        format.html { render :new}
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       end
     end
@@ -60,6 +62,22 @@ class ReservationsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  # get all reserved dates from database
+  def get_reserved_dates
+    reserved_dates = {}
+    Reservation.pluck(:start_date).each {|date|
+        (date..date + 2.days).each {|d| 
+            reserved_dates[d.month] ||= []
+            reserved_dates[d.month].push(d.day).uniq!
+        }
+    }
+    #reserve all prior days in month
+    reserved_dates[Date.today.month] ||= []
+    (reserved_dates[Date.today.month] += (1..Date.yesterday.day).to_a).uniq!
+    reserved_dates
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
