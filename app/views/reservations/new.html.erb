@@ -11,7 +11,9 @@
     </div>
     <div class="row">
         <div class="col-md-7 col-md-offset-2 mainContent">
-
+        <% if !@availableToday %>
+            <%= render 'unavailable' %>
+        <% end %> 
             <div class="row topText">
                 <h2> Get it Today <a class="reserveLink" data-toggle ="modal" data-target="#reserveLaterModal">(Reserve for Later)</a></h2>
                 <h4> 9am-9pm pickup at 3156 24th St. <br>
