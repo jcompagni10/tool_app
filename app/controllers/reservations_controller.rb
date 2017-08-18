@@ -57,13 +57,17 @@ class ReservationsController < ApplicationController
           @reservation.stripe = charge[1]
           @reservation.save
           flash.now[:success] = "Reservation succesful, a confirmation email has been sent to #{@reservation.email}."
-          #ReservationMailer.reservation_confirmation(@reservation).deliver
+          format.js{render :renderForm}
+          #send conf email
+          ReservationMailer.reservation_confirmation(@reservation).deliver
         else
+          #set flash to errors
           flash.now[:error] = charge[1];
+          #reload page
+          format.js{render :renderForm}
+
         end
-        
-        #reload page
-        format.js{render :renderForm}
+
       else
         format.js{render :renderForm}
       

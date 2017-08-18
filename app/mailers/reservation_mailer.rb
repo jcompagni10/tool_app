@@ -9,6 +9,6 @@ class ReservationMailer < ApplicationMailer
   def reservation_confirmation(reservation)
     @reservation = reservation
 
-    mail to: "Reservation.email", subject: "Reservation Confirmation"
+    mail to: reservation.email, subject: "Reservation Confirmation"
   end
 end
