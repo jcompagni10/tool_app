@@ -51,16 +51,22 @@ class ReservationsController < ApplicationController
     @reserveLater = !reservation_params["start_date(1i)"].nil?
     respond_to do |format|
       if @reservation.valid?
-        flash.now[:success] = "Reservation succesful, a confirmation email has been sent to #{@reservation.email}."
+        charge = stripeCharge @reservation.stripe, 5000
+        if charge[0]   
+          #save charge id from stripe
+          @reservation.stripe = charge[1]
+          @reservation.save
+          flash.now[:success] = "Reservation succesful, a confirmation email has been sent to #{@reservation.email}."
+          ReservationMailer.reservation_confirmation(@reservation).deliver
+        else
+          flash.now[:error] = charge[1];
+        end
+        
+        #reload page
         format.js{render :renderForm}
-        #format.json{render :renderForm}
-        @reservation.save
-        #format.html { redirect_to '/', notice: 'Reservation was successfully created.' }
       else
         format.js{render :renderForm}
-       # format.json{render :renderForm}
-        #format.html { render :new}
-        #format.json { render json: @reservation.errors, status: :unprocessable_entity }
+      
       end
     end
   end
@@ -116,5 +122,27 @@ class ReservationsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def reservation_params
       params.require(:reservation).permit(:email, :tos, :start_date, :ladder, :light, :stripe, :address, :instructions, :delivery_time)
+    end
+
+    def stripeCharge(token, amt)                
+      response = [];
+      begin 
+      resp = Stripe::Charge.create(
+          :amount => amt,
+          :currency => "usd",
+          :source => token, 
+          :description => "Drill Me Now Rental"
+      )
+
+      #catch card errors
+      rescue Stripe::CardError => e
+        return [false, e.json_body[:error][:message]] 
+      #catch stripe errors
+      rescue Stripe::StripeError => e
+        return [false, e.json_body[:error][:message]]
+      end 
+
+      #success
+      return [true, resp.id]
     end
 end

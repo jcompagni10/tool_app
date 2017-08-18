@@ -1,0 +1,35 @@
+Hello,<br>
+
+This is an email confirming your reservation from Drill Me Now for 
+<% if @reservation.start_date == Date.today %>
+  Today (<b><%= @reservation.start_date.strftime("%m/%d/%Y") %>) </b>
+<% else %>
+  <b><%= @reservation.start_date.strftime("%A, %B %d, %Y") %></b>
+<% end %>
+.<br><br>
+<b>Contact Info: </b> <%=@reservation.email %><br>
+<b>Ladder: </b> <%= @reservation.ladder ? "Yes" : "No" %><br>
+<b>Light: </b> <%= @reservation.light ? "Yes" : "No" %><br>
+<% dTime = @reservation.delivery_time %>
+<b>Delivery Time: </b> <%= dTime.nil? ? "N/A" : 
+  Time.strptime(dTime.to_s, "%H").strftime("%l%p") + "-" + Time.strptime((dTime+1).to_s, "%H").strftime("%l%p") %>
+<b>Delivery Address: </b> <%= @reservation.address.nil? ? "N/A" : @reservation.address  %><br>
+<b>Special Instructions: </b> <%= @reservation.instructions.nil? ? "N/A" : @reservation.instructions  %><br><br>
+
+Tools must be returned to 3156 24th St. by <b> 
+<%= (@reservation.start_date + 3.days).strftime("%A, %B %d, %Y")%> .</b>
+If your tools were delivered we will contact you to arrange a pickup. <br><br><br>
+
+Sincerely,
+The Drill Me Now Team
+
+
+
+
+
+
+
+
+
+
+
