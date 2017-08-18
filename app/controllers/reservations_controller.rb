@@ -57,7 +57,7 @@ class ReservationsController < ApplicationController
           @reservation.stripe = charge[1]
           @reservation.save
           flash.now[:success] = "Reservation succesful, a confirmation email has been sent to #{@reservation.email}."
-          ReservationMailer.reservation_confirmation(@reservation).deliver
+          #ReservationMailer.reservation_confirmation(@reservation).deliver
         else
           flash.now[:error] = charge[1];
         end
