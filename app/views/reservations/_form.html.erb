@@ -1,10 +1,11 @@
+
 <% if flash[:success] %>
       <div id="notice"><%= flash[:success] %></div>
 <% else %>
-  <%= form_with(model: reservation, remote: true, html: {autocomplete: "off"}) do |form| %>
+  <%= form_with(model: reservation, remote: true, html: {autocomplete: "off", id: "reservation_form"}) do |form| %>
     <% if reservation.errors.any? %>
       <div id="error_explanation">
-        <h2>Incorrect info for <%= pluralize(reservation.errors.count, "section") %>: </h2>
+        <h2>Please correct <%= pluralize(reservation.errors.count, "errors") %> below: </h2>
 
         <ul>
         <% reservation.errors.full_messages.each do |message| %>
@@ -81,16 +82,25 @@
         </div>
         <div class="inputField">
           <%= form.label :stripe, "Card: " %>
-          <%= form.text_field :stripe, id: :reservation_stripe %>
+          <div id="card-element">
+            <!-- a Stripe Element will be inserted here. -->
+          </div>
+          <div id="card-errors" role="alert"> 
+            <!-- Used to display form errors --> 
+          </div>
+          <%= text_field_tag  "reservation[stripe]", nil, type: 'hidden', id: "reservation_stripe" %>
         </div>
         <div class="termsOfService">
-          <span>I agree to the terms serivce</span>
           <%= form.check_box :tos, id: :reservation_tos %>
+          <span>I agree to the terms serivce</span> 
         </div>
         <div class="actions submitWrapper">
-          <%= form.submit "Reserve Now",  :class=>'btn btn-primary' %>
+        <button class="btn btn-primary" onClick ="tokenHandler(event)">Reserve Now </button>
         </div>
       </div>
     </div>
   <% end %>
 <% end %>
+<script>
+mountStripe()
+</script>

@@ -53,10 +53,12 @@ class ReservationsController < ApplicationController
       if @reservation.valid?
         flash.now[:success] = "Reservation succesful, a confirmation email has been sent to #{@reservation.email}."
         format.js{render :renderForm}
+        #format.json{render :renderForm}
         @reservation.save
         #format.html { redirect_to '/', notice: 'Reservation was successfully created.' }
       else
         format.js{render :renderForm}
+       # format.json{render :renderForm}
         #format.html { render :new}
         #format.json { render json: @reservation.errors, status: :unprocessable_entity }
       end
