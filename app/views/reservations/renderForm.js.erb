@@ -1,0 +1,5 @@
+$("#rentalFormWrapper").html("<%= j render(partial: 'form', :locals => {reserveLater: @reserveLater, reservation: @reservation, availableToday: @availableToday})%> ");
+$(".unavailableWrapper").hide()
+updateDueDate();
+changeResMonth($("#start_date_2i").val());
+

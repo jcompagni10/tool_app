@@ -1,9 +1,7 @@
-<div class="unavailableCover">
-</div>
 <div class="unavailableWrapper">
+    <div class="unavailableCover">
+    </div>
     <h2> Currently no toolboxes available </h2>
     <h3> You can still reserve one for later </h3>
-    <button class="btn btn-primary" data-toggle ="modal" data-target="#reserveLaterModal">
-    Reserve a Toolbox
-    </button>
+    <%= link_to 'Reserve a Toolbox', showResDate_path, remote: true, class: "btn btn-primary"%>
 </div>

@@ -15,6 +15,8 @@ function toggleDelivery(val){
         $("#delivery_time").prop('disabled', true)
         $("#deliveryInput").hide()
     }
+    deliveryChange;
+
 }
 
 function toggleReserve(){
@@ -49,6 +51,5 @@ function updateDueDate(){
     }
 }
 $(window).load(function(){
-    deliveryChange;
     changeResMonth($("#start_date_2i").val());
 })

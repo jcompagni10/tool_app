@@ -15,16 +15,16 @@
             <%= render 'unavailable' %>
         <% end %> 
             <div class="row topText">
-                <h2> Get it Today <a class="reserveLink" data-toggle ="modal" data-target="#reserveLaterModal">(Reserve for Later)</a></h2>
+                <h2> Get it Today 
+                    <%= link_to '(Reserve for Later)', showResDate_path, remote: true, class: "reserveLink"%>
+                </h2>
                 <h4> 9am-9pm pickup at 3156 24th St. <br>
                 or <br>
                 <u>Same day delivery </u> at your convenience. </h4>
             </div>
-            <% if flash[:notice] %>
-                <div id="notice"><%= flash[:success] %></div>
-            <% else %>
-                <%= render partial: 'form', :locals => {reserveLater: false, reservation: @reservation } %>
-            <%end %>   
+            <div id="rentalFormWrapper">
+                <%= render partial: 'form', :locals => {reserveLater: false, reservation: @reservation, availableToday: @availableToday } %>
+            </div> 
             <div class="bottomText">
                 Tools due back in 2 days 
                 <span class="dueDate">
@@ -43,20 +43,7 @@
         </div>    
     </div>
 </div>
-<div class="modal fade" id="reserveLaterModal" role="dialog">
-    <div class="modal-dialog">
 
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 style="">Reserve  For Later</h4>
-        </div>
-        <div class="modal-body">
-            <%= render partial: 'form', :locals => {reserveLater: true, reservation: @reservation } %> 
-        </div>
-    </div>
-</div>
 
         
         

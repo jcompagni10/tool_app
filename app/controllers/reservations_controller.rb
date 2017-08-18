@@ -16,26 +16,49 @@ class ReservationsController < ApplicationController
   def new
     @reservedDates = get_reserved_dates
     @reservedDates[Date.today.month] ||= []
-    @availableToday = !@reservedDates[Date.today.month].include?(Date.today.day)
-    @reservation = Reservation.new
+    #set to always availalable for testing 
+    @availableToday = session[:availableToday]= true #!@reservedDates[Date.today.month].include?(Date.today.day)
+
+    @reservation = Reservation.new    
   end
 
   # GET /reservations/1/edit
   def edit
   end
 
+  def hideResDate
+    @availableToday = session[:availableToday]
+    @reservation = Reservation.new
+    @reserveLater = false;
+    respond_to do |format|
+      format.js { render :renderForm }
+    end
+  end
+
+  def showResDate
+    @availableToday = session[:availableToday]
+    @reservation = Reservation.new
+    @reserveLater = true;
+    respond_to do |format|
+      format.js { render :renderForm }
+    end
+  end
+
   # POST /reservations
   # POST /reservations.json
   def create
     @reservation = Reservation.new(reservation_params)
-
+    @reserveLater = !reservation_params["start_date(1i)"].nil?
     respond_to do |format|
-      if @reservation.save
-        format.html { redirect_to '/', notice: 'Reservation was successfully created.' }
-        flash[:success] = "Reservation succesful, a confirmation email has been sent to #{@reservation.email}."
+      if @reservation.valid?
+        flash.now[:success] = "Reservation succesful, a confirmation email has been sent to #{@reservation.email}."
+        format.js{render :renderForm}
+        @reservation.save
+        #format.html { redirect_to '/', notice: 'Reservation was successfully created.' }
       else
-        format.html { render :new}
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        format.js{render :renderForm}
+        #format.html { render :new}
+        #format.json { render json: @reservation.errors, status: :unprocessable_entity }
       end
     end
   end

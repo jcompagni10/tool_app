@@ -7,7 +7,7 @@ class Reservation < ApplicationRecord
     validates :stripe, presence: true
     validates :email, presence: true
     validates :tos, presence: true
+
    # validates :start_date, presence: true
 
-    #belongs_to :reserved_date
 end
