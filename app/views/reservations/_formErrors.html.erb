@@ -1,0 +1,10 @@
+<% if reservation.errors.any?%>
+    <div id="error_explanation">
+    <h2>Please correct <%= pluralize(reservation.errors.count, "errors") %> below: </h2>
+
+    <ul>
+    <% reservation.errors.messages.each do |message| %>
+        <li><%= message[1][0] %></li>
+    <% end %>
+    </div>
+<% end %>

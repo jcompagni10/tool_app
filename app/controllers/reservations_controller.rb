@@ -26,6 +26,7 @@ class ReservationsController < ApplicationController
   def edit
   end
 
+  #show day-of rental form
   def hideResDate
     @availableToday = session[:availableToday]
     @reservation = Reservation.new
@@ -35,6 +36,7 @@ class ReservationsController < ApplicationController
     end
   end
 
+  #show form for reserve ahead
   def showResDate
     @availableToday = session[:availableToday]
     @reservation = Reservation.new
@@ -51,15 +53,18 @@ class ReservationsController < ApplicationController
     @reserveLater = !reservation_params["start_date(1i)"].nil?
     respond_to do |format|
       if @reservation.valid?
-        charge = stripeCharge @reservation.stripe, 5000
+        price = getTotal @reservation
+        charge = stripeCharge @reservation.stripe, price
         if charge[0]   
           #save charge id from stripe
           @reservation.stripe = charge[1]
           @reservation.save
           flash.now[:success] = "Reservation succesful, a confirmation email has been sent to #{@reservation.email}."
           format.js{render :renderForm}
-          #send conf email
+          #send conf email to user
           ReservationMailer.reservation_confirmation(@reservation).deliver
+          #send reminder email to drillmenowsf@gmail.com  
+          ReservationMailer.reservation_reminder(@reservation).deliver
         else
           #set flash to errors
           flash.now[:error] = charge[1];
@@ -69,7 +74,7 @@ class ReservationsController < ApplicationController
         end
 
       else
-        format.js{render :renderForm}
+        format.js{render :renderErrors}
       
       end
     end
@@ -126,6 +131,17 @@ class ReservationsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def reservation_params
       params.require(:reservation).permit(:email, :tos, :start_date, :ladder, :light, :stripe, :address, :instructions, :delivery_time)
+    end
+
+    def getTotal(reservation)
+      #set base price (in cents)
+      price = 2000
+      #add ladder price (in cents)
+      price += reservation.ladder ? 1000 : 0
+      #add light price (in cents)
+      price += reservation.light ? 1000 : 0
+      #add delivery price (in cents)
+      price += !reservation.delivery_time.nil? ? 1500 : 0
     end
 
     def stripeCharge(token, amt)                

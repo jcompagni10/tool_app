@@ -45,6 +45,7 @@ function mountStripe(){
 
 
 function tokenHandler(e){
+    $("#submitButton").prop("disabled", true)
     e.preventDefault()
     stripe.createToken(card).then(function(result){
         if (result.error) {

@@ -4,10 +4,12 @@ class Reservation < ApplicationRecord
         self.start_date ||= Date.today
     end
     
-    validates :stripe, presence: true
-    validates :email, presence: true
-    validates :tos, presence: true
-
-   # validates :start_date, presence: true
+    validates :stripe, :presence => {:message => "Credit Card Info Required"}
+    validates :email, :presence => {:message => "Email Address Required"}
+    validates :tos, :presence => {:message => "You Must Agree To 'Terms of Service'"}
+    validates_format_of :email, {:with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, :message => "Invalid Email Format"}
+    
+    #require address if delivery
+    validates :address, :presence => {if: :delivery_time, :message =>"Delivery Address Required"}
 
 end

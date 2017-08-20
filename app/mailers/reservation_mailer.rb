@@ -11,4 +11,11 @@ class ReservationMailer < ApplicationMailer
 
     mail to: reservation.email, subject: "Reservation Confirmation"
   end
+
+  def reservation_reminder(reservation)
+    @reservation = reservation
+
+    mail to: "drillmenowsf@gmail.com", subject: "Reservation Reminder"
+  end
+
 end

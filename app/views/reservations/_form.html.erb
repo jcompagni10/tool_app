@@ -3,17 +3,9 @@
       <div id="notice"><%= flash[:success] %></div>
 <% else %>
   <%= form_with(model: reservation, remote: true, html: {autocomplete: "off", id: "reservation_form"}) do |form| %>
-    <% if reservation.errors.any? %>
-      <div id="error_explanation">
-        <h2>Please correct <%= pluralize(reservation.errors.count, "errors") %> below: </h2>
-
-        <ul>
-        <% reservation.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-        </ul>
-      </div>
-    <% end %>
+    <div id="errorsWrapper">
+        <%= render partial: 'formErrors', :locals => {reservation: @reservation} %>
+    </div>
     <div class="row optionRow row-eq-height">
       <div class="col-xs-3">
         <div class="optionBox">
@@ -25,7 +17,7 @@
       <div class="col-xs-3">
         <div class="optionBox">
           <%= image_tag("ladderIcon.jpg", alt: "tools") %>
-          <div class="optionTitle">Add a Ladder ($15)</div>
+          <div class="optionTitle">Add a Ladder ($10)</div>
           <%= form.check_box :ladder, id: :reservation_ladder%>
         </div>
       </div>
@@ -96,7 +88,7 @@
           <span>I agree to the terms serivce</span> 
         </div>
         <div class="actions submitWrapper">
-        <button class="btn btn-primary" onClick ="tokenHandler(event)">Reserve Now </button>
+        <button id="submitButton" class="btn btn-primary" onClick ="tokenHandler(event)">Reserve Now </button>
         </div>
       </div>
     </div>
