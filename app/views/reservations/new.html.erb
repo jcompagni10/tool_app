@@ -1,9 +1,10 @@
 <script>
     var reserved_dates = <%= @reservedDates.to_json.to_s.html_safe %>
 </script>
+<%= render 'modals' %>
 <div class="container-fluid">
     <div class="row">
-        <div class ="col appTitle">
+        <div class ="col-md-7 col-md-offset-2 appTitle">
             <h1> Drill Me Now </h1>
             <h4> Rent an electric drill & all the tools you need
             for your home improvement projects. </h4>
@@ -15,9 +16,13 @@
             <%= render 'unavailable' %>
         <% end %> 
             <div class="row topText">
-                <h2> Get it Today 
-                    <%= link_to '(Reserve for Later)', showResDate_path, remote: true, class: "reserveLink"%>
-                </h2>
+                <% if @availableToday %>
+                    <h2> Get it Today 
+                        <%= link_to '(Reserve for Later)', showResDate_path, remote: true, class: "reserveLink"%>
+                    </h2>
+                <% else %>
+                    <h2> Reserve Your Toolbox </h2>
+                <% end %> 
                 <h4> 9am-9pm pickup at 3156 24th St. <br>
                 or <br>
                 <u>Same day delivery </u> at your convenience. </h4>

@@ -17,7 +17,7 @@ class ReservationsController < ApplicationController
     @reservedDates = get_reserved_dates
     @reservedDates[Date.today.month] ||= []
     #set to always availalable for testing 
-    @availableToday = session[:availableToday]= true #!@reservedDates[Date.today.month].include?(Date.today.day)
+    @availableToday = session[:availableToday]= !@reservedDates[Date.today.month].include?(Date.today.day)
 
     @reservation = Reservation.new    
   end
