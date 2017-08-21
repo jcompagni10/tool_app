@@ -218,7 +218,6 @@ background-image: url("/assets/bars.jpeg")
 
     .btn-primary{
         margin-top: 50px;
-        width: 50%;
         padding: 10px;
         font-size: 19px;
         border-radius: 11px;
@@ -287,6 +286,7 @@ background-image: url("/assets/bars.jpeg")
 
 .modal-dialog{
     width: 300px;
+    margin: 25px auto;
 }
 
 #toolsModal .modal-dialog{
