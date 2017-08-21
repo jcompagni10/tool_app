@@ -1,9 +1,7 @@
 class Reservation < ApplicationRecord
-    before_save :default_values
-    def default_values
-        self.start_date ||= Date.today
-    end
-    
+    attr_accessor :reserve_ahead
+
+    validates :start_date, :presence => {:message => "Rental Date Required"}
     validates :stripe, :presence => {:message => "Credit Card Info Required"}
     validates :email, :presence => {:message => "Email Address Required"}
     validates :tos, :presence => {:message => "You Must Agree To 'Terms of Service'"}

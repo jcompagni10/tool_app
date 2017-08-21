@@ -15,9 +15,8 @@ class ReservationsController < ApplicationController
   # GET /reservations/new
   def new
     @reservedDates = get_reserved_dates
-    @reservedDates[Date.today.month] ||= []
     #set to always availalable for testing 
-    @availableToday = session[:availableToday]= !@reservedDates[Date.today.month].include?(Date.today.day)
+    @availableToday = session[:availableToday]= true #!@reservedDates.include?(Date.today.strftime("%d-%m-%Y"))
 
     @reservation = Reservation.new    
   end
@@ -49,8 +48,20 @@ class ReservationsController < ApplicationController
   # POST /reservations
   # POST /reservations.json
   def create
+    #convert start_date back to ruby date
+    if !!reservation_params["reserve_ahead"]
+      if !reservation_params["start_date"].empty?
+        start_date = reservation_params["start_date"]
+        params[:reservation][:start_date] = Date.strptime(start_date, "%m/%d/%Y")
+      end
+      #set start date to today if not reserving ahead
+    else 
+      params[:reservation][:start_date] = Date.today
+    end
+
+    
     @reservation = Reservation.new(reservation_params)
-    @reserveLater = !reservation_params["start_date(1i)"].nil?
+    @reserveLater = !reservation_params["start_date"].nil?
     respond_to do |format|
       if @reservation.valid?
         price = getTotal @reservation
@@ -106,20 +117,31 @@ class ReservationsController < ApplicationController
 
   # get all reserved dates from database
   def get_reserved_dates
-    reserved_dates = {}
+    reserved_dates = []
     if(Reservation.count != 0 )
-      Reservation.pluck(:start_date).each {|date|
-          (date..date + 2.days).each {|d| 
-              reserved_dates[d.month] ||= []
-              reserved_dates[d.month].push(d.day).uniq!
-          }
+      reservations = Reservation.pluck(:start_date).sort
+      reservations.each_cons (2) {|date, nextDate|
+        #check if there is sufficient time between reservations 
+        if nextDate - date < 6
+           unavailableTil = nextDate - 1.day
+        else 
+          unavailableTil = date + 2.day
+        end
+        #mark days unavailable
+        (date..unavailableTil).each {|d| 
+            reserved_dates.push(d.strftime("%d-%m-%Y"))
+        }
+      }
+      #handle last reservation
+      (reservations.last..reservations.last+2.days).each {|d| 
+        reserved_dates.push(d.strftime("%d-%m-%Y"))
+
       }
     end
-    #reserve all prior days in month
-    reserved_dates[Date.today.month] ||= []
-    (reserved_dates[Date.today.month] += (1..Date.yesterday.day).to_a).uniq!
     reserved_dates
   end
+
+
 
 
   private
@@ -130,7 +152,7 @@ class ReservationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def reservation_params
-      params.require(:reservation).permit(:email, :tos, :start_date, :ladder, :light, :stripe, :address, :instructions, :delivery_time)
+      params.require(:reservation).permit(:email, :tos, :reserve_ahead, :start_date, :ladder, :light, :stripe, :address, :instructions, :delivery_time)
     end
 
     def getTotal(reservation)

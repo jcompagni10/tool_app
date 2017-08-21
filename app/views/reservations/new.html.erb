@@ -1,5 +1,5 @@
 <script>
-    var reserved_dates = <%= @reservedDates.to_json.to_s.html_safe %>
+    var reserved_dates = <%= @reservedDates.to_json.to_s.html_safe %>;
 </script>
 <%= render 'modals' %>
 <div class="container-fluid">
@@ -15,38 +15,37 @@
         <% if !@availableToday %>
             <%= render 'unavailable' %>
         <% end %> 
-            <div class="row topText">
-                <% if @availableToday %>
-                    <h2> Get it Today 
-                        <%= link_to '(Reserve for Later)', showResDate_path, remote: true, class: "reserveLink"%>
-                    </h2>
-                <% else %>
-                    <h2> Reserve Your Toolbox </h2>
-                <% end %> 
-                <h4> 9am-9pm pickup at 3156 24th St. <br>
-                or <br>
-                <u>Same day delivery </u> at your convenience. </h4>
-            </div>
-            <div id="rentalFormWrapper">
-                <%= render partial: 'form', :locals => {reserveLater: false, reservation: @reservation, availableToday: @availableToday } %>
-            </div> 
-            <div class="bottomText">
-                Tools due back in 2 days 
-                <span class="dueDate">
-                    <%="#{(Time.now + 3.days).strftime("%m/%d/%Y")}" %>
-                </span>
-            </div>       
+        <div class="row topText">
+            <% if @availableToday %>
+                <h2> Get it Today 
+                    <%= link_to '(Reserve for Later)', showResDate_path, remote: true, class: "reserveLink"%>
+                </h2>
+            <% else %>
+                <h2> Reserve Your Toolbox </h2>
+            <% end %> 
+            <h4> 9am-9pm pickup at 3156 24th St. <br>
+            or <br>
+            <u>Same day delivery </u> at your convenience. </h4>
         </div>
-        <div class="col-md-3 sideBar">
-            <div class="quote pull-left">
-                <span class="quoteBody">
-                    "I rented a toolbox from <i>Drill Me Now</i> and I 
-                    built a new dog house for FiFi"
-                </span><br>
-                <div class="quoteByLine">-Jon McFixit</div>
-            </div>
-        </div>    
+        <div id="rentalFormWrapper">
+            <%= render partial: 'form', :locals => {reserveLater: false, reservation: @reservation, availableToday: @availableToday } %>
+        </div> 
+        <div class="bottomText">
+            Tools due back in 2 days 
+            <span class="dueDate">
+                <%="#{(Time.now + 3.days).strftime("%m/%d/%Y")}" %>
+            </span>
+        </div>       
     </div>
+    <div class="col-md-3 sideBar">
+        <div class="quote pull-left">
+            <span class="quoteBody">
+                "I rented a toolbox from <i>Drill Me Now</i> and I 
+                built a new dog house for FiFi"
+            </span><br>
+            <div class="quoteByLine">-Jon McFixit</div>
+        </div>
+    </div>    
 </div>
 
 

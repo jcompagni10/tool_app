@@ -39,7 +39,22 @@
 
     <div class="row">
       <div class="bottomInfo col-md-6 col-md-offset-3">
-
+        <% if reserveLater %>
+          <div class="reserveDate inputField">
+            <%= form.label :start_date, "Rental Date: " %>
+            <input type="hidden" id="reserve_ahead" name="reservation[reserve_ahead]" value="true">
+            <%= form.text_field :start_date, {:id => "start_date", :readonly  => "true", :onChange => "updateDueDate(this.value)"} %>
+            <% if availableToday %>
+              <%= link_to 'Reserve Today', hideResDate_path, remote: true %>
+            <% end %>
+          </div>
+          <script>
+            $("#start_date").datepicker({
+              minDate: new Date(),
+              beforeShowDay: DisableSpecificDates
+              })
+          </script>
+        <% end %>
         <div id= "deliveryInput" class="initHidden">
           <div class="inputField">
             <%= form.label :delivery_time, "Desired Delivery Time: " %>
@@ -57,18 +72,6 @@
             <%= form.text_field :instructions, id: :instructions %>
           </div>
         </div>
-        <% if reserveLater %>
-          <div class="reserveDate inputField">
-            <%= form.label :start_date, "Rental Date: " %>
-            <%= text_field_tag "reservation[start_date(1i)]", nil, type: 'hidden', value: Date.today.year, id: "start_date_1i" %> 
-            <%= select nil, "reservation[start_date(2i)]", (Date.today.month..12).collect { |d| [Date::MONTHNAMES[d], d] }, options = {}, {id: "start_date_2i", onChange: "changeResMonth(this.value)"} %>
-            <%= select nil, "reservation[start_date(3i)]", [['Day', nil]] + (1..31).collect { |d| [d, d] }, options = {}, {id: "start_date_3i", onChange: "updateDueDate()"} %>
-            <% if availableToday %>
-              <%= link_to 'Reserve Today', hideResDate_path, remote: true %>
-            <% end %>
-          </div>
-        <% end %>
-
         <div class="inputField">
           <%= form.label :email, "Email: " %>
           <%= form.email_field :email, id: :reservation_email %>

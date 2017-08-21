@@ -52,6 +52,8 @@ function tokenHandler(e){
             // Inform the user if there was an error
             var errorElement = document.getElementById('card-errors');
             errorElement.textContent = result.error.message;
+            $("#submitButton").prop("disabled", false)
+
         } 
         else {
             $("#reservation_stripe").val(result.token.id)
