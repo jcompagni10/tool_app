@@ -16,7 +16,7 @@ class ReservationsController < ApplicationController
   def new
     @reservedDates = get_reserved_dates
     #set to always availalable for testing 
-    @availableToday = session[:availableToday]= true #!@reservedDates.include?(Date.today.strftime("%d-%m-%Y"))
+    @availableToday = session[:availableToday]= !@reservedDates.include?(Date.today.strftime("%d-%m-%Y"))
 
     @reservation = Reservation.new    
   end

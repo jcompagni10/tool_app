@@ -7,38 +7,40 @@
         <%= render partial: 'formErrors', :locals => {reservation: @reservation} %>
     </div>
     <div class="row optionRow row-eq-height">
-      <div class="col-xs-3">
+      <div class="col-sm-3 col-xs-6">
         <div class="optionBox">
-            <%= image_tag("toolsIcon.jpg", 'data-toggle' => "modal", 'data-target' => "#toolsModal") %>
-          <div class="optionTitle">Toolbox</div><br>
-          <input type="checkbox" checked onclick="return false">
+          <a data-toggle="modal" data-target="#toolsModal">
+            <%= image_tag("toolsIcon.jpg") %>
+            <div class="optionTitle">Toolbox</div>
+          </a>
+        <input type="checkbox" checked onclick="return false">
         </div>
       </div>
-      <div class="col-xs-3">
+      <div class="col-sm-3 col-xs-6">
         <div class="optionBox">
           <%= image_tag("ladderIcon.jpg", 'data-toggle' => "modal", 'data-target' => "#ladderModal") %>
-          <div class="optionTitle">Add a Ladder ($10)</div>
+          <div class="optionTitle">Ladder ($10)</div>
           <%= form.check_box :ladder, id: :reservation_ladder%>
         </div>
       </div>
-      <div class="col-xs-3">
+      <div class="col-sm-3 col-xs-6">
         <div class="optionBox">
           <%= image_tag("lightIcon.jpg", 'data-toggle' => "modal", 'data-target' => "#lightModal") %>
-          <div class="optionTitle">Add a Work Lamp ($10)</div>
+          <div class="optionTitle">Light ($10)</div>
           <%= form.check_box :light, id: :reservation_light %>
         </div>
       </div>
-      <div class="col-xs-3">
+      <div class="col-sm-3 col-xs-6">
           <div class="optionBox">
             <%= image_tag("deliveryIcon.jpg", 'data-toggle' => "modal", 'data-target' => "#deliveryModal") %>
-            <div class="optionTitle">Delivery ($10)</div><br>
+            <div class="optionTitle">Delivery ($10)</div>
             <input type="checkbox" onChange ="toggleDelivery(this.checked)">
           </div>
       </div>
     </div>
 
     <div class="row">
-      <div class="bottomInfo col-md-6 col-md-offset-3">
+      <div class="bottomInfo col-md-8 col-md-offset-2">
         <% if reserveLater %>
           <div class="reserveDate inputField">
             <%= form.label :start_date, "Rental Date: " %>
@@ -81,15 +83,12 @@
           <div id="card-element">
             <!-- a Stripe Element will be inserted here. -->
           </div>
-          <div id="card-errors" role="alert"> 
-            <!-- Used to display form errors --> 
-            <%=flash[:error] %>
-          </div>
+          <div id="card-errors" role="alert"><%=flash[:error]%></div>
           <%= text_field_tag  "reservation[stripe]", nil, type: 'hidden', id: "reservation_stripe" %>
         </div>
         <div class="termsOfService">
           <%= form.check_box :tos, id: :reservation_tos %>
-          <span>I agree to the terms serivce</span> 
+          <span>I agree to the <a data-toggle="modal" data-target="#tos"> Terms of Serivce </a></span> 
         </div>
         <div class="actions submitWrapper">
         <button id="submitButton" class="btn btn-primary" onClick ="tokenHandler(event)">Reserve Now </button>

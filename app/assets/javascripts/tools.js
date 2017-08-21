@@ -24,6 +24,12 @@ function DisableSpecificDates(date) {
     return [reserved_dates.indexOf(date_string) == -1];
 }
 
+function tosAgree(btn){
+    $("#reservation_tos").prop("checked", "true")
+    $(btn).prop("disabled", "true")
+    $("#tos").modal('toggle')
+}
+
 function updateDueDate(resDate){
     console.log(resDate)
     if ($("#start_date").length){

@@ -1,16 +1,25 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import url('https://fonts.googleapis.com/css?family=Acme|Luckiest+Guy|Racing+Sans+One|Signika');
 
-$dark-blue: #0A1725;
+
+$dark-blue: #033E5B;
 $light-blue: #55A2B3;
 $orange: #ffd400;
 
+a:hover{
+    background-color: unset;
+}
 
 body{
     margin: 0;
     padding: 0;
     background-image: url('/assets/toolsBG.png');
     background-size: cover;
+}
+
+.container{
+    padding: 40px 30px;
 }
 
 #notice{
@@ -27,17 +36,23 @@ body{
 .appTitle{
     text-align: center;
     position: relative;
-    color: $light-blue;
+    font-family: 'Racing Sans One', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: $dark-blue;
+    margin-bottom: 25px;
 
 
     h1{
-    text-transform: uppercase;
-    letter-spacing: -2px;
+        text-transform: uppercase;
+        letter-spacing: -2px;
+        font-size: 50px
     }
 
     h4{
-        font-weight: normal;
-        color: $dark-blue;
+    font-size: 17px;
+    font-weight: bold;
+    color: $dark-blue;
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing: -1px;
     }
 
 }
@@ -46,19 +61,26 @@ body{
    background-color:rgba(255,212,0,.8);
    padding: 20px;
    box-shadow: 3px 2px 7px -2px #000;
-   margin-bottom: 30px;
 }
 .topText{
+    color: $dark-blue;
     text-align: center;
+    font-family: 'Racing Sans One', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0px 0px 30px;
+    font-size: 40px;
+    line-height: .7em;
 }
 .reserveLink{
     font-size: .5em;
+    white-space: nowrap 
 }
 .row-eq-height{
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
+    @media screen and (min-width: 750px){ 
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+    }
 }
 
 .field_with_errors{
@@ -72,9 +94,6 @@ body{
 
 }
 
-#start_date_3i option:disabled::after{
-    content: " (Unavailable)"
-}
 
 
 #error_explanation {
@@ -82,10 +101,19 @@ body{
     margin: 20px auto;
 }
 
+.optionRow{
+margin-bottom: 15px;
+}
+
 .optionBox{
     overflow: hidden;
     position: relative;
     background:#fff;
+    border: 4px solid $light-blue;
+    border-radius: 12px;
+    box-shadow: 2px 2px 7px 1px rgba(0,0,0,.5);
+    height: 100%;
+    margin-bottom: 15px;
 
     img{
         object-fit: contain;
@@ -96,16 +124,18 @@ body{
     .optionTitle{
         width: 100%;
         position: relative;
-        top: -16px;
+        top: -4px;
         text-align: center;
-        color: #000;
-        font-size: 1.3em;
+        color: $dark-blue;
+        font-size: 1em;
         text-shadow: 1px 1px 1px 1px #000;
         line-height: 1em;
+        font-weight: bold;
+        font-family: Arial, Helvetica, sans-serif;
     }
     input{
         position: absolute;
-        bottom: 5px;
+        top: 5px;
         right: 5px
     }
 
@@ -146,10 +176,11 @@ text-align:center;
 }
 
 .quote{
-    font-size: 1.5em;
+    font-size: 1.9em;
     line-height: 1.2em;
     font-weight: bold;
     margin-top: 50px;
+    font-family: 'Signika', sans-serif;
 }
 .quoteByLine{
     font-weight: normal;
@@ -174,19 +205,19 @@ background-image: url("/assets/bars.jpeg")
 }
 
 .unavailableWrapper{
-position: absolute;
-height: 100%;
-width: 100%;
-z-index: 100;
-top: 0px;
-left: 0;  
-text-align: center;
-padding-top: 150px;
-color: white;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+    top: 0px;
+    left: 0;  
+    text-align: center;
+    padding-top: 150px;
+    color: white;
 
     .btn-primary{
         margin-top: 50px;
-        width: 39%;
+        width: 50%;
         padding: 10px;
         font-size: 19px;
         border-radius: 11px;
@@ -219,8 +250,15 @@ color: white;
 }
 
 #card-errors{
-    color: red;
-    margin-left: 5px;
+    margin: 4px;
+    background-color: rgba(230,0,0, .6);
+    color: #fff;
+    padding:10px;
+    border-radius: 5px;
+}
+
+#card-errors:empty{
+    padding: 0px
 }
 
 //Modal
@@ -247,12 +285,34 @@ color: white;
 }
 
 .modal-dialog{
-width: 300px;
+    width: 300px;
+}
+
+#toolsModal .modal-dialog{
+    width: 450px;
+
+    img{
+        max-height: 400px;
+    }
 }
 
 .modalInfo{
     font-size: 1.4em;
     width: 90%;
     margin: 0 auto 5px auto;
+}
 
+#tos {
+    .modal-header{
+        padding: 0px;
+    }
+    .modal-body{
+        height: 400px;
+        overflow: scroll;
+        text-align: left;
+    }
+    .btn{
+        width: 100%;
+        margin: 10px 0px
+    }
 }
