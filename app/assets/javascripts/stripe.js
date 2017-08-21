@@ -41,6 +41,10 @@ function mountStripe(){
             displayError.textContent = '';
         }
     });
+    
+    //Enable submit button once stripe mounted
+    $("#submitButton").prop("disabled", false)
+
 }
 
 
@@ -54,7 +58,8 @@ function tokenHandler(e){
             errorElement.textContent = result.error.message;
             $("#submitButton").prop("disabled", false)
 
-        } 
+        }
+        //no result created ie. Stripe not loaded
         else {
             $("#reservation_stripe").val(result.token.id)
             //submit form

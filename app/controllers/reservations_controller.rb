@@ -97,11 +97,17 @@ class ReservationsController < ApplicationController
             reserved_dates.push(d.strftime("%d-%m-%Y"))
         }
       }
+
+      #set unavailable time before first reservation
+      (reservations.first-3.day..reservations.first+2).each {|d| 
+        reserved_dates.push(d.strftime("%d-%m-%Y"))
+      }
       #handle last reservation
       (reservations.last..reservations.last+2.days).each {|d| 
         reserved_dates.push(d.strftime("%d-%m-%Y"))
-
       }
+      
+
     end
     reserved_dates
   end
