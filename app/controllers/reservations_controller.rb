@@ -84,27 +84,13 @@ class ReservationsController < ApplicationController
   def get_reserved_dates
     reserved_dates = []
     if(Reservation.count != 0 )
-      reservations = Reservation.pluck(:start_date).sort
-      reservations.each_cons (2) {|date, nextDate|
-        #check if there is sufficient time between reservations 
-        if nextDate - date < 6
-           unavailableTil = nextDate - 1.day
-        else 
-          unavailableTil = date + 2.day
-        end
+      reservations = Reservation.pluck(:start_date)
+      reservations.each {|date|
         #mark days unavailable
-        (date-2.days..unavailableTil).each {|d| 
-            reserved_dates.push(d.strftime("%d-%m-%Y"))
+        (date-2.days..date+2.days).each {|d| 
+            reserved_dates.push(d.strftime("%d-%m-%Y")).uniq!
         }
       }
-
-
-      #handle last reservation
-      (reservations.last..reservations.last+2.days).each {|d| 
-        reserved_dates.push(d.strftime("%d-%m-%Y"))
-      }
-      
-
     end
     reserved_dates
   end
