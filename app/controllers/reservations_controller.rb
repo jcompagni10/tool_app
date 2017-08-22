@@ -93,15 +93,12 @@ class ReservationsController < ApplicationController
           unavailableTil = date + 2.day
         end
         #mark days unavailable
-        (date..unavailableTil).each {|d| 
+        (date-2.days..unavailableTil).each {|d| 
             reserved_dates.push(d.strftime("%d-%m-%Y"))
         }
       }
 
-      #set unavailable time before first reservation
-      (reservations.first-3.day..reservations.first+2).each {|d| 
-        reserved_dates.push(d.strftime("%d-%m-%Y"))
-      }
+
       #handle last reservation
       (reservations.last..reservations.last+2.days).each {|d| 
         reserved_dates.push(d.strftime("%d-%m-%Y"))
