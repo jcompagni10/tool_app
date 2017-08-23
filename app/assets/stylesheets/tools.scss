@@ -3,84 +3,112 @@
 @import url('https://fonts.googleapis.com/css?family=Acme|Luckiest+Guy|Racing+Sans+One|Signika');
 
 
-$dark-blue: #033E5B;
-$light-blue: #55A2B3;
-$orange: #ffd400;
+body{
+    margin: 0;
+    padding: 0;
+    background-image: url('/assets/background.jpg');
+    background-size: cover;
+    font-family: 'Helvetica Neue Light', Helvetica, sans-serif;
+    color: #000;
+}
 
+
+//base styles
 a:hover{
     background-color: unset;
 }
 
-body{
-    margin: 0;
-    padding: 0;
-    background-image: url('/assets/toolsBG.png');
-    background-size: cover;
+a{
+    color: #fff !important;
+    text-decoration: underline;
 }
 
-.container{
-    padding: 40px 30px;
+a:hover, a:active{
+    color: #fff;
 }
 
-#notice{
-    width: 100%;
-    text-align: center;
-    font-size: 1.2em;
-    background-color: rgba(0, 200, 0, 0.6);
-    border: 1px solid #00c800;
-    padding: 15px;
-    margin: 60px 0px;
+h2{
+    font-size: 20px;
+}
+
+.text-header{
+    font-size: 18px;
+    font-weight: bold;    
+}
+
+.generic-text{
+    font-size: 14px;
+}
+
+.caveat-text{
+    font-size: 12px;
+    font-style: italic; 
 }
 
 
+//Top Title
 .appTitle{
     text-align: center;
-    position: relative;
-    font-family: 'Racing Sans One', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: $dark-blue;
     margin-bottom: 25px;
 
-
     h1{
-        text-transform: uppercase;
-        letter-spacing: -2px;
-        font-size: 50px
-    }
-
-    h4{
-    font-size: 17px;
-    font-weight: bold;
-    color: $dark-blue;
-    font-family: Arial, Helvetica, sans-serif;
-    letter-spacing: -1px;
+        font-size: 50px;
+        font-weight: bold
     }
 
 }
 
+//Quote
+
+.quote{
+    width: 75%;
+    max-width: 600px;
+}
+
+.quoteByLine{
+width: 100%;
+text-align: center;
+}
+
+// Main Content
 .mainContent{
-   background-color:rgba(255,212,0,.8);
-   padding: 20px;
-   box-shadow: 3px 2px 7px -2px #000;
+    background-image: url('/assets/wood.jpg');
+    border: 2px solid #fff;
+    padding: 20px;
 }
-.topText{
-    color: $dark-blue;
-    text-align: center;
-    font-family: 'Racing Sans One', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0px 0px 30px;
-    font-size: 40px;
-    line-height: .7em;
+
+//Form elements
+#reservation_form{
+    padding: 0px 50px;
 }
-.reserveLink{
-    font-size: .5em;
-    white-space: nowrap 
+
+.form-section-header{
+    margin-left: -40px;
 }
-.row-eq-height{
-    @media screen and (min-width: 750px){ 
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
+
+.fa-circle{
+    color: yellow;
+}
+
+.fa-inverse{
+    color:#000;
+}
+
+//Page 1
+.top-image{
+    margin-bottom: 15px;
+    img{
+        width: 100%;
+        border: 2px solid #fff;
     }
+}
+
+.top-text{
+    margin: 0 auto;
+    width: 85%;
+    text-align: center;
+    padding-bottom: 30px;
+    border-bottom: 3px solid #000;
 }
 
 .field_with_errors{
@@ -110,7 +138,6 @@ margin-bottom: 15px;
     overflow: hidden;
     position: relative;
     background:#fff;
-    border: 4px solid $light-blue;
     border-radius: 12px;
     box-shadow: 2px 2px 7px 1px rgba(0,0,0,.5);
     height: 100%;
@@ -127,7 +154,6 @@ margin-bottom: 15px;
         position: relative;
         top: -4px;
         text-align: center;
-        color: $dark-blue;
         font-size: 1em;
         text-shadow: 1px 1px 1px 1px #000;
         line-height: 1em;
@@ -176,19 +202,6 @@ text-align:center;
     }
 }
 
-.quote{
-    font-size: 1.9em;
-    line-height: 1.2em;
-    font-weight: bold;
-    margin-top: 50px;
-    font-family: 'Signika', sans-serif;
-}
-.quoteByLine{
-    font-weight: normal;
-    font-size: 1em;
-    float: right;
-    margin-right: 25px;
-}
 
 
 

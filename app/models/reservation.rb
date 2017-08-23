@@ -1,5 +1,4 @@
 class Reservation < ApplicationRecord
-    attr_accessor :reserve_ahead
 
     validates :start_date, :presence => {:message => "Rental Date Required"}
     validates :stripe, :presence => {:message => "Credit Card Info Required"}

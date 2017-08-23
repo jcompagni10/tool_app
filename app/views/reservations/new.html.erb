@@ -3,48 +3,33 @@
 </script>
 <%= render 'modals' %>
 <div class="container">
-    <div class="row">
-        <div class ="col-md-7 col-md-offset-2 appTitle">
-            <h1> Drill Me Now </h1>
-            <h4> Rent an electric drill & all the tools you need
-            for your home improvement projects</h4>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-7 col-md-offset-2 mainContent">
-            <% if !@availableToday %>
-                <%= render 'unavailable' %>
-            <% end %> 
-            <div class="col-12 topText">
-                <% if @availableToday %>
-                    Get it Today 
-                    <%= link_to '(Reserve for Later)', showResDate_path, remote: true, class: "reserveLink"%>
-                <% else %>
-                    Reserve Your Toolbox
-                <% end %> 
-                <h4> 9am-9pm pickup at 3156 24th St.</h4>
+    <div class= "row"
+        <div class="col-10 col-offset-1">
+            <div class="row">
+                <div class ="col-10 col-offset-1 appTitle">
+                    <h1> Drill Me Now </h1>
+                    <h2>Rent a toolbox for everything from Ikea furniture to custom builds</h2>
+                </div>
             </div>
-            <div id="rentalFormWrapper">
-                <%= render partial: 'form', :locals => {reserveLater: false, reservation: @reservation, availableToday: @availableToday } %>
-            </div> 
-            <div class="bottomText">
-                Tools due back in 2 days 
-                <span class="dueDate">
-                    <%="#{(Time.now + 3.days).strftime("%m/%d/%Y")}" %>
-                </span>
-            </div>       
-        </div>
-        <div class="col-md-3 sideBar">
-            <div class="quote pull-left">
-                <span class="quoteBody">
-                    "I rented a toolbox from <i>Drill Me Now</i> and I 
-                    built a new dog house for FiFi"
-                </span><br>
-                <div class="quoteByLine">-Jon McFixit</div>
+            <div class="row">
+                <div class="col-sm-6 col-xs-12 mainContent pull-right">
+                    <%= form_with(model: @reservation, remote: true, html: {autocomplete: "off", id: "reservation_form"}) do |form| %>
+                        <div class="page1">
+                            <%= render partial: "page1", :locals => {form: form} %>
+                        </div>    
+                    <% end %>
+                </div>
+                <div class="col-sm-6 sideBar pull-left text-header">
+                    <div class="quote">
+                        <span class="quoteBody">
+                            "I rented a toolbox from <i>Drill Me Now</i> and I 
+                            built a new dog house for FiFi"
+                        </span><br>
+                        <div class="quoteByLine">-Jon McFixit</div>
+                    </div>
+                </div>    
             </div>
-        </div>    
+        </div>
     </div>
 </div>
-
-
-        
+                

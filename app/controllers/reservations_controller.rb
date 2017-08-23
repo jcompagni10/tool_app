@@ -6,46 +6,23 @@ class ReservationsController < ApplicationController
   def new
     @reservedDates = get_reserved_dates
     #set to always availalable for testing 
-    @availableToday = session[:availableToday]= !@reservedDates.include?(Date.today.strftime("%d-%m-%Y"))
+    @availableToday = session[:availableToday]= true #!@reservedDates.include?(Date.today.strftime("%d-%m-%Y"))
 
     @reservation = Reservation.new    
   end
 
 
-  #show day-of rental form
-  def hideResDate
-    @availableToday = session[:availableToday]
-    @reservation = Reservation.new
-    @reserveLater = false;
-    respond_to do |format|
-      format.js { render :renderForm }
-    end
-  end
 
-  #show form for reserve ahead
-  def showResDate
-    @availableToday = session[:availableToday]
-    @reservation = Reservation.new
-    @reserveLater = true;
-    respond_to do |format|
-      format.js { render :renderForm }
-    end
-  end
+
+
 
   # POST /reservations
   # POST /reservations.json
   def create
     #convert start_date back to ruby date
-    if !!reservation_params["reserve_ahead"]
-      if !reservation_params["start_date"].empty?
-        start_date = reservation_params["start_date"]
-        params[:reservation][:start_date] = Date.strptime(start_date, "%m/%d/%Y")
-      end
-      #set start date to today if not reserving ahead
-    else 
-      params[:reservation][:start_date] = Date.today
-    end
 
+    start_date = reservation_params["start_date"]
+    params[:reservation][:start_date] = Date.strptime(start_date, "%m/%d/%Y")
     
     @reservation = Reservation.new(reservation_params)
     @reserveLater = !reservation_params["start_date"].nil?
