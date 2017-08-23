@@ -9,13 +9,13 @@ function deliveryChange(){
 function toggleDelivery(val){
     if (val){
         $("#delivery_time").prop('disabled', false)
-        $("#deliveryInput").show()
+        $("#deliveryInput").toggleClass("hidden")
     }
     else{
         $("#delivery_time").prop('disabled', true)
-        $("#deliveryInput").hide()
+        $("#deliveryInput").toggleClass("hidden")
     }
-    deliveryChange;
+    deliveryChange();
 
 }
 
@@ -42,3 +42,20 @@ function updateDueDate(resDate){
         $(".dueDate").html("");
     }
 }
+
+function toCheckout(){
+    $("#page1").toggleClass("hidden");
+    $("#page2").toggleClass("hidden");
+}
+
+function back(){
+    $("#page2").toggleClass("hidden");
+    $("#page1").toggleClass("hidden");
+}
+
+$(document).ready(function(){
+    $("#start_date").datepicker({
+      minDate: new Date(),
+      beforeShowDay: DisableSpecificDates
+      })
+})

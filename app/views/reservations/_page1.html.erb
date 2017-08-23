@@ -15,14 +15,45 @@
         <i class="fa fa-circle fa-stack-2x"></i>
         <i class="fa fa-inverse fa-stack-1x">1</i>
     </span>
-    <span class="text-header"> Check Availability </span>
+    <span class="text-header"> Check availability </span>
 </div>
 
-<div class="reserveDate inputField">
-    <%= form.label :start_date, "Get it: ", class: "generic-text" %>
+<div class="reserveDate inputField generic-text">
+    <%= form.label :start_date, "Get it: "%>
     <%= form.text_field :start_date, {:id => "start_date", :readonly  => "true", :onChange => "updateDueDate(this.value)"} %>
 </div>
-
+Return it: 
 <span class="dueDate">
     <%="#{(Time.now + 3.days).strftime("%m/%d/%Y")}" %>
 </span>
+
+<div class ="form-section-header">
+    <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-inverse fa-stack-1x">2</i>
+    </span>
+    <span class="text-header"> Select optional add-ons </span>
+</div>
+<%= render partial: 'add_ons', :locals => {form: form} %>
+<div id= "deliveryInput" class="hidden">
+    <div class="inputField">
+        <%= form.label :address, "Address: " %>
+        <%= form.text_field :address, id: :address, class: "full-width" %>
+    </div>
+    <div class="inputField">
+        <%= form.label :instructions, "Optional instructions: " %>
+        <%= form.text_field :instructions, id: :instructions, class: "full-width" %>
+    </div>
+    <div class="inputField">
+        <%= form.label :delivery_time, "Time window for delivery: " %>
+        <p class="caveat-text">
+            Select the start of a 1-hour window from 9am-9pm
+        </p>
+        <% delivery_times = { "9am" => 9, "10am" => 10, "11am" => 11, "12pm" => 12, "1pm" => 13, "2pm" => 14, "3pm" => 15, "4pm" => 16, "5pm" => 17, "6pm" => 18, "7pm" => 19, "8pm" => 20 } %>
+        <%= form.select :delivery_time, delivery_times, {}, {:id => "delivery_time", :onChange => "deliveryChange()", :disabled => true}  %>
+        &nbspto <span id="deliveryEndTime" class="generic-text">10am</span>
+    </div>
+</div>
+<div class="text-center">
+    <button class="btn btn-primary text-header" onClick= "toCheckout()"> Checkout </button>
+</div>

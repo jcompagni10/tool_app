@@ -1,0 +1,35 @@
+<table class="add-on-table">
+    <tr>
+        <td class="checkboxCol">
+            <%= form.check_box :ladder, id: :reservation_ladder%>
+        </td>
+        <td class="priceCol">
+            +$10
+        </td>
+        <td class="descriptionCol">
+            Ladder <a href="#"><span class="glyphicon glyphicon-question-sign"></span></a>
+        </td>
+    </tr>
+    <tr>
+        <td class="checkboxCol">
+            <%= form.check_box :light, id: :reservation_light%>
+        </td>
+        <td class="priceCol">
+            +$10
+        </td>
+        <td class="descriptionCol">
+            Light <a href="#"><span class="glyphicon glyphicon-question-sign"></span></a>
+        </td>
+    </tr>
+    <tr>
+        <td class="checkboxCol">
+            <input type="checkbox" onChange ="toggleDelivery(this.checked)">
+        </td>
+        <td class="priceCol">
+            +$8
+        </td>
+        <td class="descriptionCol">
+            Delivery <a href="#"><span class="glyphicon glyphicon-question-sign"></span></a>
+        </td>
+    </tr>
+</table>

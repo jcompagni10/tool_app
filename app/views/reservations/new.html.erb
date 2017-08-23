@@ -14,9 +14,12 @@
             <div class="row">
                 <div class="col-sm-6 col-xs-12 mainContent pull-right">
                     <%= form_with(model: @reservation, remote: true, html: {autocomplete: "off", id: "reservation_form"}) do |form| %>
-                        <div class="page1">
+                        <div id="page1">
                             <%= render partial: "page1", :locals => {form: form} %>
                         </div>    
+                        <div id="page2" class="hidden">
+                            <%= render partial: "page2", :locals => {form: form} %>
+                        </div>
                     <% end %>
                 </div>
                 <div class="col-sm-6 sideBar pull-left text-header">
