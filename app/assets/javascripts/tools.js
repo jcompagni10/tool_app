@@ -1,4 +1,4 @@
-var reserveNow = true;
+var reserved_dates = [];
 function deliveryChange(){
     var endTime = 1 + parseInt($("#delivery_time").val());
     var suffix = (endTime < 12 )? "am" : "pm";
@@ -19,10 +19,6 @@ function toggleDelivery(val){
 
 }
 
-function DisableSpecificDates(date) {
-    var date_string = jQuery.datepicker.formatDate('dd-mm-yy', date);
-    return [reserved_dates.indexOf(date_string) == -1];
-}
 
 function tosAgree(btn){
     $("#reservation_tos").prop("checked", "true")
@@ -53,9 +49,34 @@ function back(){
     $("#page1").toggleClass("hidden");
 }
 
+function DisableSpecificDates(date) {
+    var date_string = jQuery.datepicker.formatDate('dd-mm-yy', date);
+    return [reserved_dates.indexOf(date_string) == -1];
+}
+
+function getReservedDates(){
+    request = $.ajax({
+        url: "/getReservedDates",
+        method: "GET",
+        dataType: "json"
+      })
+      .success(function(result){
+        reserved_dates = result
+      })
+      .fail(function(){
+          alert("Something isn't working right. Make sure you have JavaScript enabled in your browser");
+      });
+}
+
 $(document).ready(function(){
+    //Get reserved dates w/ ajax
+
+    getReservedDates();
+
+    //Init Datepicker
     $("#start_date").datepicker({
       minDate: new Date(),
       beforeShowDay: DisableSpecificDates
       })
+    
 })

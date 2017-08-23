@@ -4,7 +4,6 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/new
   def new
-    @reservedDates = get_reserved_dates
     #set to always availalable for testing 
     @availableToday = session[:availableToday]= true #!@reservedDates.include?(Date.today.strftime("%d-%m-%Y"))
 
@@ -58,7 +57,7 @@ class ReservationsController < ApplicationController
 
 
   # get all reserved dates from database
-  def get_reserved_dates
+  def getReservedDates
     reserved_dates = []
     if(Reservation.count != 0 )
       reservations = Reservation.pluck(:start_date)
@@ -69,7 +68,7 @@ class ReservationsController < ApplicationController
         }
       }
     end
-    reserved_dates
+    render json: reserved_dates
   end
 
 
