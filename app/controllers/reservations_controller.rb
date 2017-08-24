@@ -11,8 +11,9 @@ class ReservationsController < ApplicationController
   # POST /reservations
   # POST /reservations.json
   def create
-    if !!reservation_params[:start_date]
-      params[:reservation][:start_date] = Date.strptime(reservation_params[:start_date], "%m/%d/%Y")
+    if !reservation_params["start_date"].empty?
+      start_date = reservation_params["start_date"]
+      params[:reservation][:start_date] = Date.strptime(start_date, "%m/%d/%Y")
     end
     @reservation = Reservation.new(reservation_params)
     respond_to do |format|
