@@ -66,8 +66,16 @@ h2{
 //Quote
 
 .quote{
-    width: 75%;
     max-width: 600px;
+    width: 85%;
+    max-width: 600px;
+    margin: 0px auto;
+    color: #000;
+    text-shadow: 0px 0px 1px #ccc;
+
+    @media screen and (max-width: 768px) {
+        margin-top: 40px;
+    }
 }
 
 .quoteByLine{
@@ -85,6 +93,9 @@ text-align: center;
 //Form elements
 #reservation_form{
     padding: 0px 50px;
+    @media screen and (max-width: 768px) {
+        padding: 0 25px;
+    }
 
     #error_explanation{
         width: 100%;
@@ -126,7 +137,7 @@ text-align: center;
     .field_with_errors{
         padding: 0px;
         background-color: unset;
-        display: block;
+        display: unset;
 
         input{
             box-shadow: 0 0 2px 1px #f00;
@@ -135,7 +146,7 @@ text-align: center;
 
     .btn-primary{
         background-color: #1dafc9;
-        width: 50%;
+        width: 75%;
         margin: 20px auto 0;
         border: 2px solid #fff;
         color: #fff;
@@ -158,21 +169,27 @@ text-align: center;
 }
 
 //Page 1
-.top-image{
-    margin-bottom: 15px;
+.top-section{
+    margin-bottom: 20px;
+    border-bottom: 2px solid #000;
+    
+    @media screen and (max-width: 450px){
+        margin: 0px -30px 20px;
+    }
+        
     img{
         width: 100%;
         border: 2px solid #fff;
+        margin-bottom: 15px;
     }
-}
 
 .top-text{
     margin: 0 auto;
     width: 85%;
     text-align: center;
     padding-bottom: 20px;
-    border-bottom: 2px solid #000;
-    margin-bottom: 20px;
+}
+
 }
 
 .add-on-table{
@@ -198,14 +215,31 @@ text-align: center;
 }
 
 .reserveDate{
+    display: table;
+    width: 100%;
      label{
-        margin-left: -15px !important;
         white-space: nowrap;
-        padding-top: 6px;
+        display: table-cell;
+        width: 1px;
+        vertical-align: middle;
+        
+    }
+
+    .field_with_errors:first-of-type{
+    display: table-cell !important;
+    width: 1px;
+    vertical-align: middle;
+    }
+
+    .field_with_errors:nth-of-type(2){
+        display: table-cell !important;
     }
 
     input{
+        display: table-cell;
+        margin-left: 10px;
         margin-bottom: 5px;
+        max-width: 360px;
     }
 }
 
@@ -233,7 +267,8 @@ text-align: center;
 //Page 2
 
 .back_button{
-    margin-left: -50px;
+    margin-left: -40px;
+    margin-bottom: 10px;
     color: #fff;
 }
 .termsOfService{

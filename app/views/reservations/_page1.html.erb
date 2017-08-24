@@ -1,13 +1,13 @@
-<div class='top-image'>
+<div class='top-section'>
     <%= image_tag 'tools.jpg', alt: "tools" %>
-</div>
-<div class="top-text">
-    <span class="text-header">
-        Your toolbox rental includes:
-    </span>
-    <span class="generic-text">
-        Electric drill, stud finder, level, screwdriver set, hammer, pliers, wrenches, <a data-toggle="modal" data-target="#toolsModal">and more!</a>
-    </span>
+    <div class="top-text">
+        <span class="text-header">
+            Your toolbox rental includes:
+        </span><br>
+        <span class="generic-text">
+            Electric drill, stud finder, level, screwdriver set, hammer, pliers, wrenches, <a data-toggle="modal" data-target="#toolsModal">and more!</a>
+        </span>
+    </div>
 </div>
 
 <div class ="form-section-header">
@@ -19,19 +19,15 @@
 </div>
 
 <div class="reserveDate inputField generic-text">
-    <div class="row-fluid">
-        <div class="col-xs-1">
-            <%= form.label :start_date, "Get it: "%>
-        </div>
-        <div class="col-xs-11">
-            <%= form.text_field :start_date, {:id => "start_date", :class=>"full-width", :readonly  => "true", :onChange => "updateDueDate(this.value)"} %>
-        </div>
-    </div>
+        <%= form.label :start_date, "Get it: "%>
+        <%= form.text_field :start_date, {:id => "start_date", :class=>"full-width", :readonly  => "true", :onChange => "updateDueDate()"} %>
 </div>
 Return it: 
 <span class="dueDate">
     3 days from rental
 </span>
+
+
 
 <div class ="form-section-header">
     <span class="fa-stack fa-lg">

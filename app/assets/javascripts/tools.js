@@ -18,9 +18,18 @@ function toggleDelivery(val){
     }
     deliveryChange();
 }
-    
 
-function updateDueDate(resDate){
+//Change back from rails string
+function reformatDate(){
+    date= $("#start_date").val();
+    date = $.datepicker.parseDate("yy-mm-dd", date)
+    if (date != ""){
+        $("#start_date").val($.datepicker.formatDate("DD, MM d, yy", date));
+        updateDueDate();
+    }
+}
+
+function updateDueDate(){
     if ($("#start_date").length){
         var dueDate = $('#start_date').datepicker('getDate', '+3d'); 
         dueDate.setDate(dueDate.getDate()+3); 

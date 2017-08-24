@@ -83,7 +83,7 @@ class ReservationsController < ApplicationController
       #add light price (in cents)
       price += reservation.light ? 1000 : 0
       #add delivery price (in cents)
-      price += !reservation.delivery_time.nil? ? 1500 : 0
+      price += !reservation.delivery_time.nil? ? 800 : 0
     end
 
     def stripeCharge(token, amt)                

@@ -3,6 +3,7 @@ $(".mainContent").html("<%= j render(partial: 'mainContent', :locals => {reserva
 renderFullForm();
 mountDatePicker();
 mountStripe();
+reformatDate();
 
 <% if @delivery %>
     $("#delivery").prop("checked", true)  
