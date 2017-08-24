@@ -1,6 +1,54 @@
-<div class="back_button">
-    <a href="#" onClick="back()">
+<div class="back_button hideInFullForm">
+    <a href="" onClick="toPage1()">
         <span class="glyphicon glyphicon-menu-left"></span>
         Go back
     </a>
+</div>
+<div class="order_summary">
+    <div class="text-header">
+        Your order order summary
+    </div>        
+
+    <% options = {"Toolbox": "$20", "Ladder": "+$10", "Work Light": "+$10", "Delivery": "+$8", "Total": "$20"} %>
+    <table id="summary_table">
+        <% options.keys.each do |option| %>
+            <tr>
+                <td class="priceCol">
+                    <%=options[option] %>
+                </td>
+                <td class="descriptionCol">
+                    <%= option %>
+                </td>
+            </tr>
+        <% end %>
+    </table>
+</div>
+<div class ="form-section-header">
+    <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-inverse fa-stack-1x">3</i>
+    </span>
+    <span class="text-header"> Enter Contact & Payment </span>
+</div>
+<div class="inputField">
+    <%= form.label :email, "Email: " %>
+    <%= form.email_field :email, id: :reservation_email, class: "full-width"%>
+</div>
+
+<div class="inputField">
+    <%= form.label :stripe, "Credit or Debit Card: " %>
+    <div id="card-element">
+        <!-- a Stripe Element will be inserted here. -->
+    </div>
+    <div id="card-errors" role="alert"><%=flash[:error]%></div>    
+    <%= text_field_tag  "reservation[stripe]", nil, type: 'hidden', id: "reservation_stripe" %>
+</div>
+
+<div class="termsOfService">
+    <%= form.check_box :tos, id: :reservation_tos %>
+    <span>I agree to the <a href="#" data-toggle="modal" data-target="#tos"> Terms of Serivce </a></span> 
+</div>
+
+<div class="text-center">
+    <button id="submitButton" class="btn btn-primary text-header" onClick ="tokenHandler(event)" disabled="true">Drill me now!</button>
 </div>

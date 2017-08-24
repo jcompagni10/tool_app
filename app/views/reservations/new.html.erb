@@ -1,6 +1,3 @@
-<script>
-    var reserved_dates = <%= @reservedDates.to_json.to_s.html_safe %>;
-</script>
 <%= render 'modals' %>
 <div class="container">
     <div class= "row"
@@ -13,14 +10,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-6 col-xs-12 mainContent pull-right">
-                    <%= form_with(model: @reservation, remote: true, html: {autocomplete: "off", id: "reservation_form"}) do |form| %>
-                        <div id="page1">
-                            <%= render partial: "page1", :locals => {form: form} %>
-                        </div>    
-                        <div id="page2" class="hidden">
-                            <%= render partial: "page2", :locals => {form: form} %>
-                        </div>
-                    <% end %>
+                    <%= render "mainContent" %>
                 </div>
                 <div class="col-sm-6 sideBar pull-left text-header">
                     <div class="quote">

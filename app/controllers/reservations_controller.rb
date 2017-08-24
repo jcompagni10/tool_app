@@ -1,31 +1,23 @@
 class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
 
-
   # GET /reservations/new
   def new
-    #set to always availalable for testing 
-    @availableToday = session[:availableToday]= true #!@reservedDates.include?(Date.today.strftime("%d-%m-%Y"))
-
     @reservation = Reservation.new    
   end
-
-
-
 
 
 
   # POST /reservations
   # POST /reservations.json
   def create
-    #convert start_date back to ruby date
-
-    start_date = reservation_params["start_date"]
-    params[:reservation][:start_date] = Date.strptime(start_date, "%m/%d/%Y")
-    
+    debugger
+    if !!reservation_params.start_date
+      reservation_params.start_date = Date.strptime(reservation_params.start_date, "%m/%d/%Y")
+    end
     @reservation = Reservation.new(reservation_params)
-    @reserveLater = !reservation_params["start_date"].nil?
     respond_to do |format|
+      debugger
       if @reservation.valid?
         price = getTotal @reservation
         charge = stripeCharge @reservation.stripe, price
@@ -33,22 +25,19 @@ class ReservationsController < ApplicationController
           #save charge id from stripe
           @reservation.stripe = charge[1]
           @reservation.save
-          flash.now[:success] = "Reservation succesful, a confirmation email has been sent to #{@reservation.email}."
-          format.js{render :renderForm}
+          format.js{render js: "toPage3()"}
           #send conf email to user
           ReservationMailer.reservation_confirmation(@reservation).deliver
-          #send reminder email to drillmenowsf@gmail.com  
-          ReservationMailer.reservation_reminder(@reservation).deliver
         else
           #set flash to errors
           flash.now[:error] = charge[1];
           #reload page
-          format.js{render :renderForm}
+          format.js{render :renderFullForm}
 
         end
 
       else
-        format.js{render :renderErrors}
+        format.js{render :renderFullForm}
       
       end
     end
@@ -63,7 +52,7 @@ class ReservationsController < ApplicationController
       reservations = Reservation.pluck(:start_date)
       reservations.each {|date|
         #mark days unavailable
-        (date-2.days..date+2.days).each {|d| 
+        (date-3.days..date+3.days).each {|d| 
             reserved_dates.push(d.strftime("%d-%m-%Y")).uniq!
         }
       }
@@ -75,14 +64,11 @@ class ReservationsController < ApplicationController
 
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_reservation
-      @reservation = Reservation.find(params[:id])
-    end
+
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def reservation_params
-      params.require(:reservation).permit(:email, :tos, :reserve_ahead, :start_date, :ladder, :light, :stripe, :address, :instructions, :delivery_time)
+      params.require(:reservation).permit(:email, :tos, :start_date, :ladder, :light, :stripe, :address, :instructions, :delivery_time)
     end
 
     def getTotal(reservation)

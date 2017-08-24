@@ -1,4 +1,5 @@
 var reserved_dates = [];
+
 function deliveryChange(){
     var endTime = 1 + parseInt($("#delivery_time").val());
     var suffix = (endTime < 12 )? "am" : "pm";
@@ -16,18 +17,10 @@ function toggleDelivery(val){
         $("#deliveryInput").toggleClass("hidden")
     }
     deliveryChange();
-
 }
-
-
-function tosAgree(btn){
-    $("#reservation_tos").prop("checked", "true")
-    $(btn).prop("disabled", "true")
-    $("#tos").modal('toggle')
-}
+    
 
 function updateDueDate(resDate){
-    console.log(resDate)
     if ($("#start_date").length){
         dueBack= new Date();
         dueBack.setDate(( $("#start_date").datepicker('getDate').getDate() + 3))
@@ -39,19 +32,38 @@ function updateDueDate(resDate){
     }
 }
 
-function toCheckout(){
-    $("#page1").toggleClass("hidden");
-    $("#page2").toggleClass("hidden");
+function toPage1(){
+    $("#page2").addClass("hide");
+    $("#page1").removeClass("hide");
 }
 
-function back(){
-    $("#page2").toggleClass("hidden");
-    $("#page1").toggleClass("hidden");
+function toPage2(){
+    $("#page1").addClass("hide");
+    $("#page2").removeClass("hide");
+}
+
+function toPage3(){
+    $("#page1").addClass("hide");    
+    $("#page2").addClass("hide");
+    $("#page3").removeClass("hide");
+}
+
+function renderFullForm(){
+    $("#page1").removeClass("hide");
+    $("#page2").removeClass("hide");
+    $(".hiddenInFullForm").addClass("hide")
 }
 
 function DisableSpecificDates(date) {
     var date_string = jQuery.datepicker.formatDate('dd-mm-yy', date);
     return [reserved_dates.indexOf(date_string) == -1];
+}
+
+function mountDatePicker(){
+    $("#start_date").datepicker({
+        minDate: new Date(),
+        beforeShowDay: DisableSpecificDates
+        })
 }
 
 function getReservedDates(){
@@ -72,11 +84,9 @@ $(document).ready(function(){
     //Get reserved dates w/ ajax
 
     getReservedDates();
-
+    mountStripe();
+    mountDatePicker();
     //Init Datepicker
-    $("#start_date").datepicker({
-      minDate: new Date(),
-      beforeShowDay: DisableSpecificDates
-      })
+
     
 })
