@@ -209,19 +209,35 @@ text-align: center;
 }
 
 #summary_table{
+    width: 100%;
+
+    tr{
+    width: 100%;
+    display: table;
+    }
 
     td{
         font-size: 14px;        
         padding-bottom: 6px;
         padding-left: 10px; 
     }
+
+    .priceCol{
+        width: 1px;
+    }
+
     .descriptionCol{
         padding-left: 15px;
+    }
+
+    tr:first-child{
+        display: table !important
     }
 
     tr:last-child{
         border-top: 1px solid #000;
         padding-top: 4px;
+        display: table !important
     }
 
 
@@ -236,11 +252,15 @@ text-align: center;
     
     hr{
         color: #000;
+        border-color: #000;
+        background-color: #000;
     }
 
     .btn{
         width: 100%;
         margin-bottom: 20px;
+        margin-top: 25px;
+        
     }
 
 }
@@ -293,21 +313,17 @@ text-align:center;
     padding: 0px
 }
 
-//Modal
+//Modals
 .modal .close{
     position: absolute;
-    right: 5px;
-    color: #fff;
+    right: 8px;
+    top: 5px;
+    color: #444;
     opacity: .6;
     font-size: 1.5em;
 }
 
-.close.black{
-    color: #444;
-}
-
 .modal img{
-    max-height: 300px;
     object-fit: contain;
     width: 100%;
 }
@@ -320,32 +336,31 @@ text-align:center;
     width: 300px;
     margin: 25px auto;
 }
+.modal-description{
+    padding: 0 15px 15px;
+}
 
 #toolsModal .modal-dialog{
-    width: 450px;
+    width: 70%;
+    max-width: 600px;
+}
 
-    img{
-        max-height: 400px;
+.tool-list{
+    text-align: left;
+    margin: 20px 0px;
+    @media screen and (max-width: 750px) {
+        text-align: center
     }
 }
 
-.modalInfo{
-    font-size: 1.4em;
-    width: 90%;
-    margin: 0 auto 5px auto;
-}
 
-#tos {
-    .modal-header{
-        padding: 0px;
-    }
-    .modal-body{
-        height: 400px;
-        overflow: scroll;
-        text-align: left;
-    }
-    .btn{
-        width: 100%;
-        margin: 10px 0px
-    }
+
+//TOS
+
+.tosContainer{
+    width: 85%;
+    margin: 50px auto;
+    background-color: white;
+    padding: 15px 30px 20px;
+
 }

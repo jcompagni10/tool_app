@@ -1,7 +1,32 @@
 <div class="modal fade" id="toolsModal">
   <div class="modal-dialog">
     <div class="modal-content">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h2>Your toolkit rental includes</h2>
+      <div class="row tool-list">
+      <ul>      
+          <div class="col-md-3 col-md-offset-2 col-sm-6">
+              <li>Crescent wrench</li>
+              <li>Boxcutter</li>
+              <li>Pliers (3x)</li>
+              <li>Triangle</li>
+              <li>Safety glasses</li>
+              <li>Cordless drill</li>
+              <li>Cordless impact driver</li>
+          </div>
+          <div class="col-md-3 col-md-offset-2 col-sm-6">
+              <li>Drill & screwdriver bits</li>
+              <li>Level & laser</li>
+              <li>Rubber mallet</li>
+              <li>Universal screwdriver</li>
+              <li>Stud finder </li>
+              <li>Measuring tape</li>
+              <li>Hammer</li>
+              <li>Allex wrenches (2x)</li>
+          </div>
+          </ul>
+          
+      </div>
         <%= image_tag("names.png", alt: "tools") %>
     </div>
   </div>
@@ -10,10 +35,11 @@
 <div class="modal fade" id="ladderModal">
   <div class="modal-dialog">
     <div class="modal-content">
-        <button type="button" class="close black" data-dismiss="modal">&times;</button>
-        <%= image_tag("ladderIcon.jpg", alt: "tools") %>
-        <div class="modalInfo">
-            Add a 6' ladder for an extra $10.
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h2> Optional Ladder (+$10) </h2>
+        <%= image_tag("ladder.jpg", alt: "ladder") %>
+        <div class="modal-description generic-text">
+            Ladders are great if you're short. Watch out for black cats.
         </div>
     </div>
   </div>
@@ -22,10 +48,11 @@
 <div class="modal fade" id="lightModal">
   <div class="modal-dialog">
     <div class="modal-content">
-        <button type="button" class="close black" data-dismiss="modal">&times;</button>
-        <%= image_tag("lightIcon.jpg", alt: "tools") %>
-        <div class="modalInfo">
-            Add a work lamp for an extra $10.
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h2> Optional Work Light (+$10) </h2>        
+        <%= image_tag("light.jpg", alt: "light") %>
+        <div class="modal-description generic-text">
+          If its dark use a light, it won't be dark anymore. This light is bright. 
         </div>
     </div>
   </div>
@@ -34,8 +61,9 @@
 <div class="modal fade" id="deliveryModal">
   <div class="modal-dialog">
     <div class="modal-content">
-        <button type="button" class="close black" data-dismiss="modal">&times;</button>
-        <%= image_tag("deliveryMap.jpg", alt: "tools") %>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h2> Optional Delivery (+$8) </h2>                
+        <%= image_tag("deliveryMap.jpg", alt: "map") %>
         <div class="modalInfo">
             We'll delivery your tools anytime between 9am and 9pm to anywhere within the approved delivery range.
         </div>
@@ -43,19 +71,3 @@
   </div>
 </div>
 
-<div class="modal fade" id="tos">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class ="modal-header">
-        <button type="button" class="close black" data-dismiss="modal">&times;</button>
-        <h4> Terms of Service </h4>
-      </div>
-      <div class="modal-body">
-        <p><h4>Lorem ipsum</h4> dolor sit amet, consectetur adipiscing elit. Nam ut arcu id lorem semper sodales sed sed sapien. Suspendisse gravida velit ut tristique tristique. Nulla id nunc auctor, commodo ligula ut, convallis massa. Etiam lacinia commodo leo, nec aliquam sem consectetur et. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In dui neque, vestibulum eget tincidunt nec, gravida non odio. Ut quis massa elit. Phasellus fermentum, nunc vel faucibus pellentesque, nulla quam consectetur eros, a accumsan nulla mi sit amet lacus. Nam ut lectus ipsum. </p>
-        <p><h4>Duis sagittis</h4> maximus pulvinar. Fusce semper egestas malesuada. Sed a mauris ultricies, aliquam erat eget, pellentesque libero. Vivamus pharetra laoreet posuere. Suspendisse fringilla consequat massa, sed rutrum enim efficitur in. Vestibulum et dictum purus, sit amet tincidunt quam. Ut quis sem maximus, rhoncus quam eu, lobortis elit. Integer sodales erat non justo ultricies, ut aliquet sapien efficitur. Mauris maximus ante at pellentesque ultrices. Sed at gravida libero. Integer dignissim justo ut erat pulvinar vehicula. Suspendisse rutrum nisi velit, nec mollis elit commodo ut. Sed congue elit nec purus pharetra luctus. Proin nisi ante, interdum pulvinar finibus ut, luctus a velit. </p>
-        <p><h4>Nullam iaculis</h4> nisi et ante cursus, quis hendrerit ex mollis. Phasellus faucibus erat tellus, eget ornare ipsum convallis eu. Etiam et lorem fermentum, ullamcorper lacus varius, accumsan est. Duis ac est accumsan, scelerisque sem sed, fermentum nunc. Aenean id vestibulum elit. Quisque elementum nulla at neque tempor mollis. Duis magna mauris, viverra in laoreet quis, venenatis quis nibh. Nam volutpat vel leo sed imperdiet. Praesent convallis gravida sapien id mollis. Sed sit amet ligula eu velit luctus porta vitae eu lacus. Sed posuere leo non porta mattis. Quisque tempor euismod enim. Suspendisse eu elit rhoncus orci accumsan venenatis vel id lectus. Duis tortor dui, mattis a tincidunt nec, pharetra sit amet justo. Donec ac justo ut leo congue viverra. </p>
-        <button class="btn btn-primary" onclick="tosAgree(this)"> Agree </button>
-      </div>
-    </div>
-  </div>
-</div>

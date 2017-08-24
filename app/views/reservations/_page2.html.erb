@@ -4,7 +4,7 @@
         Go back
     </a>
 </div>
-<div class="order_summary">
+<div class="order_summary hideInFullForm">
     <div class="text-header">
         Your order order summary
     </div>        
@@ -12,7 +12,7 @@
     <% options = {"Toolbox": "$20", "Ladder": "+$10", "Work Light": "+$10", "Delivery": "+$8", "Total": "$20"} %>
     <table id="summary_table">
         <% options.keys.each do |option| %>
-            <tr>
+            <tr class = "<%= option %>_Row hidden">
                 <td class="priceCol">
                     <%=options[option] %>
                 </td>
@@ -46,7 +46,7 @@
 
 <div class="termsOfService">
     <%= form.check_box :tos, id: :reservation_tos %>
-    <span>I agree to the <a href="#" data-toggle="modal" data-target="#tos"> Terms of Serivce </a></span> 
+    <span>I agree to the <%= link_to "Terms of Service", terms_of_service_path %></span> 
 </div>
 
 <div class="text-center">

@@ -3,5 +3,6 @@ Rails.application.routes.draw do
 
   root 'reservations#new'
   get 'getReservedDates', to: 'reservations#getReservedDates'
+  get 'terms_of_service', to: 'reservations#tos'
 
 end

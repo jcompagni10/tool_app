@@ -40,6 +40,21 @@ function toPage1(){
 function toPage2(){
     $("#page1").addClass("hide");
     $("#page2").removeClass("hide");
+    var total = 20;
+    if ($("#reservation_ladder").prop("checked")){
+        total += 10;
+        $(".Ladder_Row").removeClass("hidden")
+    }
+    if ($("#reservation_light").prop("checked")){
+        total += 10;
+        $(".Light_Row").removeClass("hidden")
+    }
+    if ($("#delivery").prop("checked")){
+        total += 8;
+        $(".Delivery_Row").removeClass("hidden")
+    }
+    console.log(total);
+    $(".Total_Row .priceCol").html("$"+total)
 }
 
 function toPage3(){
@@ -51,7 +66,7 @@ function toPage3(){
 function renderFullForm(){
     $("#page1").removeClass("hide");
     $("#page2").removeClass("hide");
-    $(".hiddenInFullForm").addClass("hide")
+    $(".hideInFullForm").addClass("hide")
 }
 
 function DisableSpecificDates(date) {

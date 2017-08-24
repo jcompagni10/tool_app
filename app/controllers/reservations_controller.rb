@@ -59,7 +59,9 @@ class ReservationsController < ApplicationController
     render json: reserved_dates
   end
 
-
+  def tos
+    render "terms_of_service"
+  end
 
 
   private
