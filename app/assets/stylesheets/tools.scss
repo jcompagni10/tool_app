@@ -39,6 +39,7 @@ h2{
 
 .generic-text{
     font-weight: normal;
+    font-size: 14px;
 }
 
 .caveat-text{
@@ -170,12 +171,8 @@ text-align: center;
 
 //Page 1
 .top-section{
-    margin-bottom: 20px;
+    margin: 0px -30px 20px;
     border-bottom: 2px solid #000;
-    
-    @media screen and (max-width: 450px){
-        margin: 0px -30px 20px;
-    }
         
     img{
         width: 100%;
@@ -197,6 +194,7 @@ text-align: center;
 
     td{
         padding:5px;
+        font-family: 'Helvetica Neue Light', Helvetica, sans-serif;        
     }
 
     input[type="checkbox"]{
@@ -289,6 +287,8 @@ text-align: center;
         font-size: 14px;        
         padding-bottom: 6px;
         padding-left: 10px; 
+        font-family: 'Helvetica Neue Light', Helvetica, sans-serif;
+        
     }
 
     .priceCol{
@@ -414,7 +414,7 @@ text-align:center;
 .tool-list{
     text-align: left;
     margin: 20px 0px;
-    @media screen and (max-width: 750px) {
+    @media screen and (max-width: 768px) {
         text-align: center
     }
 }
