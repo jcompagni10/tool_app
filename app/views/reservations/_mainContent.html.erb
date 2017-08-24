@@ -1,10 +1,10 @@
 <%= render "modals" %>
 
 <%= form_with(model: @reservation, remote: true, html: {autocomplete: "off", id: "reservation_form"}) do |form| %>
-    <div id="errorsWrapper">
-        <%= render partial: 'formErrors', :locals => {reservation: @reservation} %>
-    </div>
     <div id="page1" class="">
+        <div id="errorsWrapper">
+            <%= render partial: 'formErrors', :locals => {reservation: @reservation} %>
+        </div>
         <%= render partial: "page1", :locals => {form: form} %>
     </div>    
     <div id="page2" class="hide">

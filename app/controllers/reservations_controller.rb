@@ -13,7 +13,10 @@ class ReservationsController < ApplicationController
   def create
     if !reservation_params["start_date"].empty?
       start_date = reservation_params["start_date"]
-      params[:reservation][:start_date] = Date.strptime(start_date, "%m/%d/%Y")
+      params[:reservation][:start_date] =  Date.strptime(start_date, "%A, %B %d, %Y")      
+    end
+    if !reservation_params["delivery_time"].nil?
+      @delivery = true;
     end
     @reservation = Reservation.new(reservation_params)
     respond_to do |format|

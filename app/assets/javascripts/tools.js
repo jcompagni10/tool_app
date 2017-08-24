@@ -3,18 +3,18 @@ var reserved_dates = [];
 function deliveryChange(){
     var endTime = 1 + parseInt($("#delivery_time").val());
     var suffix = (endTime < 12 )? "am" : "pm";
-    var formatted = (endTime > 12? endTime - 12 : endTime) + suffix
+    var formatted = (endTime > 12? endTime - 12 : endTime) + ":00"+suffix
     $("#deliveryEndTime").html(formatted);
 }
 
 function toggleDelivery(val){
     if (val){
         $("#delivery_time").prop('disabled', false)
-        $("#deliveryInput").toggleClass("hidden")
+        $("#deliveryInput").collapse("show")
     }
     else{
         $("#delivery_time").prop('disabled', true)
-        $("#deliveryInput").toggleClass("hidden")
+        $("#deliveryInput").collapse("hide")
     }
     deliveryChange();
 }
@@ -22,10 +22,10 @@ function toggleDelivery(val){
 
 function updateDueDate(resDate){
     if ($("#start_date").length){
-        dueBack= new Date();
-        dueBack.setDate(( $("#start_date").datepicker('getDate').getDate() + 3))
-        var formatDate= dueBack.getMonth()+1+'/'+dueBack.getDate()+'/'+dueBack.getFullYear();
-        $(".dueDate").html(" on " + formatDate);
+        var dueDate = $('#start_date').datepicker('getDate', '+3d'); 
+        dueDate.setDate(dueDate.getDate()+3); 
+        var formatDate= $.datepicker.formatDate("DD, MM d, yy", dueDate)
+        $(".dueDate").html(formatDate);
     }
     else{
         $(".dueDate").html("");
@@ -53,7 +53,6 @@ function toPage2(){
         total += 8;
         $(".Delivery_Row").removeClass("hidden")
     }
-    console.log(total);
     $(".Total_Row .priceCol").html("$"+total)
 }
 
@@ -77,7 +76,8 @@ function DisableSpecificDates(date) {
 function mountDatePicker(){
     $("#start_date").datepicker({
         minDate: new Date(),
-        beforeShowDay: DisableSpecificDates
+        beforeShowDay: DisableSpecificDates,
+        dateFormat: "DD, MM d, yy"
         })
 }
 

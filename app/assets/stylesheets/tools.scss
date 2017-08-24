@@ -19,7 +19,7 @@ a:hover{
     background-color: unset;
 }
 
-a{
+a, a:active, a:focus, a:visited{
     color: #fff;
     text-decoration: underline;
 }
@@ -197,10 +197,44 @@ text-align: center;
 
 }
 
+.reserveDate{
+     label{
+        margin-left: -15px !important;
+        white-space: nowrap;
+        padding-top: 6px;
+    }
+
+    input{
+        margin-bottom: 5px;
+    }
+}
+
+#deliveryInput{
+    //hide controls in IE
+    select::-ms-expand {
+        display: none;
+    }
+
+    select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        text-indent: 1px;
+        text-overflow: '';
+        border: 1px solid #ccc;
+        padding: 3px;
+        border-radius: 4px;
+    }
+    option{
+        padding: 5px;
+        border: none;
+    }
+}
+
 //Page 2
 
 .back_button{
     margin-left: -50px;
+    color: #fff;
 }
 .termsOfService{
     width: 100%;
@@ -259,12 +293,9 @@ text-align: center;
     .btn{
         width: 100%;
         margin-bottom: 20px;
-        margin-top: 25px;
-        
+        margin-top: 25px;  
     }
-
 }
-
 
 .bottomText{
 text-align:center;

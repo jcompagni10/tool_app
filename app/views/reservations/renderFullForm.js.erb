@@ -1,5 +1,10 @@
 $(".mainContent").html("<%= j render(partial: 'mainContent', :locals => {reservation: @reservation})%> ");
+ 
 renderFullForm();
 mountDatePicker();
 mountStripe();
 
+<% if @delivery %>
+    $("#delivery").prop("checked", true)  
+    toggleDelivery(true)
+<% end %> 

@@ -6,7 +6,7 @@
         Your toolbox rental includes:
     </span>
     <span class="generic-text">
-        Electric drill, stud finder, level, screwdriver set, hammer, pliers, wrenches, <a data-toggle="modal" data-target="#toolsModal" >and more!</a>
+        Electric drill, stud finder, level, screwdriver set, hammer, pliers, wrenches, <a data-toggle="modal" data-target="#toolsModal">and more!</a>
     </span>
 </div>
 
@@ -19,12 +19,18 @@
 </div>
 
 <div class="reserveDate inputField generic-text">
-    <%= form.label :start_date, "Get it: "%>
-    <%= form.text_field :start_date, {:id => "start_date", :readonly  => "true", :onChange => "updateDueDate(this.value)"} %>
+    <div class="row-fluid">
+        <div class="col-xs-1">
+            <%= form.label :start_date, "Get it: "%>
+        </div>
+        <div class="col-xs-11">
+            <%= form.text_field :start_date, {:id => "start_date", :class=>"full-width", :readonly  => "true", :onChange => "updateDueDate(this.value)"} %>
+        </div>
+    </div>
 </div>
 Return it: 
 <span class="dueDate">
-    <%="#{(Time.now + 3.days).strftime("%m/%d/%Y")}" %>
+    3 days from rental
 </span>
 
 <div class ="form-section-header">
@@ -35,7 +41,7 @@ Return it:
     <span class="text-header"> Select optional add-ons </span>
 </div>
 <%= render partial: 'add_ons', :locals => {form: form} %>
-<div id= "deliveryInput" class="hidden">
+<div id= "deliveryInput" class="collapse">
     <div class="inputField">
         <%= form.label :address, "Address: " %>
         <%= form.text_field :address, id: :address, class: "full-width" %>
@@ -47,11 +53,11 @@ Return it:
     <div class="inputField">
         <%= form.label :delivery_time, "Time window for delivery: " %>
         <p class="caveat-text">
-            Select the start of a 1-hour window from 9am-9pm
+            Select the start of a 1-hour window from 9:00am-9:00pm
         </p>
-        <% delivery_times = { "9am" => 9, "10am" => 10, "11am" => 11, "12pm" => 12, "1pm" => 13, "2pm" => 14, "3pm" => 15, "4pm" => 16, "5pm" => 17, "6pm" => 18, "7pm" => 19, "8pm" => 20 } %>
+        <% delivery_times = { "9:00am" => 9, "10:00am" => 10, "11:00am" => 11, "12:00pm" => 12, "1:00pm" => 13, "2:00pm" => 14, "3:00pm" => 15, "4:00pm" => 16, "5:00pm" => 17, "6:00pm" => 18, "7:00pm" => 19, "8:00pm" => 20 } %>
         <%= form.select :delivery_time, delivery_times, {}, {:id => "delivery_time", :onChange => "deliveryChange()", :disabled => true}  %>
-        &nbspto <span id="deliveryEndTime" class="generic-text">10am</span>
+        &nbspto <span id="deliveryEndTime" class="generic-text">10:00am</span>
     </div>
 </div>
 <div class="text-center">
