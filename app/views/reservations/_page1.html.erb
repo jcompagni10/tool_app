@@ -39,6 +39,10 @@ Return it:
 <%= render partial: 'add_ons', :locals => {form: form} %>
 <div id= "deliveryInput" class="collapse">
     <div class="inputField">
+        <%= form.label :phone, "Phone: " %>
+        <%= form.telephone_field :phone, id: :phone, class: "full-width" %>
+    </div>
+    <div class="inputField">
         <%= form.label :address, "Address: " %>
         <%= form.text_field :address, id: :address, class: "full-width" %>
     </div>

@@ -9,7 +9,8 @@ class Reservation < ApplicationRecord
                     :presence => { message: 'You must Accept Terms of Service' }   
     #require address if delivery
     validates :address, :presence => {if: :delivery_time, :message =>"Delivery Address Required"}
-
+    validates :phone, :presence => {if: :delivery_time, :message =>"Phone Number Required"}
+    
     private 
 
         def date_valid

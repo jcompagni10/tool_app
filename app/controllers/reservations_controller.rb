@@ -15,8 +15,9 @@ class ReservationsController < ApplicationController
       start_date = reservation_params["start_date"]
       params[:reservation][:start_date] =  Date.strptime(start_date, "%A, %B %d, %Y")      
     end
+    @delivery = false
     if !reservation_params["delivery_time"].nil?
-      @delivery = true;
+      @delivery = true
     end
     @reservation = Reservation.new(reservation_params)
     respond_to do |format|
@@ -72,7 +73,7 @@ class ReservationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def reservation_params
-      params.require(:reservation).permit(:email, :tos, :start_date, :ladder, :light, :stripe, :address, :instructions, :delivery_time)
+      params.require(:reservation).permit(:email, :tos, :start_date, :ladder, :light, :stripe, :address, :instructions, :delivery_time, :phone)
     end
 
     def getTotal(reservation)

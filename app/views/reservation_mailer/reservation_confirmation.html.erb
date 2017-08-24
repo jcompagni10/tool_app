@@ -7,7 +7,8 @@ This is an email confirming your reservation from Drill Me Now for
   <b><%= @reservation.start_date.strftime("%A, %B %d, %Y") %></b>
 <% end %>
 .<br><br>
-<b>Contact Info: </b> <%=@reservation.email %><br>
+<b>Email: </b> <%=@reservation.email %><br>
+<b>Phone: </b> <%= @reservation.phone.nil? ? "N/A" :@reservation.phone %><br>
 <b>Ladder: </b> <%= @reservation.ladder ? "Yes" : "No" %><br>
 <b>Light: </b> <%= @reservation.light ? "Yes" : "No" %><br>
 <% dTime = @reservation.delivery_time %>
