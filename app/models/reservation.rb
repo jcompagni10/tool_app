@@ -1,5 +1,4 @@
 class Reservation < ApplicationRecord
-    before_create :format_date
  
     validates :start_date, :presence => {:message => "Rental Date Required"}
     validate :date_valid
@@ -21,12 +20,6 @@ class Reservation < ApplicationRecord
                 if start_date < Date.today
                     errors.add(:start_date, "Rental Date Cannot Be In The Past")
                 end
-            end
-        end
-
-        def format_date
-            if !!start_date
-                start_date = Date.strptime(start_date, "%m/%d/%Y")
             end
         end
 end

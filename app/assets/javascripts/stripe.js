@@ -50,8 +50,7 @@ function mountStripe(){
 
 function tokenHandler(e){
     $("#submitButton").prop("disabled", true)
-//    e.preventDefault()
-$("#reservation_form").trigger('submit.rails');
+    e.preventDefault()
 
     stripe.createToken(card).then(function(result){
         if (result.error) {

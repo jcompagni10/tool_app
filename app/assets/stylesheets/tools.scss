@@ -141,6 +141,15 @@ text-align: center;
         color: #fff;
     }
 
+    .btn-primary:disabled{
+        font-size: 0px;
+    }
+
+    .btn-primary:disabled:after{
+        font-size:18px;
+        content:"Working..."
+    }
+    
     .btn-primary:hover, .btn-primary:active{
         background-color: #0d9fa9;
         border: 2px solid #ccc    
