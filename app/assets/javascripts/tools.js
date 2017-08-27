@@ -59,6 +59,7 @@ function changeAddOn(addOn, state){
     total = total + (state ? price : - price);
     $(".Total_Row .priceCol").html("$"+total);
 }
+
 function toPage3(){
     $("#page1").addClass("hide");    
     $("#page2").addClass("hide");
