@@ -1,6 +1,6 @@
 <%= render "modals" %>
 
-<%= form_with(model: @reservation, remote: true, html: {autocomplete: "off", id: "reservation_form"}) do |form| %>
+<%= form_with(model: @reservation, local: true, html: {autocomplete: "off", id: "reservation_form"}) do |form| %>
     <div id="page1" class="">
         <div id="errorsWrapper">
             <%= render partial: 'formErrors', :locals => {reservation: @reservation} %>
@@ -11,6 +11,6 @@
         <%= render partial: "page2", :locals => {form: form} %>
     </div>
 <% end %>
-    <div id="page3" class="text-center hide">
-        <%= render "page3" %>
-    </div>
+<div id="page3" class="text-center hide">
+    <%= render "page3" %>
+</div>

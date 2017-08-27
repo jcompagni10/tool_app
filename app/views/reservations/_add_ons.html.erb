@@ -1,7 +1,7 @@
 <table class="add-on-table generic-text">
     <tr>
         <td class="checkboxCol">
-            <%= form.check_box :ladder, id: :reservation_ladder%>
+            <%= form.check_box :ladder, id: :reservation_ladder, onClick: "changeAddOn('Ladder',$(this).prop('checked'))"%>
         </td>
         <td class="priceCol">
             +$10
@@ -12,18 +12,18 @@
     </tr>
     <tr>
         <td class="checkboxCol">
-            <%= form.check_box :light, id: :reservation_light%>
+            <%= form.check_box :light, id: :reservation_light, onClick: "changeAddOn('Light',$(this).prop('checked'))" %>
         </td>
         <td class="priceCol">
             +$10
         </td>
         <td class="descriptionCol">
-            Light <a data-toggle="modal" data-target="#lightModal"><span class="glyphicon glyphicon-question-sign"></span></a>
+            Work Light <a data-toggle="modal" data-target="#lightModal"><span class="glyphicon glyphicon-question-sign"></span></a>
         </td>
     </tr>
     <tr>
         <td class="checkboxCol">
-            <input id="delivery" type="checkbox" onChange ="toggleDelivery(this.checked)">
+            <input id="delivery" type="checkbox" onChange ="toggleDelivery(this.checked)" onClick= "changeAddOn('Delivery', $(this).prop('checked'))">
         </td>
         <td class="priceCol">
             +$8

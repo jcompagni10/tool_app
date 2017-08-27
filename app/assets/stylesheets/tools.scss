@@ -7,10 +7,12 @@ body{
     margin: 0;
     padding: 0;
     background-image: url('/assets/background.jpg');
+    background-repeat: no-repeat;
     background-size: cover;
     font-family: 'Helvetica Neue Light', Helvetica, sans-serif;
     color: #000;
     padding-bottom: 50px;
+    
 }
 
 
@@ -22,6 +24,7 @@ a:hover{
 a, a:active, a:focus, a:visited{
     color: #fff;
     text-decoration: underline;
+    cursor: pointer;
 }
 
 a:hover, a:active{
@@ -98,6 +101,10 @@ text-align: center;
         padding: 0 25px;
     }
 
+    #errorsWrapper{
+        margin: 0px -30px;
+    }
+
     #error_explanation{
         width: 100%;
         border: 2px solid #fff;
@@ -109,6 +116,8 @@ text-align: center;
     .form-section-header{
         margin-left: -40px;
         margin-top: 15px;
+        font-size: 18px;
+        font-weight: bold;    
     }
 
     .fa-circle{
@@ -153,11 +162,11 @@ text-align: center;
         color: #fff;
     }
 
-    .btn-primary:disabled{
+    #submitButton:disabled{
         font-size: 0px;
     }
 
-    .btn-primary:disabled:after{
+    #submitButton:disabled:after{
         font-size:18px;
         content:"Working..."
     }

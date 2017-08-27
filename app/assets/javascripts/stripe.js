@@ -48,11 +48,11 @@ function mountStripe(){
 }
 
 
-function tokenHandler(e){
+function tokenHandler(e){    
     $("#submitButton").prop("disabled", true)
     e.preventDefault()
 
-    stripe.createToken(card).then(function(result){
+    stripe.createToken(card).then(function(result){        
         if (result.error) {
             // Inform the user if there was an error
             var errorElement = document.getElementById('card-errors');
@@ -61,7 +61,7 @@ function tokenHandler(e){
 
         }
         //no result created ie. Stripe not loaded
-        else {
+        else {            
             $("#reservation_stripe").val(result.token.id)
             //submit form
             $("#reservation_form").trigger('submit.rails');

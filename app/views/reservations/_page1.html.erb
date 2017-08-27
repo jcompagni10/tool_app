@@ -1,4 +1,4 @@
-<div class='top-section'>
+<div class='top-section hideInFullForm'>
     <%= image_tag 'tools.jpg', alt: "tools" %>
     <div class="top-text">
         <span class="text-header">
@@ -27,8 +27,6 @@ Return it:
     3 days from rental
 </span>
 
-
-
 <div class ="form-section-header">
     <span class="fa-stack fa-lg">
         <i class="fa fa-circle fa-stack-2x"></i>
@@ -40,7 +38,7 @@ Return it:
 <div id= "deliveryInput" class="collapse">
     <div class="inputField">
         <%= form.label :phone, "Phone: " %>
-        <%= form.telephone_field :phone, id: :phone, class: "full-width" %>
+        <%= form.telephone_field :phone, id: :phone, class: "full-width", required: true %>
     </div>
     <div class="inputField">
         <%= form.label :address, "Address: " %>

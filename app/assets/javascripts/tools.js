@@ -1,4 +1,5 @@
 var reserved_dates = [];
+var total = 20;
 
 function deliveryChange(){
     var endTime = 1 + parseInt($("#delivery_time").val());
@@ -49,22 +50,15 @@ function toPage1(){
 function toPage2(){
     $("#page1").addClass("hide");
     $("#page2").removeClass("hide");
-    var total = 20;
-    if ($("#reservation_ladder").prop("checked")){
-        total += 10;
-        $(".Ladder_Row").removeClass("hidden")
-    }
-    if ($("#reservation_light").prop("checked")){
-        total += 10;
-        $(".Light_Row").removeClass("hidden")
-    }
-    if ($("#delivery").prop("checked")){
-        total += 8;
-        $(".Delivery_Row").removeClass("hidden")
-    }
-    $(".Total_Row .priceCol").html("$"+total)
 }
 
+function changeAddOn(addOn, state){
+    prices ={"Ladder": 10, "Light": 10, "Delivery": 8};
+    $("."+addOn+"_Row").toggleClass("hidden", !state);
+    price = prices[addOn];
+    total = total + (state ? price : - price);
+    $(".Total_Row .priceCol").html("$"+total);
+}
 function toPage3(){
     $("#page1").addClass("hide");    
     $("#page2").addClass("hide");
@@ -75,6 +69,8 @@ function renderFullForm(){
     $("#page1").removeClass("hide");
     $("#page2").removeClass("hide");
     $(".hideInFullForm").addClass("hide")
+    $(".showInFullForm").removeClass("hide")
+    
 }
 
 function DisableSpecificDates(date) {
