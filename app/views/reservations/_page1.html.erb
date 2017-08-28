@@ -10,6 +10,10 @@
     </div>
 </div>
 
+<div class="summaryWrapper hide showInFullForm">
+    <%= render "summaryTable" %>
+</div> 
+
 <div class ="form-section-header">
     <span class="fa-stack fa-lg">
         <i class="fa fa-circle fa-stack-2x"></i>
@@ -19,8 +23,8 @@
 </div>
 
 <div class="reserveDate inputField generic-text">
-        <%= form.label :start_date, "Get it: "%>
-        <%= form.text_field :start_date, {:id => "start_date", :class=>"full-width", :readonly  => "true", :onChange => "updateDueDate()"} %>
+    <%= form.label :start_date, "Get it: "%>
+    <%= form.text_field :start_date, {:id => "start_date", :class=>"full-width", :readonly  => "true", :onChange => "updateDueDate()"} %>
 </div>
 Return it: 
 <span class="dueDate">
@@ -38,7 +42,7 @@ Return it:
 <div id= "deliveryInput" class="collapse">
     <div class="inputField">
         <%= form.label :phone, "Phone: " %>
-        <%= form.telephone_field :phone, id: :phone, class: "full-width", required: true %>
+        <%= form.telephone_field :phone, id: :phone, class: "full-width" %>
     </div>
     <div class="inputField">
         <%= form.label :address, "Address: " %>
