@@ -87,6 +87,13 @@ width: 100%;
 text-align: center;
 }
 
+.mainContentRow{
+    @media screen and (max-width: 768px) {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+}
+
 // Main Content
 .mainContent{
     background-image: url('/assets/wood.jpg');
@@ -96,10 +103,20 @@ text-align: center;
 
 //Form elements
 #reservation_form{
-    padding: 0px 50px;
-    @media screen and (max-width: 768px) {
+    padding: 0px 35px;
+    @media screen and (max-width: 500px) {
         padding: 0 25px;
     }
+    .error{
+        color: red;
+        margin-top: 5px;
+    }
+
+    #start_dateError{
+        margin-top: -8px;
+        margin-left: 47px;
+    }
+
 
     #errorsWrapper{
         margin: 0px -30px;
@@ -116,8 +133,9 @@ text-align: center;
     .form-section-header{
         margin-left: -40px;
         margin-top: 15px;
-        font-size: 18px;
+        font-size: 15px;
         font-weight: bold;    
+        white-space: nowrap;
     }
 
     .fa-circle{

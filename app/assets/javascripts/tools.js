@@ -66,6 +66,26 @@ function toPage3(){
     $("#page3").removeClass("hide");
 }
 
+function validateCheckout(){
+    var start_dateValid = ($("#start_date").val() != "")   
+    $("#start_dateError").toggleClass("hide", start_dateValid)
+    if ($("#delivery").prop("checked")){
+        var phone_valid =($("#phone").val() != "") 
+        $("#phoneError").toggleClass("hide", phone_valid)
+        var address_valid =($("#address").val() != "") 
+        $("#addressError").toggleClass("hide", address_valid) 
+        console.log(start_dateValid && phone_valid && address_valid)
+        if (start_dateValid && phone_valid && address_valid){
+            toPage2();
+        }
+        return;
+        
+    }
+    if (start_dateValid){
+        toPage2();
+    }
+}
+
 function renderFullForm(){
     $("#page1").removeClass("hide");
     $("#page2").removeClass("hide");
