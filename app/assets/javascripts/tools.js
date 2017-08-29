@@ -84,7 +84,7 @@ function validateCheckout(){
         $("#phoneError").toggleClass("hide", phone_valid)
         var address_valid =($("#address").val() != "") 
         $("#addressError").toggleClass("hide", address_valid) 
-        var time_valid =($("#delivery_time").val() != "") 
+        var time_valid =($("#delivery_time").val() != null) 
         $("#timeError").toggleClass("hide", time_valid) 
         if (start_dateValid && phone_valid && time_valid && address_valid){
             toPage2();
