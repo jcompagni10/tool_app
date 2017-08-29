@@ -6,7 +6,7 @@
     <% options = {"Toolbox": "$20", "Ladder": "+$10", "Work Light": "+$10", "Delivery": "+$8", "Total": "$20"} %>
     <table id="summary_table">
         <% options.keys.each do |option| %>
-            <tr class = "<%= option %>_Row hidden">
+            <tr class = "<%= option %>_Row hide">
                 <td class="priceCol">
                     <%=options[option] %>
                 </td>

@@ -21,7 +21,23 @@ describe Reservation do
     expect(FactoryGirl.build(:reservation, tos:nil)).not_to be_valid
   end
 
-  it "invalidates  multiple reservations on the same day" do
+  it "is valid without address if delivery is not selected" do
+    expect(FactoryGirl.build(:reservation, delivery_time:nil, address:nil)).to be_valid
+  end
+
+  it "is valid without phone if delivery is not selected" do
+    expect(FactoryGirl.build(:reservation, delivery_time:nil, phone:nil)).to be_valid
+  end
+
+  it "is invalid without address if delivery selected" do
+    expect(FactoryGirl.build(:reservation, address:nil)).not_to be_valid
+  end
+
+  it "is invalid without phone if delivery selected" do
+    expect(FactoryGirl.build(:reservation, phone:nil)).not_to be_valid
+  end
+
+  it "invalidates multiple reservations on the same day" do
     FactoryGirl.create(:reservation, start_date:Date.today)
     expect(FactoryGirl.build(:reservation, start_date:Date.today)).not_to be_valid
   end

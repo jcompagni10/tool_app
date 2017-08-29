@@ -23,8 +23,8 @@ function toggleDelivery(val){
 //Change back from rails string
 function reformatDate(){
     date= $("#start_date").val();
-    date = $.datepicker.parseDate("yy-mm-dd", date)
     if (date != ""){
+        date = $.datepicker.parseDate("yy-mm-dd", date)        
         $("#start_date").val($.datepicker.formatDate("DD, MM d, yy", date));
         updateDueDate();
     }
@@ -34,8 +34,8 @@ function updateDueDate(){
     if ($("#start_date").length){
         var dueDate = $('#start_date').datepicker('getDate', '+3d'); 
         dueDate.setDate(dueDate.getDate()+3); 
-        var formatDate= $.datepicker.formatDate("DD, MM d, yy", dueDate)
-        $(".dueDate").html(formatDate);
+        var formatedDate= $.datepicker.formatDate("DD, MM d, yy", dueDate)
+        $(".dueDate").html(formatedDate);
     }
     else{
         $(".dueDate").html("");
@@ -54,35 +54,33 @@ function toPage2(){
 
 function changeAddOn(addOn, state){
     prices ={"Ladder": 10, "Light": 10, "Delivery": 8};
-    $("."+addOn+"_Row").toggleClass("hidden", !state);
+    $("."+addOn+"_Row").toggleClass("hide", !state);
     price = prices[addOn];
     total = total + (state ? price : - price);
     $(".Total_Row .priceCol").html("$"+total);
 }
 
-function toPage3(){
+function toConfirmationPage(){
     $("#page1").addClass("hide");    
     $("#page2").addClass("hide");
-    $("#page3").removeClass("hide");
+    $("#confirmationPage").removeClass("hide");
 }
+
 
 function validateCheckout(){
     var start_dateValid = ($("#start_date").val() != "")   
     $("#start_dateError").toggleClass("hide", start_dateValid)
+    if (!$("#delivery").prop("checked") && start_dateValid){
+        toPage2();
+    }
     if ($("#delivery").prop("checked")){
         var phone_valid =($("#phone").val() != "") 
         $("#phoneError").toggleClass("hide", phone_valid)
         var address_valid =($("#address").val() != "") 
         $("#addressError").toggleClass("hide", address_valid) 
-        console.log(start_dateValid && phone_valid && address_valid)
         if (start_dateValid && phone_valid && address_valid){
             toPage2();
         }
-        return;
-        
-    }
-    if (start_dateValid){
-        toPage2();
     }
 }
 

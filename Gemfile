@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
@@ -38,14 +37,13 @@ group :development, :test do
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
   #jasmine for js testing
-  gem 'jasmine' 
+  gem 'jasmine-rails' 
   gem 'rspec-rails'
   gem 'factory_girl_rails'
 end
 
 group :test do
   gem 'faker'
-  gem 'capybara'
   gem 'guard-rspec'
   gem 'launchy'
 end

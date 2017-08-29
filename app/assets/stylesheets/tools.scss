@@ -327,13 +327,15 @@ text-align: center;
     }
 
     tr:first-child{
-        display: table !important
+        display: table !important;
+        position: relative !important;
     }
 
     tr:last-child{
         border-top: 1px solid #000;
         padding-top: 4px;
-        display: table !important
+        position:relative !important;
+        display: table !important;
     }
 
 
@@ -341,7 +343,7 @@ text-align: center;
 
 //page 3
 
-#page3{
+#confirmationPage{
     .text-header{
         margin:20px 0px
     }
