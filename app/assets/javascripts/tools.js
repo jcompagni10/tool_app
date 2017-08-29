@@ -2,10 +2,16 @@ var reserved_dates = [];
 var total = 20;
 
 function deliveryChange(){
-    var endTime = 1 + parseInt($("#delivery_time").val());
-    var suffix = (endTime < 12 )? "am" : "pm";
-    var formatted = (endTime > 12? endTime - 12 : endTime) + ":00"+suffix
-    $("#deliveryEndTime").html(formatted);
+    deliveryTime = $("#delivery_time").val();
+    if(deliveryTime != null){
+        var endTime = 1 + parseInt(deliveryTime);
+        var suffix = (endTime < 12 )? "am" : "pm";
+        var formatted = (endTime > 12? endTime - 12 : endTime) + ":00"+suffix
+        $("#deliveryEndTime").html(formatted);
+   }
+   else{
+    $("#deliveryEndTime").html("End Time");
+   }
 }
 
 function toggleDelivery(val){
@@ -78,7 +84,9 @@ function validateCheckout(){
         $("#phoneError").toggleClass("hide", phone_valid)
         var address_valid =($("#address").val() != "") 
         $("#addressError").toggleClass("hide", address_valid) 
-        if (start_dateValid && phone_valid && address_valid){
+        var time_valid =($("#delivery_time").val() != "") 
+        $("#timeError").toggleClass("hide", time_valid) 
+        if (start_dateValid && phone_valid && time_valid && address_valid){
             toPage2();
         }
     }
@@ -120,12 +128,11 @@ function getReservedDates(){
 }
 
 $(document).ready(function(){
-    //Get reserved dates w/ ajax
-
     getReservedDates();
     mountStripe();
     mountDatePicker();
-    //Init Datepicker
 
+    //disable "start Time" in delivery menu
+    $("#delivery_time option:first").prop("disabled", true)
     
 })
