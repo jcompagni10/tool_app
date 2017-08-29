@@ -1,24 +1,26 @@
-<div class="container">
-    <div class= "row">
-        <div class="col-xs-10 col-xs-offset-1 appTitle">
-            <h1> Drill Me Now </h1>
-            <h2>Rent a toolbox for everything from Ikea furniture to custom builds</h2>
-        </div>
-    </div>    
-    <div class="row mainContentRow">
-        <div class="col-sm-6 mainContent col-xs-12 pull-right">
-            <%= render "mainContent" %>
-        </div>
-        <div class="col-sm-6 sideBar col-xs-12 pull-left text-header">
-            <div class="quote">
-                <span class="quoteBody">
-                    "I rented a toolbox from <i>Drill Me Now</i> and I 
-                    built a new dog house for FiFi"
-                </span><br>
-                <div class="quoteByLine">-Jon McFixit</div>
+<%= render "modals" %>
+<div class="main section">
+    <div class="blackCover">
+    </div>
+    <div class="container">
+        <div class= "row">
+            <div class="col-xs-10 col-xs-offset-1 appTitle">
+                <h1> Drill Me Now </h1>
+                <h2>Rent a toolbox for everything from Ikea furniture to custom builds</h2>
             </div>
         </div>    
+        <div class="row mainContentRow">
+            <div class="col-sm-6 col-xs-12 pull-right mainContent">
+                <%= render "mainContent" %>
+            </div>
+        </div>
     </div>
+</div>
+<div class ="howItWorks section">
+    <%= render "howItWorks" %>
+</div>
+<div class="bottom section">
+    <%= render "bottomSection" %>
 </div>
 
                 

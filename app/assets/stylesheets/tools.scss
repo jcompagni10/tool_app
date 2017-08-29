@@ -2,18 +2,29 @@
 @import "bootstrap";
 @import url('https://fonts.googleapis.com/css?family=Acme|Luckiest+Guy|Racing+Sans+One|Signika');
 
+//Colors
+$yellow: #ffd520;
+$white: #fff;
+
+//Base Elements
 
 body{
     margin: 0;
     padding: 0;
-    background-image: url('/assets/background.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
     font-family: 'Helvetica Neue Light', Helvetica, sans-serif;
-    color: #000;
-    padding-bottom: 50px;
-    
+    color: #000;    
 }
+
+.container{
+    position:relative;
+}
+
+.section{
+    padding: 40px 0px;
+    position: relative;
+}
+
+
 
 
 //base styles
@@ -22,13 +33,13 @@ a:hover{
 }
 
 a, a:active, a:focus, a:visited{
-    color: #fff;
+    color:  #1dafc9;
     text-decoration: underline;
     cursor: pointer;
 }
 
 a:hover, a:active{
-    color: #fff;
+    color:  #1dafc9;
 }
 
 h2{
@@ -59,32 +70,47 @@ h2{
 .appTitle{
     text-align: center;
     margin-bottom: 25px;
+    color: #fff;
 
     h1{
+        margin-top: 0px;
         font-size: 50px;
         font-weight: bold
     }
 
 }
 
-//Quote
 
-.quote{
-    max-width: 600px;
-    width: 85%;
-    max-width: 600px;
-    margin: 0px auto;
-    color: #000;
-    text-shadow: 0px 0px 1px #ccc;
+// Main Content
 
-    @media screen and (max-width: 768px) {
-        margin-top: 40px;
-    }
+.main.section{
+    background-image: url('/assets/toolsBG.jpg');   
+    background-repeat: no-repeat;
+    background-size: cover; 
 }
 
-.quoteByLine{
-width: 100%;
-text-align: center;
+.blackCover{
+    background-color:rgba(0,0,0,.5);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    margin-top:-40px;
+
+}
+
+.mainContent{
+    background-image: url('/assets/wood.jpg');
+    border: 2px solid #fff;
+    padding: 20px 20px 0px;
+    overflow-x: scroll;
+    max-height: 440px;
+}
+
+//fix for firefox loses bottom-padding on overflow
+.mainContent:after{
+    content: "";
+    height: 20px;
+    display: block;
 }
 
 .mainContentRow{
@@ -92,13 +118,6 @@ text-align: center;
         margin-left: 5px;
         margin-right: 5px;
     }
-}
-
-// Main Content
-.mainContent{
-    background-image: url('/assets/wood.jpg');
-    border: 2px solid #fff;
-    padding: 20px;
 }
 
 //Form elements
@@ -448,6 +467,136 @@ text-align:center;
     }
 }
 
+//How it Works
+
+.howItWorks{
+    background-color: $white;
+
+    h2{
+        margin-top:0px;
+    }
+}
+.row-eq-height{
+    @media screen and (min-width: 768px) {        
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+    }
+}
+.sectionTitle{
+    margin-bottom: 30px;
+}
+
+.toolsCircle{
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+}
+
+.explanationWrapper{
+    height: 100%;
+    display: table;
+}
+
+.explanation{
+    display: table-cell;
+    vertical-align: middle;
+    @media screen and (max-width: 767px) {
+        margin-top: 15px;
+        text-align: center;     
+        width: 85%;
+        margin: 20px auto 0 auto;
+        display: block;   
+    }
+}
+
+.explanation .text-header{
+    margin-bottom: 10px;
+}
+
+.calenderDiagram{
+    margin: 100px auto 0px;    
+    @media screen and (max-width: 575px) {
+        margin-top: 50px;
+    }
+        
+    td{
+        text-align: center;
+        font-weight: normal;
+        font-size: 14px;
+    }
+    
+    img{
+        width:100px;
+        @media screen and (max-width: 575px) {
+            width: 30px;
+        }
+    }
+
+    .fa{
+        color: $yellow;
+        @media screen and (max-width: 575px) {
+            font-size: 1.3em;
+        }
+            
+    }
+
+    .textRow td{
+        padding-top:10px;
+    }
+
+    .fa-long-arrow-right{
+        transform: scaleY(1.8);
+    }
+
+    .fa-plus{
+        position: relative;
+        top: .25em;
+        margin: 0 .2em;
+    }
+}
+
+//Bottom Section
+.bottom.section{
+    background-image: url('/assets/roomBG.jpg');   
+    background-size: cover;
+    background-position: -60px;
+    text-align: center;
+    position: relative;
+}
+
+.whiteCover{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    margin-top: -40px;
+    background-color: rgba(255,255,255, .4);
+}
+
+.quote{
+    width: 80%;
+    max-width: 600px;
+    margin: 0px auto;
+    color: #000;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.infoBox{
+    margin: 0 20px;
+    margin-top: 100px;
+    background-color: #ffd520;
+    border: 2px solid #fff;
+    padding: 20px;
+    display: inline-block;
+    max-width: 350px;
+
+    .bottomText{
+        margin-top:30px
+    }
+}
 
 
 //TOS
@@ -459,3 +608,4 @@ text-align:center;
     padding: 15px 30px 20px;
 
 }
+

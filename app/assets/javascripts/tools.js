@@ -14,8 +14,8 @@ function toggleDelivery(val){
         $("#deliveryInput").collapse("show")
     }
     else{
-        $("#delivery_time").prop('disabled', true)
-        $("#deliveryInput").collapse("hide")
+        $("#delivery_time").prop('disabled', true);
+        $("#deliveryInput").collapse("hide");   
     }
     deliveryChange();
 }
