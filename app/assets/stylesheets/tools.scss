@@ -5,6 +5,7 @@
 //Colors
 $yellow: #ffd520;
 $white: #fff;
+$blue: #0d9fa9;
 
 //Base Elements
 
@@ -209,7 +210,7 @@ h2{
     }
     
     .btn-primary:hover, .btn-primary:active{
-        background-color: #0d9fa9;
+        background-color: $blue;
         border: 2px solid #ccc    
     }
 
