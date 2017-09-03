@@ -21,6 +21,9 @@ class Reservation < ApplicationRecord
                 if start_date < Date.today
                     errors.add(:start_date, "Rental Date Cannot Be In The Past")
                 end
+                if start_date == Date.today && Time.now.hour >= 21
+                    errors.add(:start_date, "Cannot Do Day Of Rental After 9pm")
+                end
             end
         end
 end

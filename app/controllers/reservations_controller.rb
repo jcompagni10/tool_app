@@ -40,6 +40,7 @@ class ReservationsController < ApplicationController
         end
 
       else
+        @errors = true;
         format.js{render :renderFullForm}
       
       end

@@ -3,7 +3,7 @@ var total = 20;
 
 function deliveryChange(){
     deliveryTime = $("#delivery_time").val();
-    if(deliveryTime != null){
+    if(deliveryTime != null && deliveryTime != ""){
         var endTime = 1 + parseInt(deliveryTime);
         var suffix = (endTime < 12 )? "am" : "pm";
         var formatted = (endTime > 12? endTime - 12 : endTime) + ":00"+suffix
@@ -31,9 +31,10 @@ function reformatDate(){
     date= $("#start_date").val();
     if (date != ""){
         date = $.datepicker.parseDate("yy-mm-dd", date)   
-        formattedDate = ($.datepicker.formatDate("D, M d, yy", date));     
-        $("#start_date").datepicker('setDate', formattedDate);
-        //updateDueDate();
+        formattedDate = ($.datepicker.formatDate("D, M d, yy", date));
+        $("#start_date").datepicker("setDate", date)     
+        $("#start_date").val(formattedDate);
+        updateDueDate();
     }   
 }
 
@@ -65,12 +66,16 @@ function toConfirmationPage(){
     $("#confirmationPage").removeClass("hide");
 }
 
+function scrollTo(anchor){
+    $('.mainContent').scrollTop($(anchor).offset().top);
+}
 
 function validateCheckout(){
     var start_dateValid = ($("#start_date").val() != "")   
     $("#start_dateError").toggleClass("hide", start_dateValid)
     if (!$("#delivery").prop("checked") && start_dateValid){
-        $("#page2").collapse("show");
+        renderFullForm();
+        scrollTo("#page2")
     }
     if ($("#delivery").prop("checked")){
         var phone_valid =($("#phone").val() != "") 
@@ -80,7 +85,8 @@ function validateCheckout(){
         var time_valid =($("#delivery_time").val() != null) 
         $("#timeError").toggleClass("hide", time_valid) 
         if (start_dateValid && phone_valid && time_valid && address_valid){
-            $("#page2").collapse("show");
+            renderFullForm();
+            scrollTo("#page2")
         }
     }
 }
@@ -101,7 +107,7 @@ function mountDatePicker(){
     $("#start_date").datepicker({
         minDate: new Date(),
         beforeShowDay: DisableSpecificDates,
-        dateFormat: "D, M d, yy"
+        dateFormat: "D, M dd, yy"
         })
 }
 

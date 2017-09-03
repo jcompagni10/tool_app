@@ -1,23 +1,22 @@
-<div class="summaryWrapper hide showInFullForm">
-    <%= render "summaryTable" %>
-</div> 
-
 <div class ="form-section-header">
     <span class="fa-stack fa-lg">
         <i class="fa fa-circle fa-stack-2x"></i>
         <i class="fa fa-inverse fa-stack-1x">1</i>
     </span>
     <span class="text-header"> Check availability </span>
-    <span class="caveat-text">(unavailable = gray)</span>
+    <div class="unavailable caveat-text">
+        (unavailable = gray)
+    </div>   
 </div>
+
 
 <div class="reserveDate inputField generic-text row">
     <div class="col-xs-12">
-        <div class="start-date-input  pull-left">
+        <div class="start-date-input nowrap pull-left">
             <%= form.label :start_date, "Get it: ", class: "dateLabel" %>
             <%= form.text_field :start_date, {:id => "start_date", :readonly  => "true", :onChange => "updateDueDate()"} %>
         </div>
-        <div class="pull-left">
+        <div class="pull-left nowrap">
             <label class="dateLabel for="dueDate">
                 Return it:
             </label> 

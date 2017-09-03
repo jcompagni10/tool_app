@@ -47,7 +47,14 @@ function mountStripe(){
 
 }
 
-
+window.addEventListener('resize', function(event) {
+    if (window.innerWidth <= 450) {
+      card.update({style: {base: {fontSize: '13px'}}});
+    } else {
+        card.update({style: {base: {fontSize: '16px'}}});
+    }
+  });
+  
 function tokenHandler(e){    
     $("#submitButton").prop("disabled", true)
     e.preventDefault()
