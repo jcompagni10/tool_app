@@ -3,7 +3,7 @@
         <i class="fa fa-circle fa-stack-2x"></i>
         <i class="fa fa-inverse fa-stack-1x">1</i>
     </span>
-    <span class="text-header"> Check availability </span>
+    <span class="text-header"> Check dates </span>
     <div class="unavailable caveat-text">
         (unavailable = gray)
     </div>   
@@ -17,10 +17,10 @@
             <%= form.text_field :start_date, {:id => "start_date", :readonly  => "true", :onChange => "updateDueDate()"} %>
         </div>
         <div class="pull-left nowrap">
-            <label class="dateLabel for="dueDate">
+            <label class="dateLabel" for="dueDate">
                 Return it:
             </label> 
-            <input type="text" id="dueDate" value="3 Days Later" disabled="true">
+            <input type="text" id="dueDate" value="3 days later" disabled="true" class="generic-text">
         </div> 
         <div id="start_dateError" class="error hide"> Start Date Required </div>        
     </div>
@@ -57,7 +57,7 @@
         </p>
         <% delivery_times = {""=> {val: "", disabled: true, selected: true}, "9:00am" => 9, "10:00am" => 10, "11:00am" => 11, "12:00pm" => 12, "1:00pm" => 13, "2:00pm" => 14, "3:00pm" => 15, "4:00pm" => 16, "5:00pm" => 17, "6:00pm" => 18, "7:00pm" => 19, "8:00pm" => 20 } %>
         <%= form.select :delivery_time, delivery_times, {}, {:id => "delivery_time", :onChange => "deliveryChange()", :disabled => true}  %>
-        to <span id="deliveryEndTime" class="generic-text">End Time</span>
+        to <span id="deliveryEndTime" class="generic-text">1 hour later</span>
         <div id="timeError" class="error hide"> Delivery Time Required </div>          
     </div>
 </div>

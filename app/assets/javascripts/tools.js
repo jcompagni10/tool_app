@@ -7,10 +7,10 @@ function deliveryChange(){
         var endTime = 1 + parseInt(deliveryTime);
         var suffix = (endTime < 12 )? "am" : "pm";
         var formatted = (endTime > 12? endTime - 12 : endTime) + ":00"+suffix
-        $("#deliveryEndTime").html(formatted);
+        $("#deliveryEndTime").text(formatted);
    }
    else{
-    $("#deliveryEndTime").html("End Time");
+    $("#deliveryEndTime").text("1 hour later");
    }
 }
 
@@ -47,7 +47,7 @@ function updateDueDate(){
         $("#dueDate").val(formatedDate);
     }
     else{
-        $("#dueDate").val("");
+        $("#dueDate").val("3 days later");
     }
 }
 
@@ -107,7 +107,7 @@ function mountDatePicker(){
     $("#start_date").datepicker({
         minDate: new Date(),
         beforeShowDay: DisableSpecificDates,
-        dateFormat: "D, M dd, yy"
+        dateFormat: "D, M d, yy"
         })
 }
 
