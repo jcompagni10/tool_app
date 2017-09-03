@@ -487,10 +487,7 @@ h2{
 }
 
 .calenderDiagram{
-    margin: 100px auto 0px;    
-    @media screen and (max-width: 575px) {
-        margin-top: 50px;
-    }
+    width:100%; 
         
     td{
         text-align: center;
@@ -503,10 +500,6 @@ h2{
         @media screen and (max-width: 550px) {
             font-size: 14px;
         }
-    }
-
-    .middleTD{
-        padding: 0 15px;
     }
 
     img{
