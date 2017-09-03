@@ -494,6 +494,13 @@ h2{
         font-size: 14px;
         white-space: nowrap;
     }
+
+    .text-header{
+        @media screen and (max-width: 550px) {
+            font-size: 14px;
+        }
+    }
+
     .middleTD{
         padding: 0 15px;
     }
