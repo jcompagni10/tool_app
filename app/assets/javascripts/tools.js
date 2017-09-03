@@ -130,7 +130,5 @@ $(document).ready(function(){
     mountStripe();
     mountDatePicker();
 
-    //disable "start Time" in delivery menu
-    $("#delivery_time option:first").prop("disabled", true)
     
 })
