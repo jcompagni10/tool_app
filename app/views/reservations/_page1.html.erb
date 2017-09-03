@@ -57,10 +57,10 @@
         </p>
         <% delivery_times = {""=>"", "9:00am" => 9, "10:00am" => 10, "11:00am" => 11, "12:00pm" => 12, "1:00pm" => 13, "2:00pm" => 14, "3:00pm" => 15, "4:00pm" => 16, "5:00pm" => 17, "6:00pm" => 18, "7:00pm" => 19, "8:00pm" => 20 } %>
         <%= form.select :delivery_time, delivery_times, {}, {:id => "delivery_time", :onChange => "deliveryChange()", :disabled => true}  %>
-        &nbspto <span id="deliveryEndTime" class="generic-text">End Time</span>
+        to <span id="deliveryEndTime" class="generic-text">End Time</span>
         <div id="timeError" class="error hide"> Delivery Time Required </div>          
     </div>
 </div>
 <div class="text-center">
-    <button id="checkoutBtn" class="btn btn-primary text-header hideInFullForm" onClick= "validateCheckout()" type="button"> Reserve Now </button>
+    <button id="checkoutBtn" class="btn btn-primary text-header hideInFullForm top-spacer" onClick= "validateCheckout()" type="button"> Reserve Now </button>
 </div>  
