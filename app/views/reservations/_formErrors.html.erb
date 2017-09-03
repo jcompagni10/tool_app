@@ -1,5 +1,5 @@
 <% if reservation.errors.any?%>
-    <div id="error_explanation">
+    <div id="error_explanation" class="bottom-spacer">
     <span class="text-header">Sorry! There were a few error(s): </span>
     <ul>
         <% reservation.errors.messages.each do |message| %>

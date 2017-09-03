@@ -30,40 +30,33 @@ function toggleDelivery(val){
 function reformatDate(){
     date= $("#start_date").val();
     if (date != ""){
-        date = $.datepicker.parseDate("yy-mm-dd", date)        
-        $("#start_date").val($.datepicker.formatDate("DD, MM d, yy", date));
-        updateDueDate();
-    }
+        date = $.datepicker.parseDate("yy-mm-dd", date)   
+        formattedDate = ($.datepicker.formatDate("D, M d, yy", date));     
+        $("#start_date").datepicker('setDate', formattedDate);
+        //updateDueDate();
+    }   
 }
 
 function updateDueDate(){
     if ($("#start_date").length){
         var dueDate = $('#start_date').datepicker('getDate', '+3d'); 
         dueDate.setDate(dueDate.getDate()+3); 
-        var formatedDate= $.datepicker.formatDate("DD, MM d, yy", dueDate)
-        $(".dueDate").html(formatedDate);
+        console.log(dueDate)
+        var formatedDate= $.datepicker.formatDate("D, M d, yy", dueDate)
+        $("#dueDate").val(formatedDate);
     }
     else{
-        $(".dueDate").html("");
+        $("#dueDate").val("");
     }
 }
 
-function toPage1(){
-    $("#page2").addClass("hide");
-    $("#page1").removeClass("hide");
-}
 
-function toPage2(){
-    $("#page1").addClass("hide");
-    $("#page2").removeClass("hide");
-}
 
 function changeAddOn(addOn, state){
     prices ={"Ladder": 10, "Light": 10, "Delivery": 8};
-    $("."+addOn+"_Row").toggleClass("hide", !state);
     price = prices[addOn];
     total = total + (state ? price : - price);
-    $(".Total_Row .priceCol").html("$"+total);
+    $(".totalRow .priceCol").html("$"+total);
 }
 
 function toConfirmationPage(){
@@ -77,7 +70,7 @@ function validateCheckout(){
     var start_dateValid = ($("#start_date").val() != "")   
     $("#start_dateError").toggleClass("hide", start_dateValid)
     if (!$("#delivery").prop("checked") && start_dateValid){
-        toPage2();
+        $("#page2").collapse("show");
     }
     if ($("#delivery").prop("checked")){
         var phone_valid =($("#phone").val() != "") 
@@ -87,14 +80,13 @@ function validateCheckout(){
         var time_valid =($("#delivery_time").val() != null) 
         $("#timeError").toggleClass("hide", time_valid) 
         if (start_dateValid && phone_valid && time_valid && address_valid){
-            toPage2();
+            $("#page2").collapse("show");
         }
     }
 }
 
 function renderFullForm(){
-    $("#page1").removeClass("hide");
-    $("#page2").removeClass("hide");
+    $("#page2").removeClass("collapse");
     $(".hideInFullForm").addClass("hide")
     $(".showInFullForm").removeClass("hide")
     
@@ -109,7 +101,7 @@ function mountDatePicker(){
     $("#start_date").datepicker({
         minDate: new Date(),
         beforeShowDay: DisableSpecificDates,
-        dateFormat: "DD, MM d, yy"
+        dateFormat: "D, M d, yy"
         })
 }
 

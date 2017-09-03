@@ -7,21 +7,25 @@
         <i class="fa fa-circle fa-stack-2x"></i>
         <i class="fa fa-inverse fa-stack-1x">1</i>
     </span>
-    <span class="text-header"> Check availability </span><span class="caveat-text textWrap">(unavailable = gray)</span>
+    <span class="text-header"> Check availability </span>
+    <span class="caveat-text">(unavailable = gray)</span>
 </div>
 
-<div class="reserveDate inputField generic-text">
-    <%= form.label :start_date, "Get it: "%>
-    <%= form.text_field :start_date, {:id => "start_date", :class=>"full-width", :readonly  => "true", :onChange => "updateDueDate()"} %>        
+<div class="reserveDate inputField generic-text row">
+    <div class="col-xs-12">
+        <div class="start-date-input  pull-left">
+            <%= form.label :start_date, "Get it: ", class: "dateLabel" %>
+            <%= form.text_field :start_date, {:id => "start_date", :readonly  => "true", :onChange => "updateDueDate()"} %>
+        </div>
+        <div class="pull-left">
+            <label class="dateLabel for="dueDate">
+                Return it:
+            </label> 
+            <input type="text" id="dueDate" value="3 Days Later" disabled="true">
+        </div> 
+        <div id="start_dateError" class="error hide"> Start Date Required </div>        
+    </div>
 </div>
-<div id="start_dateError" class="error hide"> Start Date Required </div>
-
-
-
-Return it: 
-<span class="dueDate">
-    3 days from rental
-</span>
 
 
 <div class ="form-section-header">
@@ -52,12 +56,12 @@ Return it:
         <p class="caveat-text">
             Select the start of a 1-hour window from 9:00am-9:00pm
         </p>
-        <% delivery_times = {"Start Time"=>"", "9:00am" => 9, "10:00am" => 10, "11:00am" => 11, "12:00pm" => 12, "1:00pm" => 13, "2:00pm" => 14, "3:00pm" => 15, "4:00pm" => 16, "5:00pm" => 17, "6:00pm" => 18, "7:00pm" => 19, "8:00pm" => 20 } %>
+        <% delivery_times = {""=>"", "9:00am" => 9, "10:00am" => 10, "11:00am" => 11, "12:00pm" => 12, "1:00pm" => 13, "2:00pm" => 14, "3:00pm" => 15, "4:00pm" => 16, "5:00pm" => 17, "6:00pm" => 18, "7:00pm" => 19, "8:00pm" => 20 } %>
         <%= form.select :delivery_time, delivery_times, {}, {:id => "delivery_time", :onChange => "deliveryChange()", :disabled => true}  %>
         &nbspto <span id="deliveryEndTime" class="generic-text">End Time</span>
         <div id="timeError" class="error hide"> Delivery Time Required </div>          
     </div>
 </div>
 <div class="text-center">
-    <button id="checkoutBtn" class="btn btn-primary text-header hideInFullForm" onClick= "validateCheckout()" type="button"> Checkout </button>
+    <button id="checkoutBtn" class="btn btn-primary text-header hideInFullForm" onClick= "validateCheckout()" type="button"> Reserve Now </button>
 </div>  

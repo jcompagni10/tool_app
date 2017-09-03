@@ -1,4 +1,15 @@
-<table class="add-on-table generic-text">
+<table class="add-on-table generic-text bottom-spacer">
+    <tr>
+        <td class="checkboxCol">
+            <%= form.check_box :toolbox, disabled: "true", checked: true; %>
+        </td>
+        <td class="priceCol">
+            $20
+        </td>
+        <td class="descriptionCol">
+            Toolbox <a data-toggle="modal" data-target="#toolsModal "><span class="glyphicon glyphicon-question-sign"></span></a>
+        </td>
+    </tr>
     <tr>
         <td class="checkboxCol">
             <%= form.check_box :ladder, id: :reservation_ladder, onClick: "changeAddOn('Ladder',$(this).prop('checked'))"%>
@@ -31,5 +42,15 @@
         <td class="descriptionCol">
             Delivery <a data-toggle="modal" data-target="#deliveryModal"><span class="glyphicon glyphicon-question-sign"></span></a>
         </td>
+    </tr>
+    <tr class="showInFullForm hide totalRow">
+        <td class="checkboxCol">
+        </td>
+        <td class="priceCol">
+            $20
+        </td>
+        <td class="descriptionCol">
+            Total
+        </td>   
     </tr>
 </table>

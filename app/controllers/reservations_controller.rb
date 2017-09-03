@@ -59,6 +59,10 @@ class ReservationsController < ApplicationController
             reserved_dates.push(d.strftime("%d-%m-%Y")).uniq!
         }
       }
+    end    
+    if (Time.now.hour >= 17)
+      today = Date.today
+      reserved_dates.push(today.strftime("%d-%m-%Y")).uniq!
     end
     render json: reserved_dates
   end

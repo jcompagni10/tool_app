@@ -25,7 +25,12 @@ body{
     position: relative;
 }
 
-
+.row-eq-height{
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+}
 
 
 //base styles
@@ -44,7 +49,11 @@ a:hover, a:active{
 }
 
 h2{
-    font-size: 20px;
+    font-size: 30px;
+    @media screen and (max-width: 767px) {
+        font-size: 25px;
+    }
+        
 }
 
 .text-header{
@@ -67,10 +76,17 @@ h2{
     position: absolute;
 }
 
+.bottom-spacer{
+    margin-bottom: 20px !important;
+}
+
+.top-spacer{
+    margin-top: 20px !important;
+}
+
 //Top Title
 .appTitle{
     text-align: center;
-    margin-bottom: 25px;
     color: #fff;
 
     h1{
@@ -133,10 +149,9 @@ h2{
     }
 
     #start_dateError{
-        margin-top: -8px;
-        margin-left: 47px;
+        clear:both;
+        padding-top: 5px;
     }
-
 
     #errorsWrapper{
         margin: 0px -30px;
@@ -146,7 +161,6 @@ h2{
         width: 100%;
         border: 2px solid #fff;
         padding: 7px 7px 0;
-        margin-bottom: 20px;
         background-color: rgba(255,145,145,1);
     }
 
@@ -156,7 +170,18 @@ h2{
         font-size: 15px;
         font-weight: bold;    
         white-space: nowrap;
+
+        .caveat-text{
+            white-space: nowrap;
+            vertical-align: sub;
+            font-weight: normal;           
+        }
+
+        .text-header{
+            vertical-align: sub;
+        }
     }
+
 
     .fa-circle{
         color: yellow;
@@ -165,6 +190,10 @@ h2{
     .fa-inverse{
         color:#000;
         font-weight: bold;
+        font-size: 18px;
+        font-family: 'Helvetica Neue Light', Helvetica, sans-serif;
+        line-height: 2.5em;
+        
     }
 
     .inputField{
@@ -195,7 +224,7 @@ h2{
     .btn-primary{
         background-color: #1dafc9;
         width: 75%;
-        margin: 20px auto 0;
+        margin: 0 auto;
         border: 2px solid #fff;
         color: #fff;
     }
@@ -217,76 +246,59 @@ h2{
 }
 
 //Page 1
-.top-section{
-    margin: 0px -30px 20px;
-    border-bottom: 2px solid #000;
-        
-    img{
-        width: 100%;
-        border: 2px solid #fff;
-        margin-bottom: 15px;
-    }
 
-.top-text{
-    margin: 0 auto;
-    width: 85%;
-    text-align: center;
-    padding-bottom: 20px;
-}
-
-}
-
-.add-on-table{
-    margin-bottom: 20px;
-
-    td{
-        padding:5px;
-        font-family: 'Helvetica Neue Light', Helvetica, sans-serif;        
-    }
-
-    input[type="checkbox"]{
-        position: relative;
-        margin: 0;
-    }
-
-    .descriptionCol{
-        padding-left: 5px;
-    }
-
-    a{
-        color: #000;
-    }
-
-}
 
 .reserveDate{
-    display: table;
-    width: 100%;
-     label{
-        white-space: nowrap;
-        display: table-cell;
-        width: 1px;
-        vertical-align: middle;
-        
+    .start-date-input{
+        margin-right: 10px;
     }
 
-    .field_with_errors:first-of-type{
-    display: table-cell !important;
-    width: 1px;
-    vertical-align: middle;
+    #start_date{
+        margin-left: 10px;
+    }
+    
+    .dateLabel{
+        display: inline-block;
+        vertical-align: baseline
     }
 
-    .field_with_errors:nth-of-type(2){
-        display: table-cell !important;
+    #dueDate{
+        border: none;
+        background: none;
+        padding: 3px;
     }
 
     input{
-        display: table-cell;
-        margin-left: 10px;
-        margin-bottom: 5px;
-        max-width: 360px;
+        width: 150px;
     }
 }
+
+.add-on-table{
+    
+        td{
+            padding:5px;
+            font-family: 'Helvetica Neue Light', Helvetica, sans-serif;        
+        }
+    
+        input[type="checkbox"]{
+            position: relative;
+            margin: 0;
+        }
+    
+        .descriptionCol{
+            padding-left: 5px;
+        }
+    
+        a{
+            color: #000;
+        }
+    
+        .totalRow{
+            border-top: 1px solid #000;
+            font-weight: bold;
+        }
+    
+    }
 
 #deliveryInput{
     //hide controls in IE
@@ -313,7 +325,6 @@ h2{
 
 .back_button{
     margin-left: -40px;
-    margin-bottom: 10px;
     color: #fff;
 }
 .termsOfService{
@@ -322,51 +333,10 @@ h2{
     font-size: .9em;
 }
 
-#summary_table{
-    width: 100%;
 
-    tr{
-    width: 100%;
-    display: table;
-    }
-
-    td{
-        font-size: 14px;        
-        padding-bottom: 6px;
-        padding-left: 10px; 
-        font-family: 'Helvetica Neue Light', Helvetica, sans-serif;
-        
-    }
-
-    .priceCol{
-        width: 1px;
-    }
-
-    .descriptionCol{
-        padding-left: 15px;
-    }
-
-    tr:first-child{
-        display: table !important;
-        position: relative !important;
-    }
-
-    tr:last-child{
-        border-top: 1px solid #000;
-        padding-top: 4px;
-        position:relative !important;
-        display: table !important;
-    }
-
-
-}
-
-//page 3
+//confirmation 
 
 #confirmationPage{
-    .text-header{
-        margin:20px 0px
-    }
     
     hr{
         color: #000;
@@ -376,20 +346,8 @@ h2{
 
     .btn{
         width: 100%;
-        margin-bottom: 20px;
-        margin-top: 25px;  
     }
 }
-
-.bottomText{
-text-align:center;
-
-    .dueDate{
-        font-weight:bold;
-    }
-}
-
-
 
 
 //stripe 
@@ -460,13 +418,15 @@ text-align:center;
     max-width: 600px;
 }
 
-.tool-list{
+#toolsModal ul {
     text-align: left;
-    margin: 20px 0px;
-    @media screen and (max-width: 768px) {
-        text-align: center
-    }
-}
+    margin-bottom:0px;
+    padding-left:0px;
+  }
+
+  #toolsModal #image-row {
+    margin-top:5%
+  }
 
 //How it Works
 
@@ -485,9 +445,7 @@ text-align:center;
         display: flex;
     }
 }
-.sectionTitle{
-    margin-bottom: 30px;
-}
+
 
 .toolsCircle{
     width: 100%;
@@ -526,8 +484,12 @@ text-align:center;
         text-align: center;
         font-weight: normal;
         font-size: 14px;
+        white-space: nowrap;
     }
-    
+    .middleTD{
+        padding: 0 15px;
+    }
+
     img{
         width:100px;
         @media screen and (max-width: 575px) {
@@ -593,10 +555,6 @@ text-align:center;
     padding: 20px;
     display: inline-block;
     max-width: 350px;
-
-    .bottomText{
-        margin-top:30px
-    }
 }
 
 

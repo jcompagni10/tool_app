@@ -1,34 +1,3 @@
-
-describe("toPage1", function(){
-    beforeEach(function(){
-        affix("#page2");
-        affix("#page1");
-        toPage1();        
-    })
-    it("hides page 1",function(){
-        expect($("#page1").hasClass("hide")).toBe(false);
-    })
-
-    it("it hides page 2",function(){
-        expect($("#page2").hasClass("hide")).toBe(true);
-    })
-})
-
-describe("toPage2", function(){
-    beforeEach(function(){
-        affix("#page2");
-        affix("#page1");
-        toPage2();        
-    })
-    it("hides page 1",function(){
-        expect($("#page1").hasClass("hide")).toBe(true);
-    })
-
-    it("it shows page 2",function(){
-        expect($("#page2").hasClass("hide")).toBe(false);
-    })
-})
-
 describe("toConfirmationPage", function(){
     beforeEach(function(){
         affix("#page2");
@@ -52,19 +21,19 @@ describe("toConfirmationPage", function(){
 describe('reformatDate', function(){
     beforeEach(function(){
         affix("#start_date");
-        mountDatePicker();        
-        affix(".dueDate");
-        $("#start_date").val("2017-08-28" );
+        affix("#dueDate");
+        $("#start_date").val("2017-12-15");
+        mountDatePicker();                                
         reformatDate();
         
     })
 
     it("formats date from ruby date to full date", function(){
-        expect($("#start_date").val()).toBe("Monday, August 28, 2017");
+        expect($("#start_date").val()).toBe("Fri, Dec 15, 2017");
     })
 
     it("it formats due date", function(){
-        expect($(".dueDate").html()).toBe("Thursday, August 31, 2017");
+        expect($("#dueDate").val()).toBe("Mon, Dec 17, 2017");
     })
 })
 
