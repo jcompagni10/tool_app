@@ -1,0 +1,194 @@
+<%= form_with(model: @reservation, remote: true, html: {autocomplete: "off", id: "reservation_form"}) do |form| %>
+    <div class="form-group">
+        <div id="page1" class="">
+            <div id="errorsWrapper">
+                <% if @reservation.errors.any?%>
+                    <div id="error_explanation" class="bottom-spacer">
+                    <span class="text-header">Sorry! There were a few error(s): </span>
+                    <ul>
+                        <% @reservation.errors.messages.each do |message| %>
+                            <li><%= message[1][0] %></li>
+                        <% end %>
+                    </div>
+                <% end %>
+            </div>
+            <div id="step-1">
+                <div class ="form-section-header">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-inverse fa-stack-1x">1</i>
+                    </span>
+                    <span class="text-header"> Check dates </span>
+                    <div class="unavailable caveat-text">
+                        (unavailable = gray)
+                    </div>   
+                </div>
+
+
+                <div class="reserveDate inputField generic-text row">
+                    <div class="col-xs-12">
+                        <div class="start-date-input nowrap pull-left">
+                            <%= form.label :start_date, "Get it: ", class: "dateLabel" %>
+                            <%= form.text_field :start_date, {:id => "start_date", :readonly  => "true", :onChange => "updateDueDate()"} %>
+                        </div>
+                        <div class="pull-left nowrap">
+                            <label class="dateLabel" for="dueDate">
+                                Return it:
+                            </label> 
+                            <input type="text" id="dueDate" value="3 days later" disabled="true" class="generic-text">
+                        </div> 
+                        <div id="start_dateError" class="error hide"> Start Date Required </div>        
+                    </div>
+                </div>
+            </div>
+            <div id="step-2">
+                <div class ="form-section-header">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-inverse fa-stack-1x">2</i>
+                    </span>
+                    <span class="text-header"> Select optional add-ons </span>
+                </div>
+                
+                <table class="add-on-table generic-text">
+                    <tr>
+                        <td class="checkboxCol">
+                            <%= form.check_box :toolbox, disabled: "true", checked: true; %>
+                        </td>
+                        <td class="priceCol">
+                            $20
+                        </td>
+                        <td class="descriptionCol">
+                            Toolbox <a data-toggle="modal" data-target="#toolsModal "><span class="glyphicon glyphicon-question-sign"></span></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="checkboxCol">
+                            <%= form.check_box :ladder, id: :reservation_ladder, onClick: "changeAddOn('Ladder',$(this).prop('checked'))"%>
+                        </td>
+                        <td class="priceCol">
+                            +$10
+                        </td>
+                        <td class="descriptionCol">
+                            Ladder <a data-toggle="modal" data-target="#ladderModal"><span class="glyphicon glyphicon-question-sign"></span></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="checkboxCol">
+                            <%= form.check_box :light, id: :reservation_light, onClick: "changeAddOn('Light',$(this).prop('checked'))" %>
+                        </td>
+                        <td class="priceCol">
+                            +$10
+                        </td>
+                        <td class="descriptionCol">
+                            Work Light <a data-toggle="modal" data-target="#lightModal"><span class="glyphicon glyphicon-question-sign"></span></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="checkboxCol">
+                            <input id="delivery" type="checkbox" onChange ="toggleDelivery(this.checked)" onClick= "changeAddOn('Delivery', $(this).prop('checked'))">
+                        </td>
+                        <td class="priceCol">
+                            +$8
+                        </td>
+                        <td class="descriptionCol">
+                            Delivery <a data-toggle="modal" data-target="#deliveryModal"><span class="glyphicon glyphicon-question-sign"></span></a>
+                        </td>
+                    </tr>
+                    <tr class="showInFullForm hide totalRow">
+                        <td class="checkboxCol">
+                        </td>
+                        <td class="priceCol">
+                            $20
+                        </td>
+                        <td class="descriptionCol">
+                            Total
+                        </td>   
+                    </tr>
+                </table>
+
+                <div id= "deliveryInput" class="collapse">
+                    <div class="inputField">
+                        <%= form.label :phone, "Phone (for delivery contact): " %>
+                        <%= form.telephone_field :phone, id: :phone, class: "full-width" %>
+                        <div id="phoneError" class="error hide"> Phone Number Required  </div>
+                    </div>
+                    <div class="inputField">
+                        <%= form.label :address, "Address: " %>
+                        <%= form.text_field :address, id: :address, class: "full-width" %>
+                        <div id="addressError" class="error hide"> Address Required </div>  
+                    </div>
+                    <div class="inputField">
+                        <%= form.label :instructions, "Optional instructions: " %>
+                        <%= form.text_field :instructions, id: :instructions, class: "full-width" %>
+                    </div>
+                    <div class="inputField">
+                        <%= form.label :delivery_time, "Time window for delivery: " %>
+                        <p class="caveat-text">
+                            Select the start of a 1-hour window from 9:00am-9:00pm
+                        </p>
+                        <% delivery_times = {""=> {val: "", disabled: true, selected: true}, "9:00am" => 9, "10:00am" => 10, "11:00am" => 11, "12:00pm" => 12, "1:00pm" => 13, "2:00pm" => 14, "3:00pm" => 15, "4:00pm" => 16, "5:00pm" => 17, "6:00pm" => 18, "7:00pm" => 19, "8:00pm" => 20 } %>
+                        <%= form.select :delivery_time, delivery_times, {}, {:id => "delivery_time", :onChange => "deliveryChange()", :disabled => true}  %>
+                        to <span id="deliveryEndTime" class="generic-text">1 hour later</span>
+                        <div id="timeError" class="error hide"> Delivery Time Required </div>          
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button id="checkoutBtn" class="btn btn-primary text-header hideInFullForm top-spacer" onClick= "validateCheckout()" type="button"> Reserve Now </button>
+                </div>  
+            </div>
+        </div>    
+        <div id="page2" class="collapse">
+            <div id="step-3">
+                <div class ="form-section-header">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-inverse fa-stack-1x">3</i>
+                    </span>
+                    <span class="text-header"> Enter Contact & Payment </span>
+                </div>
+                <div class="inputField">
+                    <%= form.label :email, "Email (for confirmation & receipt): " %>
+                    <%= form.email_field :email, id: :reservation_email, class: "full-width"%>
+                </div>
+
+                <div class="inputField">
+                    <%= form.label :stripe, "Credit or Debit Card: " %>
+                    <div id="card-element">
+                        <!-- a Stripe Element will be inserted here. -->
+                    </div>
+                    <div id="card-errors" role="alert"><%=flash[:error]%></div>    
+                    <%= text_field_tag  "reservation[stripe]", nil, type: 'hidden', id: "reservation_stripe" %>
+                </div>
+
+                <div class="termsOfService">
+                    <%= form.check_box :tos, id: :reservation_tos %>
+                    <span>I agree to the <%= link_to "Terms of Service", terms_of_service_path, target: :_blank %></span> 
+                </div>
+
+                <div class="text-center">
+                    <button id="submitButton" class="btn btn-primary text-header top-spacer" onClick ="tokenHandler(event)" disabled="true">Drill me now!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<% end %>
+<div id="confirmationPage" class="text-center hide">
+    <div class="text-header top-spacer bottom-spacer">
+    Thanks, you're all set
+    </div>
+    <div class="text-generic">
+        Email confirmation on its way
+    </div>
+    <hr>
+    <div class="text-header">
+        Refer a friend, get $10 back!
+    </div>
+    <div class="text-generic">
+        For each friend you refer who uses our service, you’ll get a $10 refund! 
+    </div>
+    <button class="btn btn-primary top-spacer bottom-spacer">James Mystery content</button>
+    <div class="caveat-text">
+        <%= link_to "Full Details", terms_of_service_path, target: :_blank %>
+    </div>
+</div>
