@@ -31,13 +31,13 @@ a:hover{
 }
 
 a, a:active, a:focus, a:visited{
-    color:  #1dafc9;
+    color:  $blue;
     text-decoration: underline;
     cursor: pointer;
 }
 
 a:hover, a:active{
-    color:  #1dafc9;
+    color: $blue;
 }
 
 h2{
