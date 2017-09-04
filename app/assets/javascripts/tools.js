@@ -23,6 +23,7 @@ function toggleDelivery(val){
         $("#delivery_time").prop('disabled', true);
         $("#deliveryInput").collapse("hide");   
     }
+    // JAMES: not incremental to call delivery charge every time, should actually only be called when delivery_time.val changes
     deliveryChange();
 }
 
@@ -38,6 +39,7 @@ function reformatDate(){
     }   
 }
 
+// JAMES: call when start_date changes?
 function updateDueDate(){
     if ($("#start_date").length){
         var dueDate = $('#start_date').datepicker('getDate', '+3d'); 
@@ -98,6 +100,7 @@ function renderFullForm(){
     
 }
 
+// JAMES: where is 'date' coming from??
 function DisableSpecificDates(date) {
     var date_string = jQuery.datepicker.formatDate('dd-mm-yy', date);
     return [reserved_dates.indexOf(date_string) == -1];
@@ -125,6 +128,7 @@ function getReservedDates(){
       });
 }
 
+// JAMES: pass variables, dont' declare the variable in a sub-function
 $(document).ready(function(){
     getReservedDates();
     mountStripe();
