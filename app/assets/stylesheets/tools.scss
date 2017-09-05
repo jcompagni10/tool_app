@@ -512,7 +512,7 @@ h2{
     .fa{
         color: $yellow;
         @media screen and (max-width: 575px) {
-            font-size: 1.3em;
+            font-size: 2em;
         }
             
     }
@@ -526,9 +526,6 @@ h2{
     }
 
     .fa-plus{
-        position: relative;
-        top: .25em;
-        margin: 0 .2em;
     }
 }
 
