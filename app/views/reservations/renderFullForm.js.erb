@@ -1,12 +1,7 @@
 $(".mainContent").html("<%= j render(partial: 'mainContent', :locals => {reservation: @reservation})%> ");
-renderFullForm();
-mountDatePicker();
+renderFullForm(@delivery)
+mountDatePicker(@reservation.start_date);
 mountStripe();
-<% if @delivery %>
-    $("#delivery").prop("checked", true)  
-    toggleDelivery(true)
-<% end %> 
-reformatDate();
 <% if @errors %>
     scrollTo("#page1");
 <% end %>

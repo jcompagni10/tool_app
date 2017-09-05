@@ -1,65 +1,116 @@
-var reserved_dates = [];
-var total = 20;
+mountStripe();
+mountDatePicker();
 
-function deliveryChange(){
-    deliveryTime = $("#delivery_time").val();
-    if(deliveryTime != null && deliveryTime != ""){
-        var endTime = 1 + parseInt(deliveryTime);
-        var suffix = (endTime < 12 )? "am" : "pm";
-        var formatted = (endTime > 12? endTime - 12 : endTime) + ":00"+suffix
-        $("#deliveryEndTime").text(formatted);
-   }
-   else{
-    $("#deliveryEndTime").text("1 hour later");
-   }
+var total = 20;
+var prices ={"ladder": 10, "light": 10, "delivery": 8};
+
+$("#start_date").on("change", function() {
+    start_date = $('#start_date').datepicker('getDate');
+    if(start_date != null && start_date != ""){
+        end_date = calculateEndDate(start_date)
+        $("#end_date").val(end_date);
+    } else {
+        $("#end_date").val("3 days later");
+    }
+})
+
+function calculateEndDate(start_date) {
+    end_date = new Date()
+    end_date.setDate(start_date.getDate()+3); 
+    return $.datepicker.formatDate("D, M d, yy", end_date)
 }
 
-function toggleDelivery(val){
-    if (val){
+$("#delivery_start_time").on("change", function() {
+    start_time = $(this).val();
+    if(start_time != null && start_time != ""){
+        end_time = calculateDeliveryEndTime(start_time)
+        $("#delivery_end_time").text(end_time);
+    } else {
+        $("#delivery_end_time").text("1 hour later");
+    }
+})
+
+function calculateDeliveryEndTime(start_time) {
+    endTime = 1 + parseInt(start_time);
+    var suffix = (endTime < 12 )? "am" : "pm";
+    var formatted_end_time = (endTime > 12? endTime - 12 : endTime) + ":00"+suffix
+}
+
+$(".add_on").on("change", function() {
+    type = $(this).data("type")
+    value = $(this).val()
+    toggleAddOn(type, value)
+    if (type == "delivery") {
+        toggleDelivery(value)
+    }
+})
+
+function toggleDelivery(state){
+    if (state){
         $("#delivery_time").prop('disabled', false)
         $("#deliveryInput").collapse("show")
+
+        start_time = $("#delivery_start_time").val();
+        if(start_time != null && start_time != ""){
+            end_time = calculateDeliveryEndTime(start_time)
+            end_time_field = $("#delivery_end_time")
+            if (end_time_field.text() != end_time) {
+                end_time_field.text(end_time)
+            }
+        } 
     }
     else{
         $("#delivery_time").prop('disabled', true);
         $("#deliveryInput").collapse("hide");   
     }
-    // JAMES: not incremental to call delivery charge every time, should actually only be called when delivery_time.val changes
-    deliveryChange();
 }
 
-//Change back from rails string
-function reformatDate(){
-    date= $("#start_date").val();
-    if (date != ""){
-        date = $.datepicker.parseDate("yy-mm-dd", date)   
-        formattedDate = ($.datepicker.formatDate("D, M d, yy", date));
-        $("#start_date").datepicker("setDate", date)     
-        $("#start_date").val(formattedDate);
-        updateDueDate();
-    }   
-}
-
-// JAMES: call when start_date changes?
-function updateDueDate(){
-    if ($("#start_date").length){
-        var dueDate = $('#start_date').datepicker('getDate', '+3d'); 
-        dueDate.setDate(dueDate.getDate()+3); 
-        console.log(dueDate)
-        var formatedDate= $.datepicker.formatDate("D, M d, yy", dueDate)
-        $("#dueDate").val(formatedDate);
-    }
-    else{
-        $("#dueDate").val("3 days later");
-    }
-}
-
-
-
-function changeAddOn(addOn, state){
-    prices ={"Ladder": 10, "Light": 10, "Delivery": 8};
+function toggleAddOn(addOn, state){
     price = prices[addOn];
     total = total + (state ? price : - price);
-    $(".totalRow .priceCol").html("$"+total);
+    $("#total_price").html("$"+total);
+}
+
+$("#submitButton").click(function(e) {
+    e.preventDefault()
+    tokenHandler()
+})
+
+$("#checkoutBtn").click(function() {
+    validateCheckout();
+})
+
+function validateCheckout(){
+    var start_dateValid = ($("#start_date").val() != "")   
+    $("#start_dateError").toggleClass("hide", start_dateValid)
+    if ($(".add_on[data-type='delivery']").prop("checked") == true){
+        var phone_valid =($("#phone").val() != "") 
+        $("#phoneError").toggleClass("hide", phone_valid)
+        var address_valid =($("#address").val() != "") 
+        $("#addressError").toggleClass("hide", address_valid) 
+        var time_valid =($("#delivery_start_time").val() != null) 
+        $("#timeError").toggleClass("hide", time_valid) 
+        if (start_dateValid && phone_valid && time_valid && address_valid){
+            renderFullForm();
+            scrollTo("#page2")
+        }
+    } else {
+        // if it's not valid, it's already covered, JAMES: where?
+        if (start_dateValid) {
+            renderFullForm();
+            scrollTo("#page2")
+        }
+    }
+}
+
+function renderFullForm(delivery){
+    $("#page2").removeClass("collapse");
+    $(".hideInFullForm").addClass("hide")
+    $(".showInFullForm").removeClass("hide")
+
+    if (delivery) {
+        $(".add_on[data-type='delivery']").prop("checked", true)
+    }
 }
 
 function toConfirmationPage(){
@@ -72,46 +123,30 @@ function scrollTo(anchor){
     $('.mainContent').scrollTop($(anchor).offset().top);
 }
 
-function validateCheckout(){
-    var start_dateValid = ($("#start_date").val() != "")   
-    $("#start_dateError").toggleClass("hide", start_dateValid)
-    if (!$("#delivery").prop("checked") && start_dateValid){
-        renderFullForm();
-        scrollTo("#page2")
-    }
-    if ($("#delivery").prop("checked")){
-        var phone_valid =($("#phone").val() != "") 
-        $("#phoneError").toggleClass("hide", phone_valid)
-        var address_valid =($("#address").val() != "") 
-        $("#addressError").toggleClass("hide", address_valid) 
-        var time_valid =($("#delivery_time").val() != null) 
-        $("#timeError").toggleClass("hide", time_valid) 
-        if (start_dateValid && phone_valid && time_valid && address_valid){
-            renderFullForm();
-            scrollTo("#page2")
-        }
-    }
-}
+function mountDatePicker(initial_start_date){
+    if (initial_start_date != ""){
+        start_date = $.datepicker.parseDate("yy-mm-dd", initial_start_date)   
+        formatted_start_date = ($.datepicker.formatDate("D, M d, yy", start_date));
+        $("#start_date").datepicker("setDate", formatted_start_date) 
 
-function renderFullForm(){
-    $("#page2").removeClass("collapse");
-    $(".hideInFullForm").addClass("hide")
-    $(".showInFullForm").removeClass("hide")
-    
-}
+        // not incremental to trigger change in start_date, since this requires you to call .datepicker on #start_date when you already have its value here
+        end_date = calculateEndDate(start_date)
+        $("#end_date").val(end_date);
+    }   
 
-// JAMES: where is 'date' coming from??
-function DisableSpecificDates(date) {
-    var date_string = jQuery.datepicker.formatDate('dd-mm-yy', date);
-    return [reserved_dates.indexOf(date_string) == -1];
-}
-
-function mountDatePicker(){
+    reserved_dates = []
+    getReservedDates()
     $("#start_date").datepicker({
         minDate: new Date(),
-        beforeShowDay: DisableSpecificDates,
+        beforeShowDay: disableSpecificDates,
         dateFormat: "D, M d, yy"
-        })
+    })
+}
+
+// date parameter is auto fed as part of beforeShowDay
+function disableSpecificDates(date) {
+    var date_string = jQuery.datepicker.formatDate('dd-mm-yy', date);
+    return [reserved_dates.indexOf(date_string) == -1];
 }
 
 function getReservedDates(){
@@ -124,15 +159,6 @@ function getReservedDates(){
         reserved_dates = result
       })
       .fail(function(){
-          alert("Something isn't working right. Make sure you have JavaScript enabled in your browser");
+        alert("Something isn't working right. Make sure you have JavaScript enabled in your browser");
       });
 }
-
-// JAMES: pass variables, dont' declare the variable in a sub-function
-$(document).ready(function(){
-    getReservedDates();
-    mountStripe();
-    mountDatePicker();
-
-    
-})

@@ -28,7 +28,7 @@ class ReservationsController < ApplicationController
           #save charge id from stripe
           @reservation.stripe = charge[1]
           @reservation.save
-          format.js{render js: "toConfirmationPage()"}
+          format.js{render :renderConfirmation}
           #send conf email to user
           ReservationMailer.reservation_confirmation(@reservation).deliver
         else
