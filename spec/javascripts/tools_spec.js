@@ -1,17 +1,28 @@
 
-describe ('deliveryChange', function(){
+describe ('delivery end time', function(){
     beforeEach(function(){
         affix("#delivery_start_time");   
         affix("#delivery_end_time"); 
     })
 
-    it ('formats the return time properly',function(){
+    it ('is populated correctly',function(){
         $("#delivery_start_time").val(12);
-        deliveryChange()
-        expect($("#delivery_end_time").html()).toBe("1:00pm")
+        $("#delivery_start_time").trigger("change")
+        expect($("#delivery_end_time").text()).toBe("1:00pm")
+    })
+
+    it ('formats the end time properly',function(){
+        $("#delivery_start_time").val(11);
+        $("#delivery_start_time").trigger("change")
+        expect($("#delivery_end_time").text()).toBe("12:00pm")
+    })
+
+    it ('formats the end time properly',function(){
+        $("#delivery_start_time").val(8);
+        $("#delivery_start_time").trigger("change")
+        expect($("#delivery_end_time").text()).toBe("9:00am")
     })
 })
-
 
 
 describe('reformatDate & updateend_date', function(){
