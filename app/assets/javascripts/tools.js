@@ -47,7 +47,7 @@ $(document).ready(function() {
 
     function toggleDelivery(state){
         if (state){
-            $("#delivery_time").prop('disabled', false)
+            $("#delivery_start_time").prop('disabled', false)
             $("#deliveryInput").collapse("show")
 
             start_time = $("#delivery_start_time").val();
@@ -60,7 +60,7 @@ $(document).ready(function() {
             } 
         }
         else{
-            $("#delivery_time").prop('disabled', true);
+            $("#delivery_start_time").prop('disabled', true);
             $("#deliveryInput").collapse("hide");   
         }
     }

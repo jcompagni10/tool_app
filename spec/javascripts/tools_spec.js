@@ -1,24 +1,24 @@
 
 describe ('deliveryChange', function(){
     beforeEach(function(){
-        affix("#delivery_time");   
-        affix("#deliveryEndTime"); 
+        affix("#delivery_start_time");   
+        affix("#delivery_end_time"); 
     })
 
     it ('formats the return time properly',function(){
-        $("#delivery_time").val(12);
+        $("#delivery_start_time").val(12);
         deliveryChange()
-        expect($("#deliveryEndTime").html()).toBe("1:00pm")
+        expect($("#delivery_end_time").html()).toBe("1:00pm")
     })
 })
 
 
 
-describe('reformatDate & updateDueDate', function(){
+describe('reformatDate & updateend_date', function(){
     beforeEach(function(){
         affix("#start_date");
         mountDatePicker();        
-        affix("#dueDate");
+        affix("#end_date");
         $("#start_date").val("2017-12-29" );
         reformatDate();
     })
@@ -28,7 +28,7 @@ describe('reformatDate & updateDueDate', function(){
     })
 
     it("it formats due date", function(){
-        expect($("#dueDate").val()).toBe("Mon, Jan 1, 2018");
+        expect($("#end_date").val()).toBe("Mon, Jan 1, 2018");
     })
 })
 
@@ -94,7 +94,7 @@ describe('validateCheckout', function(){
         affix("#start_date");
         affix("#phone");
         affix("#address");
-        affix("#delivery_time");
+        affix("#delivery_start_time");
         affix("#start_dateError");
         affix("#addressError");
         affix("#phoneError");
@@ -130,7 +130,7 @@ describe('validateCheckout', function(){
         $("#phone").val("510-531-1114");
         $("#start_date").val("Thursday, August 31, 2017");        
         $("#address").val("123 any address ");
-        $("#delivery_time").val(12);
+        $("#delivery_start_time").val(12);
         validateCheckout();        
         expect(window.renderFullForm).toHaveBeenCalled();
     })

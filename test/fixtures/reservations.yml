@@ -9,7 +9,7 @@ one:
   stripe: MyString
   address: MyString
   instructions: MyString
-  delivery_time: 1
+  delivery_start_time: 1
 
 two:
   email: MyString
@@ -20,4 +20,4 @@ two:
   stripe: MyString
   address: MyString
   instructions: MyString
-  delivery_time: 1
+  delivery_start_time: 1

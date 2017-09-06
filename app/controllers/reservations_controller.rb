@@ -15,7 +15,7 @@ class ReservationsController < ApplicationController
       start_date = reservation_params["start_date"]
       params[:reservation][:start_date] =  Date.strptime(start_date, "%A, %B %d, %Y")      
     end
-    reservation_params["delivery_time"].present? ? @delivery = true : @delivery = false
+    reservation_params["delivery_start_time"].present? ? @delivery = true : @delivery = false
     @reservation = Reservation.new(reservation_params)
     respond_to do |format|
       if @reservation.valid?
@@ -88,7 +88,7 @@ class ReservationsController < ApplicationController
       #add light price (in cents)
       price += reservation.light ? 1000 : 0
       #add delivery price (in cents)
-      price += !reservation.delivery_time.nil? ? 800 : 0
+      price += !reservation.delivery_start_time.nil? ? 800 : 0
     end
 
     def stripeCharge(token, amt)                
