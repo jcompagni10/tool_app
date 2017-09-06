@@ -33,7 +33,7 @@ $(document).ready(function() {
     function calculateDeliveryEndTime(start_time) {
         endTime = 1 + parseInt(start_time);
         var suffix = (endTime < 12 )? "am" : "pm";
-        var formatted_end_time = (endTime > 12? endTime - 12 : endTime) + ":00"+suffix
+        return (endTime > 12? endTime - 12 : endTime) + ":00"+suffix
     }
 
     $(".add_on").on("change", function() {
