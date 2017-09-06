@@ -39,7 +39,6 @@ $(document).ready(function() {
     $(".add_on").on("change", function() {
         type = $(this).data("type")
         value = $(this).prop("checked")
-        console.log("calling toggleaddon for type = " + type + " value = " + value)
         toggleAddOn(type, value)
         if (type == "delivery") {
             toggleDelivery(value)
