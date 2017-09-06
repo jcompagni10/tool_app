@@ -45,11 +45,12 @@ $(document).ready(function() {
         }
     })
 
-    function toggleDelivery(state){
+    function toggleDelivery(state, show_edit){
         if (state){
             $("#delivery_start_time").prop('disabled', false)
             $("#deliveryInput").collapse("show")
 
+            // repopulates end_time if this is a page re-render
             start_time = $("#delivery_start_time").val();
             if(start_time != null && start_time != ""){
                 end_time = calculateDeliveryEndTime(start_time)
@@ -58,10 +59,14 @@ $(document).ready(function() {
                     end_time_field.text(end_time)
                 }
             } 
-        }
-        else{
+
+            // as long as delivery section is showing, neve need to show edit link
+        }else{
             $("#delivery_start_time").prop('disabled', true);
             $("#deliveryInput").collapse("hide");   
+
+            // shows edit link if delivery exists (i.e., if it was passed on render full form)
+            $("#edit_delivery").removeClass("hide")
         }
     }
 
@@ -92,6 +97,7 @@ $(document).ready(function() {
             $("#timeError").toggleClass("hide", time_valid) 
             if (start_dateValid && phone_valid && time_valid && address_valid){
                 renderFullForm();
+                toggleDelivery(false, true); // hides this section, which user can then pop out via "edit"
                 scrollTo("#page2")
             }
         } else {
@@ -109,7 +115,9 @@ $(document).ready(function() {
         $(".showInFullForm").removeClass("hide")
 
         if (delivery) {
+            // for page re-renders
             $(".add_on[data-type='delivery']").prop("checked", true)
+            $("#edit_delivery").removeClass("hide")
         }
         mountStripe()
     }
