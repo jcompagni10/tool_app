@@ -8,23 +8,23 @@ class Reservation < ApplicationRecord
     validates :tos, acceptance: { message: 'You must Accept Terms of Service' },
                     :presence => { message: 'You must Accept Terms of Service' }   
     #require address if delivery
-    validates :address, :presence => {if: :delivery_time, :message =>"Delivery Address Required"}
-    validates :phone, :presence => {if: :delivery_time, :message =>"Phone Number Required"}
+    validates :address, :presence => {if: :delivery_start_time, :message =>"Delivery Address Required"}
+    validates :phone, :presence => {if: :delivery_start_time, :message =>"Phone Number Required"}
     
     private 
 
-        def date_valid
-            if !!start_date
-                if !Reservation.where(:start_date => ((start_date-3.day)..(start_date+3.days))).blank?
-                    errors.add(:start_date, "Rental Date Conflicts With Existing Reservation.")
-                end
-                if start_date < Date.today
-                    errors.add(:start_date, "Rental Date Cannot Be In The Past")
-                end
-                if start_date == Date.today && Time.now.hour >= 21
-                    errors.add(:start_date, "Cannot Do Day Of Rental After 9pm")
-                end
+    def date_valid
+        if !!start_date
+            if !Reservation.where(:start_date => ((start_date-3.day)..(start_date+3.days))).blank?
+                errors.add(:start_date, "Rental Date Conflicts With Existing Reservation.")
+            end
+            if start_date < Date.today
+                errors.add(:start_date, "Rental Date Cannot Be In The Past")
+            end
+            if start_date == Date.today && Time.now.hour >= 21
+                errors.add(:start_date, "Cannot Do Day Of Rental After 9pm")
             end
         end
+    end
 end
 

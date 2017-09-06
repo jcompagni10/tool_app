@@ -22,11 +22,11 @@ describe Reservation do
   end
 
   it "is valid without address if delivery is not selected" do
-    expect(FactoryGirl.build(:reservation, delivery_time:nil, address:nil)).to be_valid
+    expect(FactoryGirl.build(:reservation, delivery_start_time:nil, address:nil)).to be_valid
   end
 
   it "is valid without phone if delivery is not selected" do
-    expect(FactoryGirl.build(:reservation, delivery_time:nil, phone:nil)).to be_valid
+    expect(FactoryGirl.build(:reservation, delivery_start_time:nil, phone:nil)).to be_valid
   end
 
   it "is invalid without address if delivery selected" do
