@@ -29,7 +29,7 @@
                 </div>
 
 
-                <div class="reserveDate inputField generic-text row">
+                <div class="reserveDate form-group generic-text row">
                     <div class="col-xs-12">
                         <div class="start-date-input nowrap pull-left">
                             <%= form.label :start_date, "Get it: ", class: "dateLabel" %>
@@ -111,21 +111,21 @@
                 </table>
 
                 <div id= "deliveryInput" class="collapse">
-                    <div class="inputField">
+                    <div class="form-group">
                         <%= form.label :phone, "Phone (for delivery contact): " %>
                         <%= form.telephone_field :phone, id: :phone, class: "full-width" %>
                         <div id="phoneError" class="error hide"> Phone Number Required  </div>
                     </div>
-                    <div class="inputField">
+                    <div class="form-group">
                         <%= form.label :address, "Address: " %>
                         <%= form.text_field :address, id: :address, class: "full-width" %>
                         <div id="addressError" class="error hide"> Address Required </div>  
                     </div>
-                    <div class="inputField">
+                    <div class="form-group">
                         <%= form.label :instructions, "Optional instructions: " %>
                         <%= form.text_field :instructions, id: :instructions, class: "full-width" %>
                     </div>
-                    <div class="inputField">
+                    <div class="form-group">
                         <%= form.label :delivery_time, "Time window for delivery: " %>
                         <p class="caveat-text">
                             Select the start of a 1-hour window from 9:00am-9:00pm
@@ -150,12 +150,12 @@
                     </span>
                     <span class="text-header"> Enter Contact & Payment </span>
                 </div>
-                <div class="inputField">
+                <div class="form-group">
                     <%= form.label :email, "Email (for confirmation & receipt): " %>
                     <%= form.email_field :email, id: :reservation_email, class: "full-width"%>
                 </div>
 
-                <div class="inputField">
+                <div class="form-group">
                     <%= form.label :stripe, "Credit or Debit Card: " %>
                     <div id="card-element">
                         <!-- a Stripe Element will be inserted here. -->
