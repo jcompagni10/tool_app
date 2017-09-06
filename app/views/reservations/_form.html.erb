@@ -35,11 +35,10 @@
                             <%= form.label :start_date, "Get it: ", class: "dateLabel" %>
                             <%= form.text_field :start_date, {:id => "start_date", :readonly  => "true"} %>
                         </div>
+                        <br class="visible-xs">
                         <div class="pull-left nowrap">
-                            <label class="dateLabel" for="dueDate">
-                                Return it:
-                            </label> 
-                            <input type="text" id="end_date" value="3 days later" disabled="true" class="generic-text">
+                            <%= form.label :end_date, "Return it: ", class: "dateLabel" %>
+                            <span id="end_date" class="generic-text">3 days later</span>
                         </div> 
                         <div id="start_dateError" class="error hide"> Start Date Required </div>        
                     </div>

@@ -8,9 +8,9 @@ $(document).ready(function() {
         start_date = $('#start_date').datepicker('getDate');
         if(start_date != null && start_date != ""){
             end_date = calculateEndDate(start_date)
-            $("#end_date").val(end_date);
+            $("#end_date").text(end_date);
         } else {
-            $("#end_date").val("3 days later");
+            $("#end_date").text("3 days later");
         }
     })
 
