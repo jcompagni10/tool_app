@@ -98,10 +98,10 @@ $(document).ready(function() {
             if (start_dateValid && phone_valid && time_valid && address_valid){
                 renderFullForm();
                 toggleDelivery(false, true); // hides this section, which user can then pop out via "edit"
+                toggleDelivery({"section_view":false, "edit_view": true})
                 scrollTo("#page2")
             }
         } else {
-            // if it's not valid, it's already covered, JAMES: where?
             if (start_dateValid) {
                 renderFullForm();
                 scrollTo("#page2")
