@@ -34,7 +34,7 @@
     </tr>
     <tr>
         <td class="checkboxCol">
-            <input id="delivery" type="checkbox" onChange ="toggleDelivery(this.checked)" onClick= "changeAddOn('Delivery', $(this).prop('checked'))">
+            <%= form.check_box :delivery, id: :delivery, onChange: "toggleDelivery(this.checked)", onClick: "changeAddOn('Delivery', $(this).prop('checked'))" %>
         </td>
         <td class="priceCol">
             +$8

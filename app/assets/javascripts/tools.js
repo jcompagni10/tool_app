@@ -40,9 +40,8 @@ function reformatDate(){
 
 function updateDueDate(){
     if ($("#start_date").length){
-        var dueDate = $('#start_date').datepicker('getDate', '+3d'); 
+        var dueDate = $('#start_date').datepicker('getDate'); 
         dueDate.setDate(dueDate.getDate()+3); 
-        console.log(dueDate)
         var formatedDate= $.datepicker.formatDate("D, M d, yy", dueDate)
         $("#dueDate").val(formatedDate);
     }

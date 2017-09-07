@@ -67,7 +67,6 @@ function tokenHandler(e){
             $("#submitButton").prop("disabled", false)
 
         }
-        //no result created ie. Stripe not loaded
         else {            
             $("#reservation_stripe").val(result.token.id)
             //submit form

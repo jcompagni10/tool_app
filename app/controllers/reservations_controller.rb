@@ -15,10 +15,7 @@ class ReservationsController < ApplicationController
       start_date = reservation_params["start_date"]
       params[:reservation][:start_date] =  Date.strptime(start_date, "%A, %B %d, %Y")      
     end
-    @delivery = false
-    if !reservation_params["delivery_time"].nil?
-      @delivery = true
-    end
+    @delivery = !reservation_params["delivery_time"].nil?
     @reservation = Reservation.new(reservation_params)
     respond_to do |format|
       if @reservation.valid?
@@ -61,7 +58,7 @@ class ReservationsController < ApplicationController
         }
       }
     end    
-    if (Time.now.hour >= 17)
+    if (Time.now.hour >= 21)
       today = Date.today
       reserved_dates.push(today.strftime("%d-%m-%Y")).uniq!
     end
