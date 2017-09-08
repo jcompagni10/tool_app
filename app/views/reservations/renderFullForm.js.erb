@@ -1,5 +1,6 @@
 console.log("here")
 $(".mainContent").html("<%= j render(partial: 'form', :locals => {reservation: @reservation})%> ");
+documentLoaded()
 renderFullForm(<%= @delivery %>)
 mountDatePicker(<%= @reservation.start_date %> );
 <% if @errors %>

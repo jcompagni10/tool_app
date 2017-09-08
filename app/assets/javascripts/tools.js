@@ -92,6 +92,7 @@ function scrollTo(anchor){
 }
 
 function mountDatePicker(initial_start_date){
+    console.log("date picker")
     if (initial_start_date != "" && initial_start_date != null){
         start_date = $.datepicker.parseDate("yy-mm-dd", initial_start_date)   
         formatted_start_date = ($.datepicker.formatDate("D, M d, yy", start_date));
