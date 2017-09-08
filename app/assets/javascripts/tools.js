@@ -1,6 +1,5 @@
 var total = 20;
 var prices ={"ladder": 10, "light": 10, "delivery": 8};
-var initialLoad = true;
 
 function calculateEndDate(start_date) {
     end_date = new Date()
@@ -15,13 +14,15 @@ function calculateDeliveryEndTime(start_time) {
 }
 
 function toggleDelivery(state){
+    //disabled delivery start time when not selected. Used to determine whether delivery is selected for validation purposes
+    $("#delivery_start_time").prop("disabled", state)
     if (state){
         $("#delivery_start_time").prop('disabled', false)
         $("#deliveryInput").collapse("show")
 
         // repopulates end_time if this is a page re-render
         start_time = $("#delivery_start_time").val();
-        if(start_time != null && start_time != ""){
+        if(start_time != null && start_time != "0"){
             end_time = calculateDeliveryEndTime(start_time)
             end_time_field = $("#delivery_end_time")
             if (end_time_field.text() != end_time) {
@@ -37,9 +38,7 @@ function toggleDelivery(state){
         $("#deliveryInput").collapse("hide");   
 
         // shows edit link if delivery exists (i.e., if it was passed on render full form)
-        if (!initialLoad) {
-            $("#edit_delivery").removeClass("hide")
-        }
+        $("#edit_delivery").removeClass("hide")
     }
 }
 
@@ -57,10 +56,10 @@ function validateCheckout(){
         $("#phoneError").toggleClass("hide", phone_valid)
         var address_valid =($("#address").val() != "") 
         $("#addressError").toggleClass("hide", address_valid) 
-        var time_valid =($("#delivery_start_time").val() != "") 
+        var time_valid =($("#delivery_start_time").val() != "0") 
         $("#timeError").toggleClass("hide", time_valid) 
         if (start_dateValid && phone_valid && time_valid && address_valid){
-            renderFullForm();
+            renderFullForm(true);
             toggleDelivery(false); // hides this section, which user can then pop out via "edit"
             scrollTo("#page2")
         }
@@ -73,15 +72,16 @@ function validateCheckout(){
 }
 
 function renderFullForm(delivery){
-    initialLoad = false
     $("#page2").removeClass("collapse");
     $(".hideInFullForm").addClass("hide")
     $(".showInFullForm").removeClass("hide")
+    toggleDelivery
 
     if (delivery) {
         // for page re-renders
         $(".add_on[data-type='delivery']").prop("checked", true)
-        $("#edit_delivery").removeClass("hide")
+        $("#edit_delivery").removeClass("hidden")
+
     }
 }
 
@@ -92,7 +92,6 @@ function toConfirmationPage(){
 }
 
 function scrollTo(anchor){
-    console.log(anchor)
     $('.mainContent').scrollTop($(anchor).offset().top);
 }
 
@@ -138,15 +137,7 @@ function getReservedDates(){
 
 
 function documentLoaded(state) {
-    if (state["isReload"] == null){
-        mountDatePicker();        
-    }
-    else{
-        initialLoad = false;
-    }
-
     mountStripe()
-    
 
     $("#start_date").on("change", function() {
         start_date = $('#start_date').datepicker('getDate');
@@ -160,7 +151,7 @@ function documentLoaded(state) {
 
     $("#delivery_start_time").on("change", function() {
         start_time = $(this).val();
-        if(start_time != null && start_time != ""){
+        if(start_time != null && start_time != "0"){
             end_time = calculateDeliveryEndTime(start_time)
             $("#delivery_end_time").text(end_time);
         } else {
@@ -178,6 +169,10 @@ function documentLoaded(state) {
         }
     })
 
+    $("#edit_delivery").click(function(){
+        toggleDelivery(true)
+    })
+
     $("#submitButton").click(function(e) {
         e.preventDefault()
         tokenHandler()
@@ -188,4 +183,7 @@ function documentLoaded(state) {
     })
 }
 
-$(document).ready(documentLoaded)
+$(document).ready(function(){
+    mountDatePicker();
+    documentLoaded();
+})

@@ -1,9 +1,12 @@
 $(".mainContent").html("<%= j render(partial: 'form', :locals => {reservation: @reservation})%> ");
-documentLoaded({isReload: true});
+documentLoaded();
 mountDatePicker("<%= @reservation.start_date %>")
 renderFullForm(<%= @delivery %>);
-<% if @errors %>
-    scrollTo("#errorsWrapper");
-    console.log("scroll")
+//repopulate price for table
+$("#total_price").html("$"+total);
+<% if @errors && @delivery%>
+    toggleDelivery(true)
 <% end %>
+
+
 

@@ -1,10 +1,12 @@
 beforeAll(function(){
+    documentLoaded()
 })
 
 describe ('delivery end time', function(){
     beforeEach(function(){
         affix("#delivery_start_time");   
         affix("#delivery_end_time"); 
+        documentLoaded()
     })
 
     it ('is populated correctly',function(){
@@ -31,6 +33,7 @@ describe('reformatDate & updateend_date', function(){
     beforeEach(function(){
         affix("#start_date");
         affix("#end_date");
+        documentLoaded()                       
         mountDatePicker("2017-12-29")
     })
 
@@ -48,6 +51,7 @@ describe("changeAddOn", function(){
         affix("table");
         $("table").html("<tr class='totalRow'><td class='priceCol'></td></tr>");
         total = 20;
+        documentLoaded()                               
     })
 
     it("it adds a ladder",function(){

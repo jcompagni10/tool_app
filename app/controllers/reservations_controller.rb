@@ -4,6 +4,7 @@ class ReservationsController < ApplicationController
   # GET /reservations/new
   def new
     @reservation = Reservation.new(email:"test@test.com")  
+    @delivery_start_options = delivery_start_options
   end
 
 
@@ -38,8 +39,7 @@ class ReservationsController < ApplicationController
 
       else
         @errors = true;
-        puts @reservation.errors.any?
-        puts @reservation.errors.inspect
+        @delivery_start_options = delivery_start_options        
         format.js{render :renderFullForm}
       
       end
@@ -79,7 +79,11 @@ class ReservationsController < ApplicationController
     def reservation_params
       params.require(:reservation).permit(:email, :tos, :start_date, :ladder, :light, :stripe, :address, :instructions, :delivery_start_time, :phone)
     end
-
+    def delivery_start_options
+      t = Time.new(0)
+      delivery_options = [["", 0]] + (9..20).map{|idx| [(t+idx.hour).strftime("%I:00%P"), idx]}
+    end
+    
     def getTotal(reservation)
       #set base price (in cents)
       price = 2000

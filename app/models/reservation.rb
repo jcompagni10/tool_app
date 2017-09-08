@@ -1,13 +1,12 @@
 class Reservation < ApplicationRecord
- 
     validates :start_date, :presence => {:message => "Rental Date Required"}
     validate :date_valid
     validates :stripe, :presence => {:message => "Credit Card Info Required"}
     validates :email, :presence => {:message => "Email Address Required"}
     validates_format_of :email, {:with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, :message => "Invalid Email Format"}    
-    validates :tos, acceptance: { message: 'You must Accept Terms of Service' },
-                    :presence => { message: 'You must Accept Terms of Service' }   
-    #require address if delivery
+    validates :tos, acceptance: { message: 'You Must Accept Terms of Service' },
+                    :presence => { message: 'You Must Accept Terms of Service' }   
+    validates :delivery_start_time, :numericality => {other_than: 0, allow_nil: true, message: "You Must Select A Delivery Time" }
     validates :address, :presence => {if: :delivery_start_time, :message =>"Delivery Address Required"}
     validates :phone, :presence => {if: :delivery_start_time, :message =>"Phone Number Required"}
     
@@ -26,5 +25,7 @@ class Reservation < ApplicationRecord
             end
         end
     end
+
+            
 end
 

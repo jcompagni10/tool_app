@@ -94,7 +94,7 @@
                             +$8
                         </td>
                         <td class="descriptionCol">
-                            Delivery <a data-toggle="modal" data-target="#deliveryModal"><span class="glyphicon glyphicon-question-sign"></span></a> <%= content_tag "a", "edit",  {class: "link hide", id: "edit_delivery"} %>
+                            Delivery <a data-toggle="modal" data-target="#deliveryModal"><span class="glyphicon glyphicon-question-sign"></span></a> <%= content_tag "a", "edit",  {class: "link hidden", id: "edit_delivery"} %>
                         </td>
                     </tr>
                     <tr class="showInFullForm hide totalRow">
@@ -129,7 +129,7 @@
                         <p class="caveat-text">
                             Select the start of a 1-hour window from 9:00am-9:00pm
                         </p>
-                        <%= form.select :delivery_start_time, [["9:00am", 9], ["10:00am", 10], ["11:00am", 11], ["12:00pm", 12], ["1:00pm", 13], ["2:00pm", 14], ["3:00pm", 15], ["4:00pm", 16], ["5:00pm", 17], ["6:00pm", 18], ["7:00pm", 19], ["8:00pm", 20]], {include_blank: true}, {:id => "delivery_start_time"} %>
+                        <%= form.select :delivery_start_time, @delivery_start_options, {}, {:id => "delivery_start_time"} %>
         
                         to <span id="delivery_end_time" class="generic-text">1 hour later</span>
                         <div id="timeError" class="error hide"> Delivery Time Required </div>          
