@@ -66,7 +66,11 @@ $(document).ready(function() {
             $("#deliveryInput").collapse("hide");   
 
             // shows edit link if delivery exists (i.e., if it was passed on render full form)
-            $("#edit_delivery").removeClass("hide")
+            if (show_edit) {
+                $("#edit_delivery").removeClass("hide")
+            } else {
+                $("#edit_delivery").addClass("hide")
+            }
         }
     }
 
@@ -98,7 +102,7 @@ $(document).ready(function() {
             if (start_dateValid && phone_valid && time_valid && address_valid){
                 renderFullForm();
                 toggleDelivery(false, true); // hides this section, which user can then pop out via "edit"
-                toggleDelivery({"section_view":false, "edit_view": true})
+                // toggleDelivery({"section_view":false, "edit_view": true})
                 scrollTo("#page2")
             }
         } else {
@@ -110,9 +114,13 @@ $(document).ready(function() {
     }
 
     function renderFullForm(delivery){
+        console.log("render full form with delivery = " + delivery)
         $("#page2").removeClass("collapse");
+        console.log("render full form with delivery = " + delivery)
         $(".hideInFullForm").addClass("hide")
+        console.log("render full form with delivery = " + delivery)
         $(".showInFullForm").removeClass("hide")
+        console.log("render full form with delivery = " + delivery)
 
         if (delivery) {
             // for page re-renders
@@ -133,6 +141,7 @@ $(document).ready(function() {
     }
 
     function mountDatePicker(initial_start_date){
+        console.log("mount date picker with initial_start_date = " + initial_start_date)
         if (initial_start_date != "" && initial_start_date != null){
             start_date = $.datepicker.parseDate("yy-mm-dd", initial_start_date)   
             formatted_start_date = ($.datepicker.formatDate("D, M d, yy", start_date));
