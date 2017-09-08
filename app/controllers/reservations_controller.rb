@@ -60,7 +60,7 @@ class ReservationsController < ApplicationController
         }
       }
     end    
-    if (Time.now.hour >= 17)
+    if (Time.now.hour >= 21)
       today = Date.today
       reserved_dates.push(today.strftime("%d-%m-%Y")).uniq!
     end
