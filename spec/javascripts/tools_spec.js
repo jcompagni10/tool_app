@@ -1,8 +1,12 @@
+beforeAll(function(){
+    documentLoaded()
+})
 
 describe ('delivery end time', function(){
     beforeEach(function(){
         affix("#delivery_start_time");   
         affix("#delivery_end_time"); 
+        documentLoaded()
     })
 
     it ('is populated correctly',function(){
@@ -28,10 +32,9 @@ describe ('delivery end time', function(){
 describe('reformatDate & updateend_date', function(){
     beforeEach(function(){
         affix("#start_date");
-        mountDatePicker();        
         affix("#end_date");
-        $("#start_date").val("2017-12-29" );
-        reformatDate();
+        documentLoaded()                       
+        mountDatePicker("2017-12-29")
     })
 
     it("formats date from ruby date to full date", function(){
@@ -83,7 +86,7 @@ describe("toConfirmationPage", function(){
         affix("#page2");
         affix("#page1");
         affix("#confirmationPage");
-        toConfirmationPage();        
+        toConfirmationPage();    
     })
     it("hides page 1",function(){
         expect($("#page1").hasClass("hide")).toBe(true);
@@ -146,4 +149,3 @@ describe('validateCheckout', function(){
         expect(window.renderFullForm).toHaveBeenCalled();
     })
 })
-
