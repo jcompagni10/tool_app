@@ -77,8 +77,10 @@ class ReservationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def reservation_params
-      params.require(:reservation).permit(:email, :tos, :start_date, :ladder, :light, :stripe, :address, :instructions, :delivery_start_time, :phone)
+      params.require(:reservation).permit(:email, :tos, :start_date, :ladder, :light, :delivery_start_time, :stripe, :address, :instructions, :phone)
     end
+
+    #generate options for delivery_start_time select
     def delivery_start_options
       t = Time.new(0)
       delivery_options = [["", 0]] + (9..20).map{|idx| [(t+idx.hour).strftime("%I:00%P"), idx]}
