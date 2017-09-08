@@ -3,7 +3,7 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/new
   def new
-    @reservation = Reservation.new(email:"asdf")  
+    @reservation = Reservation.new(email:"test@test.com")  
   end
 
 

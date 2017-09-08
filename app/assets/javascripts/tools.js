@@ -15,11 +15,11 @@ function calculateDeliveryEndTime(start_time) {
 
 function toggleDelivery(state, show_edit){
     if (state){
-        $("#reservation_delivery_start_time_4i").prop('disabled', false)
+        $("#delivery_start_time").prop('disabled', false)
         $("#deliveryInput").collapse("show")
 
         // repopulates end_time if this is a page re-render
-        start_time = $("#reservation_delivery_start_time_4i").val();
+        start_time = $("#delivery_start_time").val();
         if(start_time != null && start_time != ""){
             end_time = calculateDeliveryEndTime(start_time)
             end_time_field = $("#delivery_end_time")
@@ -30,7 +30,7 @@ function toggleDelivery(state, show_edit){
 
         // as long as delivery section is showing, neve need to show edit link
     }else{
-        $("#reservation_delivery_start_time_4i").prop('disabled', true);
+        $("#delivery_start_time").prop('disabled', true);
         $("#deliveryInput").collapse("hide");   
 
         // shows edit link if delivery exists (i.e., if it was passed on render full form)
@@ -52,7 +52,7 @@ function validateCheckout(){
         $("#phoneError").toggleClass("hide", phone_valid)
         var address_valid =($("#address").val() != "") 
         $("#addressError").toggleClass("hide", address_valid) 
-        var time_valid =($("#reservation_delivery_start_time_4i").val() != "") 
+        var time_valid =($("#delivery_start_time").val() != "") 
         $("#timeError").toggleClass("hide", time_valid) 
         if (start_dateValid && phone_valid && time_valid && address_valid){
             renderFullForm();
@@ -146,8 +146,9 @@ function documentLoaded() {
         }
     })
 
-    $("#reservation_delivery_start_time_4i").on("change", function() {
+    $("#delivery_start_time").on("change", function() {
         start_time = $(this).val();
+        console.log(start_time)
         if(start_time != null && start_time != ""){
             end_time = calculateDeliveryEndTime(start_time)
             $("#delivery_end_time").text(end_time);
