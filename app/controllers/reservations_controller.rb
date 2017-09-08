@@ -3,7 +3,8 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/new
   def new
-    @reservation = Reservation.new    
+    @reservation = Reservation.new(email:"test@test.com")  
+    @delivery_start_options = delivery_start_options
   end
 
 
@@ -15,7 +16,11 @@ class ReservationsController < ApplicationController
       start_date = reservation_params["start_date"]
       params[:reservation][:start_date] =  Date.strptime(start_date, "%A, %B %d, %Y")      
     end
+<<<<<<< HEAD
     @delivery = !reservation_params["delivery_time"].nil?
+=======
+    reservation_params["delivery_start_time"].present? ? @delivery = true : @delivery = false
+>>>>>>> james
     @reservation = Reservation.new(reservation_params)
     respond_to do |format|
       if @reservation.valid?
@@ -25,7 +30,7 @@ class ReservationsController < ApplicationController
           #save charge id from stripe
           @reservation.stripe = charge[1]
           @reservation.save
-          format.js{render js: "toConfirmationPage()"}
+          format.js{render :renderConfirmation}
           #send conf email to user
           ReservationMailer.reservation_confirmation(@reservation).deliver
         else
@@ -38,6 +43,7 @@ class ReservationsController < ApplicationController
 
       else
         @errors = true;
+        @delivery_start_options = delivery_start_options        
         format.js{render :renderFullForm}
       
       end
@@ -75,9 +81,15 @@ class ReservationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def reservation_params
-      params.require(:reservation).permit(:email, :tos, :start_date, :ladder, :light, :stripe, :address, :instructions, :delivery_time, :phone)
+      params.require(:reservation).permit(:email, :tos, :start_date, :ladder, :light, :delivery_start_time, :stripe, :address, :instructions, :phone)
     end
 
+    #generate options for delivery_start_time select
+    def delivery_start_options
+      t = Time.new(0)
+      delivery_options = [["", 0]] + (9..20).map{|idx| [(t+idx.hour).strftime("%I:00%P"), idx]}
+    end
+    
     def getTotal(reservation)
       #set base price (in cents)
       price = 2000
@@ -86,7 +98,7 @@ class ReservationsController < ApplicationController
       #add light price (in cents)
       price += reservation.light ? 1000 : 0
       #add delivery price (in cents)
-      price += !reservation.delivery_time.nil? ? 800 : 0
+      price += !reservation.delivery_start_time.nil? ? 800 : 0
     end
 
     def stripeCharge(token, amt)                

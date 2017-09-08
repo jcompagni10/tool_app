@@ -31,13 +31,13 @@ a:hover{
 }
 
 a, a:active, a:focus, a:visited{
-    color:  #1dafc9;
+    color:  $blue;
     text-decoration: underline;
     cursor: pointer;
 }
 
 a:hover, a:active{
-    color:  #1dafc9;
+    color: $blue;
 }
 
 h2{
@@ -193,10 +193,6 @@ h2{
         
     }
 
-    .inputField{
-        margin-bottom: 7px;
-    }
-    
     label{
         font-size: 14px;
         font-weight: normal;
@@ -213,7 +209,7 @@ h2{
         background-color: unset;
         display: unset;
 
-        input{
+        input, select{
             box-shadow: 0 0 2px 1px #f00;
         }
     }
@@ -487,10 +483,7 @@ h2{
 }
 
 .calenderDiagram{
-    margin: 100px auto 0px;    
-    @media screen and (max-width: 575px) {
-        margin-top: 50px;
-    }
+    width:100%; 
         
     td{
         text-align: center;
@@ -505,10 +498,6 @@ h2{
         }
     }
 
-    .middleTD{
-        padding: 0 15px;
-    }
-
     img{
         width:100px;
         @media screen and (max-width: 575px) {
@@ -519,7 +508,7 @@ h2{
     .fa{
         color: $yellow;
         @media screen and (max-width: 575px) {
-            font-size: 1.3em;
+            font-size: 2em;
         }
             
     }
@@ -533,9 +522,6 @@ h2{
     }
 
     .fa-plus{
-        position: relative;
-        top: .25em;
-        margin: 0 .2em;
     }
 }
 

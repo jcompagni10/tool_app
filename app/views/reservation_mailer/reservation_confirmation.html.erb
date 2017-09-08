@@ -11,7 +11,7 @@ This is an email confirming your reservation from Drill Me Now for
 <b>Phone: </b> <%= @reservation.phone.nil? ? "N/A" :@reservation.phone %><br>
 <b>Ladder: </b> <%= @reservation.ladder ? "Yes" : "No" %><br>
 <b>Light: </b> <%= @reservation.light ? "Yes" : "No" %><br>
-<% dTime = @reservation.delivery_time %>
+<% dTime = @reservation.delivery_start_time %>
 <b>Delivery Time: </b> <%= dTime.nil? ? "N/A" : 
   Time.strptime(dTime.to_s, "%H").strftime("%l%p") + "-" + Time.strptime((dTime+1).to_s, "%H").strftime("%l%p") %> <br>
 <b>Delivery Address: </b> <%= @reservation.address.nil? ? "N/A" : @reservation.address  %><br>

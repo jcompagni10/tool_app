@@ -17,7 +17,7 @@ class ReservationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create reservation" do
     assert_difference('Reservation.count') do
-      post reservations_url, params: { reservation: { address: @reservation.address, delivery_time: @reservation.delivery_time, email: @reservation.email, instructions: @reservation.instructions, ladder: @reservation.ladder, light: @reservation.light, start_date: @reservation.start_date, stripe: @reservation.stripe, tos: @reservation.tos } }
+      post reservations_url, params: { reservation: { address: @reservation.address, delivery_start_time: @reservation.delivery_start_time, email: @reservation.email, instructions: @reservation.instructions, ladder: @reservation.ladder, light: @reservation.light, start_date: @reservation.start_date, stripe: @reservation.stripe, tos: @reservation.tos } }
     end
 
     assert_redirected_to reservation_url(Reservation.last)
@@ -34,7 +34,7 @@ class ReservationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update reservation" do
-    patch reservation_url(@reservation), params: { reservation: { address: @reservation.address, delivery_time: @reservation.delivery_time, email: @reservation.email, instructions: @reservation.instructions, ladder: @reservation.ladder, light: @reservation.light, start_date: @reservation.start_date, stripe: @reservation.stripe, tos: @reservation.tos } }
+    patch reservation_url(@reservation), params: { reservation: { address: @reservation.address, delivery_start_time: @reservation.delivery_start_time, email: @reservation.email, instructions: @reservation.instructions, ladder: @reservation.ladder, light: @reservation.light, start_date: @reservation.start_date, stripe: @reservation.stripe, tos: @reservation.tos } }
     assert_redirected_to reservation_url(@reservation)
   end
 

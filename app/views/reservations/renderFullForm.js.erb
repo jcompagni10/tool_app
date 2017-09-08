@@ -1,13 +1,12 @@
-$(".mainContent").html("<%= j render(partial: 'mainContent', :locals => {reservation: @reservation})%> ");
-renderFullForm();
-mountDatePicker();
-mountStripe();
-<% if @delivery %>
-    $("#delivery").prop("checked", true)  
+$(".mainContent").html("<%= j render(partial: 'form', :locals => {reservation: @reservation})%> ");
+documentLoaded();
+mountDatePicker("<%= @reservation.start_date %>")
+renderFullForm(<%= @delivery %>);
+//repopulate price for table
+$("#total_price").html("$"+total);
+<% if @errors && @delivery%>
     toggleDelivery(true)
-<% end %> 
-reformatDate();
-<% if @errors %>
-    scrollTo("#page1");
 <% end %>
+
+
 

@@ -1,43 +1,26 @@
-var reserved_dates = [];
 var total = 20;
+var prices ={"ladder": 10, "light": 10, "delivery": 8};
 
-function deliveryChange(){
-    deliveryTime = $("#delivery_time").val();
-    if(deliveryTime != null && deliveryTime != ""){
-        var endTime = 1 + parseInt(deliveryTime);
-        var suffix = (endTime < 12 )? "am" : "pm";
-        var formatted = (endTime > 12? endTime - 12 : endTime) + ":00"+suffix
-        $("#deliveryEndTime").html(formatted);
-   }
-   else{
-    $("#deliveryEndTime").html("End Time");
-   }
+function calculateEndDate(start_date) {
+    end_date = new Date()
+    end_date.setDate(start_date.getDate()+3); 
+    return $.datepicker.formatDate("D, M d, yy", end_date)
 }
 
-function toggleDelivery(val){
-    if (val){
-        $("#delivery_time").prop('disabled', false)
+function calculateDeliveryEndTime(start_time) {
+    endTime = 1 + parseInt(start_time);
+    var suffix = (endTime < 12 )? "am" : "pm";
+    return (endTime > 12? endTime - 12 : endTime) + ":00"+suffix
+}
+
+function toggleDelivery(state){
+    //disabled delivery start time when not selected. Used to determine whether delivery is selected for validation purposes
+    $("#delivery_start_time").prop("disabled", state)
+    if (state){
+        $("#delivery_start_time").prop('disabled', false)
         $("#deliveryInput").collapse("show")
-    }
-    else{
-        $("#delivery_time").prop('disabled', true);
-        $("#deliveryInput").collapse("hide");   
-    }
-    deliveryChange();
-}
 
-//Change back from rails string
-function reformatDate(){
-    date= $("#start_date").val();
-    if (date != ""){
-        date = $.datepicker.parseDate("yy-mm-dd", date)   
-        formattedDate = ($.datepicker.formatDate("D, M d, yy", date));
-        $("#start_date").datepicker("setDate", date)     
-        $("#start_date").val(formattedDate);
-        updateDueDate();
-    }   
-}
-
+<<<<<<< HEAD
 function updateDueDate(){
     if ($("#start_date").length){
         var dueDate = $('#start_date').datepicker('getDate'); 
@@ -47,16 +30,71 @@ function updateDueDate(){
     }
     else{
         $("#dueDate").val("");
+=======
+        // repopulates end_time if this is a page re-render
+        start_time = $("#delivery_start_time").val();
+        if(start_time != null && start_time != "0"){
+            end_time = calculateDeliveryEndTime(start_time)
+            end_time_field = $("#delivery_end_time")
+            if (end_time_field.text() != end_time) {
+                end_time_field.text(end_time)
+            }
+        } 
+        $("#edit_delivery").addClass("hide")
+        
+
+        // as long as delivery section is showing, neve need to show edit link
+    }else{
+        $("#delivery_start_time").prop('disabled', true);
+        $("#deliveryInput").collapse("hide");   
+
+        // shows edit link if delivery exists (i.e., if it was passed on render full form)
+        $("#edit_delivery").removeClass("hide")
+>>>>>>> james
     }
 }
 
-
-
-function changeAddOn(addOn, state){
-    prices ={"Ladder": 10, "Light": 10, "Delivery": 8};
+function toggleAddOn(addOn, state){
     price = prices[addOn];
     total = total + (state ? price : - price);
-    $(".totalRow .priceCol").html("$"+total);
+    $("#total_price").html("$"+total);
+}
+
+function validateCheckout(){
+    var start_dateValid = ($("#start_date").val() != "")
+    $("#start_dateError").toggleClass("hide", start_dateValid)
+    if ($(".add_on[data-type='delivery']").prop("checked") == true){
+        var phone_valid =($("#phone").val() != "") 
+        $("#phoneError").toggleClass("hide", phone_valid)
+        var address_valid =($("#address").val() != "") 
+        $("#addressError").toggleClass("hide", address_valid) 
+        var time_valid =($("#delivery_start_time").val() != "0") 
+        $("#timeError").toggleClass("hide", time_valid) 
+        if (start_dateValid && phone_valid && time_valid && address_valid){
+            renderFullForm(true);
+            toggleDelivery(false); // hides this section, which user can then pop out via "edit"
+            scrollTo("#page2")
+        }
+    } else {
+        if (start_dateValid) {
+            renderFullForm();
+            scrollTo("#page2")
+        }
+    }
+}
+
+function renderFullForm(delivery){
+    $("#page2").removeClass("collapse");
+    $(".hideInFullForm").addClass("hide")
+    $(".showInFullForm").removeClass("hide")
+    toggleDelivery
+
+    if (delivery) {
+        // for page re-renders
+        $(".add_on[data-type='delivery']").prop("checked", true)
+        $("#edit_delivery").removeClass("hidden")
+
+    }
 }
 
 function toConfirmationPage(){
@@ -69,45 +107,30 @@ function scrollTo(anchor){
     $('.mainContent').scrollTop($(anchor).offset().top);
 }
 
-function validateCheckout(){
-    var start_dateValid = ($("#start_date").val() != "")   
-    $("#start_dateError").toggleClass("hide", start_dateValid)
-    if (!$("#delivery").prop("checked") && start_dateValid){
-        renderFullForm();
-        scrollTo("#page2")
-    }
-    if ($("#delivery").prop("checked")){
-        var phone_valid =($("#phone").val() != "") 
-        $("#phoneError").toggleClass("hide", phone_valid)
-        var address_valid =($("#address").val() != "") 
-        $("#addressError").toggleClass("hide", address_valid) 
-        var time_valid =($("#delivery_time").val() != null) 
-        $("#timeError").toggleClass("hide", time_valid) 
-        if (start_dateValid && phone_valid && time_valid && address_valid){
-            renderFullForm();
-            scrollTo("#page2")
-        }
-    }
-}
-
-function renderFullForm(){
-    $("#page2").removeClass("collapse");
-    $(".hideInFullForm").addClass("hide")
-    $(".showInFullForm").removeClass("hide")
-    
-}
-
-function DisableSpecificDates(date) {
-    var date_string = jQuery.datepicker.formatDate('dd-mm-yy', date);
-    return [reserved_dates.indexOf(date_string) == -1];
-}
-
-function mountDatePicker(){
+function mountDatePicker(initial_start_date){
+    reserved_dates = []
+    getReservedDates()
     $("#start_date").datepicker({
         minDate: new Date(),
-        beforeShowDay: DisableSpecificDates,
-        dateFormat: "D, M dd, yy"
-        })
+        beforeShowDay: disableSpecificDates,
+        dateFormat: "D, M d, yy"
+    })
+
+    if (initial_start_date != "" && initial_start_date != null){
+        start_date = $.datepicker.parseDate("yy-mm-dd", initial_start_date)   
+        formatted_start_date = ($.datepicker.formatDate("D, M d, yy", start_date));
+        $("#start_date").datepicker("setDate", formatted_start_date) 
+
+        // not incremental to trigger change in start_date, since this requires you to call .datepicker on #start_date when you already have its value here
+        end_date = calculateEndDate(start_date)
+        $("#end_date").val(end_date);
+    }   
+}
+
+// date parameter is auto fed as part of beforeShowDay
+function disableSpecificDates(date) {
+    var date_string = jQuery.datepicker.formatDate('dd-mm-yy', date);
+    return [reserved_dates.indexOf(date_string) == -1];
 }
 
 function getReservedDates(){
@@ -120,14 +143,59 @@ function getReservedDates(){
         reserved_dates = result
       })
       .fail(function(){
-          alert("Something isn't working right. Make sure you have JavaScript enabled in your browser");
+        alert("Something isn't working right. Make sure you have JavaScript enabled in your browser");
       });
 }
 
-$(document).ready(function(){
-    getReservedDates();
-    mountStripe();
-    mountDatePicker();
 
-    
+function documentLoaded(state) {
+    mountStripe()
+
+    $("#start_date").on("change", function() {
+        start_date = $('#start_date').datepicker('getDate');
+        if(start_date != null && start_date != ""){
+            end_date = calculateEndDate(start_date)
+            $("#end_date").text(end_date);
+        } else {
+            $("#end_date").text("3 days later");
+        }
+    })
+
+    $("#delivery_start_time").on("change", function() {
+        start_time = $(this).val();
+        if(start_time != null && start_time != "0"){
+            end_time = calculateDeliveryEndTime(start_time)
+            $("#delivery_end_time").text(end_time);
+        } else {
+            $("#delivery_end_time").text("1 hour later");
+        }
+    })
+
+
+    $(".add_on").on("change", function() {
+        type = $(this).data("type")
+        value = $(this).prop("checked")
+        toggleAddOn(type, value)
+        if (type == "delivery") {
+            toggleDelivery(value)
+        }
+    })
+
+    $("#edit_delivery").click(function(){
+        toggleDelivery(true)
+    })
+
+    $("#submitButton").click(function(e) {
+        e.preventDefault()
+        tokenHandler()
+    })
+
+    $("#checkoutBtn").click(function() {
+        validateCheckout();
+    })
+}
+
+$(document).ready(function(){
+    mountDatePicker();
+    documentLoaded();
 })

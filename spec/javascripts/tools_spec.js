@@ -1,26 +1,40 @@
+beforeAll(function(){
+    documentLoaded()
+})
 
-describe ('deliveryChange', function(){
+describe ('delivery end time', function(){
     beforeEach(function(){
-        affix("#delivery_time");   
-        affix("#deliveryEndTime"); 
+        affix("#delivery_start_time");   
+        affix("#delivery_end_time"); 
+        documentLoaded()
     })
 
-    it ('formats the return time properly',function(){
-        $("#delivery_time").val(12);
-        deliveryChange()
-        expect($("#deliveryEndTime").html()).toBe("1:00pm")
+    it ('is populated correctly',function(){
+        $("#delivery_start_time").val(12);
+        $("#delivery_start_time").trigger("change")
+        expect($("#delivery_end_time").text()).toBe("1:00pm")
+    })
+
+    it ('formats the end time properly',function(){
+        $("#delivery_start_time").val(11);
+        $("#delivery_start_time").trigger("change")
+        expect($("#delivery_end_time").text()).toBe("12:00pm")
+    })
+
+    it ('formats the end time properly',function(){
+        $("#delivery_start_time").val(8);
+        $("#delivery_start_time").trigger("change")
+        expect($("#delivery_end_time").text()).toBe("9:00am")
     })
 })
 
 
-
-describe('reformatDate & updateDueDate', function(){
+describe('reformatDate & updateend_date', function(){
     beforeEach(function(){
         affix("#start_date");
-        mountDatePicker();        
-        affix("#dueDate");
-        $("#start_date").val("2017-12-29" );
-        reformatDate();
+        affix("#end_date");
+        documentLoaded()                       
+        mountDatePicker("2017-12-29")
     })
 
     it("formats date from ruby date to full date", function(){
@@ -28,7 +42,7 @@ describe('reformatDate & updateDueDate', function(){
     })
 
     it("it formats due date", function(){
-        expect($("#dueDate").val()).toBe("Mon, Jan 1, 2018");
+        expect($("#end_date").val()).toBe("Mon, Jan 1, 2018");
     })
 })
 
@@ -37,10 +51,11 @@ describe("changeAddOn", function(){
         affix("table");
         $("table").html("<tr class='totalRow'><td class='priceCol'></td></tr>");
         total = 20;
+        documentLoaded()                               
     })
 
     it("it adds a ladder",function(){
-        changeAddOn("Ladder",true);
+        $(".add_on").trigger("change")
         expect(total).toBe(30);
     })
 
@@ -72,7 +87,7 @@ describe("toConfirmationPage", function(){
         affix("#page2");
         affix("#page1");
         affix("#confirmationPage");
-        toConfirmationPage();        
+        toConfirmationPage();    
     })
     it("hides page 1",function(){
         expect($("#page1").hasClass("hide")).toBe(true);
@@ -94,7 +109,7 @@ describe('validateCheckout', function(){
         affix("#start_date");
         affix("#phone");
         affix("#address");
-        affix("#delivery_time");
+        affix("#delivery_start_time");
         affix("#start_dateError");
         affix("#addressError");
         affix("#phoneError");
@@ -130,9 +145,8 @@ describe('validateCheckout', function(){
         $("#phone").val("510-531-1114");
         $("#start_date").val("Thursday, August 31, 2017");        
         $("#address").val("123 any address ");
-        $("#delivery_time").val(12);
+        $("#delivery_start_time").val(12);
         validateCheckout();        
         expect(window.renderFullForm).toHaveBeenCalled();
     })
 })
-

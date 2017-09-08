@@ -57,8 +57,6 @@ window.addEventListener('resize', function(event) {
   
 function tokenHandler(e){    
     $("#submitButton").prop("disabled", true)
-    e.preventDefault()
-
     stripe.createToken(card).then(function(result){        
         if (result.error) {
             // Inform the user if there was an error
