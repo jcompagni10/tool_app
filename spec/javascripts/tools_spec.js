@@ -51,10 +51,11 @@ describe("changeAddOn", function(){
         affix("table");
         $("table").html("<tr class='totalRow'><td class='priceCol'></td></tr>");
         total = 20;
+        documentLoaded()                               
     })
 
     it("it adds a ladder",function(){
-        changeAddOn("Ladder",true);
+        $(".add_on").trigger("change")
         expect(total).toBe(30);
     })
 

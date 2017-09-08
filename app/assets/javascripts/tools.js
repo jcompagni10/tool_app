@@ -3,7 +3,7 @@ var prices ={"ladder": 10, "light": 10, "delivery": 8};
 
 function calculateEndDate(start_date) {
     end_date = new Date()
-    end_date.setDate(start_date.getMonth()+3); 
+    end_date.setDate(start_date.getDate()+3); 
     return $.datepicker.formatDate("D, M d, yy", end_date)
 }
 

@@ -1,3 +1,4 @@
+<% debugger %>
 $(".mainContent").html("<%= j render(partial: 'form', :locals => {reservation: @reservation})%> ");
 renderFullForm(@delivery)
 mountDatePicker(@reservation.start_date);

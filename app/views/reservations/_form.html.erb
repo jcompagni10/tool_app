@@ -10,7 +10,6 @@
                     <span class="text-header">Sorry! There were a few error(s): </span>
                     <ul>
                         <% @reservation.errors.messages.each do |message| %>
-                            <% puts "about to print messages" %>
                             <li><%= message[1][0] %></li>
                         <% end %>
                     </div>
