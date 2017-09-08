@@ -1,5 +1,6 @@
 var total = 20;
 var prices ={"ladder": 10, "light": 10, "delivery": 8};
+var initialLoad = true;
 
 function calculateEndDate(start_date) {
     end_date = new Date()
@@ -13,7 +14,7 @@ function calculateDeliveryEndTime(start_time) {
     return (endTime > 12? endTime - 12 : endTime) + ":00"+suffix
 }
 
-function toggleDelivery(state, show_edit){
+function toggleDelivery(state){
     if (state){
         $("#delivery_start_time").prop('disabled', false)
         $("#deliveryInput").collapse("show")
@@ -27,6 +28,8 @@ function toggleDelivery(state, show_edit){
                 end_time_field.text(end_time)
             }
         } 
+        $("#edit_delivery").addClass("hide")
+        
 
         // as long as delivery section is showing, neve need to show edit link
     }else{
@@ -34,7 +37,9 @@ function toggleDelivery(state, show_edit){
         $("#deliveryInput").collapse("hide");   
 
         // shows edit link if delivery exists (i.e., if it was passed on render full form)
-        $("#edit_delivery").removeClass("hide")
+        if (!initialLoad) {
+            $("#edit_delivery").removeClass("hide")
+        }
     }
 }
 
@@ -45,7 +50,7 @@ function toggleAddOn(addOn, state){
 }
 
 function validateCheckout(){
-    var start_dateValid = ($("#start_date").val() != "")   
+    var start_dateValid = ($("#start_date").val() != "")
     $("#start_dateError").toggleClass("hide", start_dateValid)
     if ($(".add_on[data-type='delivery']").prop("checked") == true){
         var phone_valid =($("#phone").val() != "") 
@@ -56,8 +61,7 @@ function validateCheckout(){
         $("#timeError").toggleClass("hide", time_valid) 
         if (start_dateValid && phone_valid && time_valid && address_valid){
             renderFullForm();
-            toggleDelivery(false, true); // hides this section, which user can then pop out via "edit"
-            toggleDelivery({"section_view":false, "edit_view": true})
+            toggleDelivery(false); // hides this section, which user can then pop out via "edit"
             scrollTo("#page2")
         }
     } else {
@@ -69,6 +73,7 @@ function validateCheckout(){
 }
 
 function renderFullForm(delivery){
+    initialLoad = false
     $("#page2").removeClass("collapse");
     $(".hideInFullForm").addClass("hide")
     $(".showInFullForm").removeClass("hide")
@@ -78,7 +83,6 @@ function renderFullForm(delivery){
         $(".add_on[data-type='delivery']").prop("checked", true)
         $("#edit_delivery").removeClass("hide")
     }
-    mountStripe()
 }
 
 function toConfirmationPage(){
@@ -88,11 +92,19 @@ function toConfirmationPage(){
 }
 
 function scrollTo(anchor){
+    console.log(anchor)
     $('.mainContent').scrollTop($(anchor).offset().top);
 }
 
 function mountDatePicker(initial_start_date){
-    console.log("date picker")
+    reserved_dates = []
+    getReservedDates()
+    $("#start_date").datepicker({
+        minDate: new Date(),
+        beforeShowDay: disableSpecificDates,
+        dateFormat: "D, M d, yy"
+    })
+
     if (initial_start_date != "" && initial_start_date != null){
         start_date = $.datepicker.parseDate("yy-mm-dd", initial_start_date)   
         formatted_start_date = ($.datepicker.formatDate("D, M d, yy", start_date));
@@ -102,14 +114,6 @@ function mountDatePicker(initial_start_date){
         end_date = calculateEndDate(start_date)
         $("#end_date").val(end_date);
     }   
-
-    reserved_dates = []
-    getReservedDates()
-    $("#start_date").datepicker({
-        minDate: new Date(),
-        beforeShowDay: disableSpecificDates,
-        dateFormat: "D, M d, yy"
-    })
 }
 
 // date parameter is auto fed as part of beforeShowDay
@@ -133,8 +137,16 @@ function getReservedDates(){
 }
 
 
-function documentLoaded() {
-    mountDatePicker();
+function documentLoaded(state) {
+    if (state["isReload"] == null){
+        mountDatePicker();        
+    }
+    else{
+        initialLoad = false;
+    }
+
+    mountStripe()
+    
 
     $("#start_date").on("change", function() {
         start_date = $('#start_date').datepicker('getDate');
@@ -148,7 +160,6 @@ function documentLoaded() {
 
     $("#delivery_start_time").on("change", function() {
         start_time = $(this).val();
-        console.log(start_time)
         if(start_time != null && start_time != ""){
             end_time = calculateDeliveryEndTime(start_time)
             $("#delivery_end_time").text(end_time);

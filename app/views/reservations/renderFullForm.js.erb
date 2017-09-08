@@ -1,9 +1,9 @@
-console.log("here")
 $(".mainContent").html("<%= j render(partial: 'form', :locals => {reservation: @reservation})%> ");
-documentLoaded()
-renderFullForm(<%= @delivery %>)
-mountDatePicker(<%= @reservation.start_date %> );
+documentLoaded({isReload: true});
+mountDatePicker("<%= @reservation.start_date %>")
+renderFullForm(<%= @delivery %>);
 <% if @errors %>
-    scrollTo("#page1");
+    scrollTo("#errorsWrapper");
+    console.log("scroll")
 <% end %>
 
