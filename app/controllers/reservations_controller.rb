@@ -16,11 +16,7 @@ class ReservationsController < ApplicationController
       start_date = reservation_params["start_date"]
       params[:reservation][:start_date] =  Date.strptime(start_date, "%A, %B %d, %Y")      
     end
-<<<<<<< HEAD
-    @delivery = !reservation_params["delivery_time"].nil?
-=======
-    reservation_params["delivery_start_time"].present? ? @delivery = true : @delivery = false
->>>>>>> james
+    @delivery = !reservation_params["delivery_time"] != 0
     @reservation = Reservation.new(reservation_params)
     respond_to do |format|
       if @reservation.valid?

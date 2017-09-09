@@ -20,17 +20,6 @@ function toggleDelivery(state){
         $("#delivery_start_time").prop('disabled', false)
         $("#deliveryInput").collapse("show")
 
-<<<<<<< HEAD
-function updateDueDate(){
-    if ($("#start_date").length){
-        var dueDate = $('#start_date').datepicker('getDate'); 
-        dueDate.setDate(dueDate.getDate()+3); 
-        var formatedDate= $.datepicker.formatDate("D, M d, yy", dueDate)
-        $("#dueDate").val(formatedDate);
-    }
-    else{
-        $("#dueDate").val("");
-=======
         // repopulates end_time if this is a page re-render
         start_time = $("#delivery_start_time").val();
         if(start_time != null && start_time != "0"){
@@ -50,7 +39,6 @@ function updateDueDate(){
 
         // shows edit link if delivery exists (i.e., if it was passed on render full form)
         $("#edit_delivery").removeClass("hide")
->>>>>>> james
     }
 }
 
