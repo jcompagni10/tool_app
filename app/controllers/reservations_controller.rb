@@ -50,21 +50,22 @@ class ReservationsController < ApplicationController
 
   # get all reserved dates from database
   def getReservedDates
-    reserved_dates = []
-    if(Reservation.count != 0 )
-      reservations = Reservation.pluck(:start_date)
-      reservations.each {|date|
-        #mark days unavailable
-        (date-3.days..date+3.days).each {|d| 
-            reserved_dates.push(d.strftime("%d-%m-%Y")).uniq!
-        }
-      }
-    end    
-    if (Time.now.hour >= 17)
-      today = Date.today
-      reserved_dates.push(today.strftime("%d-%m-%Y")).uniq!
-    end
-    render json: reserved_dates
+    # reserved_dates = []
+    # if(Reservation.count != 0 )
+    #   reservations = Reservation.pluck(:start_date)
+    #   reservations.each {|date|
+    #     #mark days unavailable
+    #     (date-3.days..date+3.days).each {|d| 
+    #         reserved_dates.push(d.strftime("%d-%m-%Y")).uniq!
+    #     }
+    #   }
+    # end    
+    # if (Time.now.hour >= 17)
+    #   today = Date.today
+    #   reserved_dates.push(today.strftime("%d-%m-%Y")).uniq!
+    # end
+    # render json: reserved_dates
+    render json: [(Date.today + 1.days).in_time_zone("Pacific Time (US & Canada)").to_i * 1000] # JS timestamp is in milliseconds, not seconds
   end
 
   def tos

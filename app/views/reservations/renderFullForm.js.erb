@@ -1,7 +1,7 @@
 $(".mainContent").html("<%= j render(partial: 'form', :locals => {reservation: @reservation})%> ");
-renderFullForm("<%= @delivery %>")
+elementVisAndNav.fullForm("<%= @delivery %>")
 mountDatePicker("<%= @reservation.start_date %>");
 <% if @errors %>
-    scrollTo("#page1");
+    elementVisAndNav.scrollTo("#page1");
 <% end %>
 
