@@ -10,7 +10,7 @@ var cartModule = (function() {
     length = cart.length;
     for (i = 0; i < length; i++) { 
       // toolkit is default and actually is disabled
-      if (i.name !== "toolkit") { $(".add_on[data-name='"+non_toolkit_items[i].name+"']").prop("checked", true); }
+      if (i.name !== "toolkit") { $(".add_on[data-name='"+cart[i].name+"']").prop("checked", true); }
     }
   }
   
@@ -21,11 +21,10 @@ var cartModule = (function() {
         cart = storedCart; // easier than calling buildItem on each item if this were part of preselectCart iterable
         preselectCart();
       } 
-      if (name !== null) { cart.push(buildItem(default_item)) }
+      if (priceList[default_item] !== null) { cart.push(buildItem(default_item)) }
     },
     addItem: function(item) {
       if (item == "delivery") { elementVisAndNav.deliverySection(true) } 
-      }
       cart.push(buildItem(item));
     },
     removeItem: function(item) {
@@ -60,7 +59,7 @@ var logisticsModule = (function() {
     time: function (start_time) {
       end_time = 1 + parseInt(start_value);
       suffix = (end_time < 12 )? "am" : "pm";
-      return = (end_time > 12 ? end_time - 12 : end_time) + ":00"+suffix;    
+      return (end_time > 12 ? end_time - 12 : end_time) + ":00"+suffix;    
     }
   }
   // NEXT STEP USE TIMEPICKER
@@ -100,27 +99,54 @@ var logisticsModule = (function() {
 
   return {
     initialize: function() {
-      reserved_dates = dateTimeFxns.getReservedDates()
-      if (reserved_dates) {
-        storedLogistics = JSON.parse(sessionStorage.getItem("logistics"), function(key, value) {
-          if (key.indexOf("date") > -1) { return new Date(value) }; // converts JSON back into time objects
-          return value;
-        })
-        if (storedLogistics) {
-          if (reserved_dates.indexOf(storedLogistics.start_date.getTime()) > -1) {
-            alert("Sorry! Looks like someone just reserved the toolkit for those dates, please select new dates & try again");
-            storedLogistics.start_date = null;
-            storedLogistics.end_date = null;
-          }
-          logistics = storedLogistics;
-          prefillLogistics();
+
+      dateTimeFxns.getReservedDates.then(
+        function(reserved_dates) {
+          console.log("success was cuaght with resrved dates passed to be used as " + reserved_dates)
+          // storedLogistics = JSON.parse(sessionStorage.getItem("logistics"), function(key, value) {
+          //   if (key.indexOf("date") > -1) { return new Date(value) }; // converts JSON back into time objects
+          //   return value;
+          // })
+          // if (storedLogistics) {
+          //   if (reserved_dates.indexOf(storedLogistics.start_date.getTime()) > -1) {
+          //     alert("Sorry! Looks like someone just reserved the toolkit for those dates, please select new dates & try again");
+          //     storedLogistics.start_date = null;
+          //     storedLogistics.end_date = null;
+          //   }
+          //   logistics = storedLogistics;
+          //   prefillLogistics();
+          // }
+        }, 
+        function(error) { 
+          // the getReservedDates shows the alert
+          console.log(error) 
         }
-      } else {
-        alert("Something isn't working right. Make sure you have JavaScript enabled in your browser, then refresh this page");
-        // what happens if user keeps going? then they may select a reserved date, and then the backend validation will fail
-      }
+      )
+      // promise.then(function(reserved_dates) {
+      //   // console.log("in initialize")
+      //   // reserved_dates = dateTimeFxns.getReservedDates()
+      //   console.log("reserved dates are =" + reserved_dates)
+      //   if (reserved_dates) {
+      //     storedLogistics = JSON.parse(sessionStorage.getItem("logistics"), function(key, value) {
+      //       if (key.indexOf("date") > -1) { return new Date(value) }; // converts JSON back into time objects
+      //       return value;
+      //     })
+      //     if (storedLogistics) {
+      //       if (reserved_dates.indexOf(storedLogistics.start_date.getTime()) > -1) {
+      //         alert("Sorry! Looks like someone just reserved the toolkit for those dates, please select new dates & try again");
+      //         storedLogistics.start_date = null;
+      //         storedLogistics.end_date = null;
+      //       }
+      //       logistics = storedLogistics;
+      //       prefillLogistics();
+      //     }
+      //   } else {
+      //     alert("Something isn't working right. Make sure you have JavaScript enabled in your browser, then refresh this page");
+      //   //   // what happens if user keeps going? then they may select a reserved date, and then the backend validation will fail
+      //   }
+      // })
     },
-    setData: setData(name, value), // private function so that we can use it with setEnd, which is itself a private function
+    setData: setData, // private function so that we can use it with setEnd, which is itself a private function
     cookify: function() {
         sessionStorage.setItem("logistics", JSON.stringify(logistics));
     },
@@ -196,26 +222,32 @@ var dateTimeFxns = {
     // console.log([reserved_dates].indexOf(timestamp) === -1)
     return [[this.reserved_dates].indexOf(timestamp) === -1];
   },
-  getReservedDates: function() {
+  getReservedDates: new Promise(function(resolve, reject) {
+    console.log("in get reserved dates")
     // technically could replace this with gon, since it's on initialize gon would be the fastest/ make most sense but gon is NOT TESTABLE omg... (that and I could always use more AJAX practice)
-    request = $.ajax({
+    $.ajax({
       url: "/getReservedDates",
       method: "GET",
       dataType: "json"
     })
-    .success(function(result){
-      this.reserved_dates = result;
-      $("#start_date").datepicker({
-        minDate: new Date(),
-        beforeShowDay: disableSpecificDates,
-        dateFormat: "D, M d, yy"
-      });
-      return result
+    .done(function(result){
+      resolve(result)
+      // console.log("in success with result = ")
+      // console.log(result)
+      // this.reserved_dates = result;
+      // $("#start_date").datepicker({
+      //   minDate: new Date(),
+      //   beforeShowDay: this.disableSpecificDates,
+      //   dateFormat: "D, M d, yy"
+      // });
+      // return result
     })
-    .fail(function(error) {
-      return null
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      reject(new Error(errorThrown))
+      alert("Something isn't working right. Make sure you have JavaScript enabled in your browser, then refresh this page");
+      // return null
     })
-  },
+  }),
   formatDateTime: function(type, value) {
     if (type == "date") {
       days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
