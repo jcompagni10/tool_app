@@ -37,7 +37,8 @@ group :development, :test do
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
   #jasmine for js testing
-  gem 'jasmine-rails' 
+  gem 'jasmine' 
+  gem 'jasmine-jquery-rails' # more matchers + fixture loading
   gem 'rspec-rails'
   gem 'factory_girl_rails'
 end

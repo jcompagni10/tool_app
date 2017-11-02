@@ -1,6 +1,10 @@
 // Module pattern, because definitely want to obscure priceList and cart and not make them visible to bad actors who can make their own modifications and save it
 // Module vs RMP? I mean, I guess if I wanted this to be super strict and have no one be able to change the public methods later I'd use RMP, but don't see a real need for htat yet (as I'm the only person working on this)
 
+$("#test").on("click", function() {
+  console.log("CLICKED TEST")
+});
+
 var cartModule = (function() {
   var cart = [];
   var priceList = { toolkit:1500, ladder:1000, light:1000, delivery:800 };
@@ -17,20 +21,22 @@ var cartModule = (function() {
   return {
     initialize: function(default_item) {
       storedCart = JSON.parse(sessionStorage.getItem("cart"));
-      if (storedCart) {
+      if (storedCart && storedCart.length > 0) {
         cart = storedCart; // easier than calling buildItem on each item if this were part of preselectCart iterable
         preselectCart();
-      } 
-      if (priceList[default_item] !== null) { cart.push(buildItem(default_item)) }
+      } else { 
+        if (priceList[default_item] != null) { cart.push(buildItem(default_item)) }
+      }
     },
     addItem: function(item) {
+      console.log("clicked with " +item)
       if (item == "delivery") { elementVisAndNav.deliverySection(true) } 
       cart.push(buildItem(item));
     },
     removeItem: function(item) {
-      if (name == "delivery") { elementVisAndNav.deliverySection(false) } 
-      index = cart.findIndex(item => item.name === item);
-      index > -1 ? cart.splice(index, 1) : cart
+      if (item == "delivery") { elementVisAndNav.deliverySection(false) } 
+      index = cart.findIndex(object => object.name === item);
+      if (index > -1) { cart.splice(index, 1) }
     },
     getItems: function() {
       return cart.map( object => object.name );
@@ -39,10 +45,13 @@ var cartModule = (function() {
       return cart.reduce((sum,object) => sum + object.price, 0);
     },
     cookify: function() {
-      sessionStorage.setItem("cart", JSON.stringify(cart));
+      if (cart.length) { sessionStorage.setItem("cart", JSON.stringify(cart)); }
     },
     valid: function() {
       return cart.length > 0
+    },
+    clear: function() {
+      cart = []
     }
   }
 })();
@@ -99,52 +108,28 @@ var logisticsModule = (function() {
 
   return {
     initialize: function() {
-
       dateTimeFxns.getReservedDates.then(
         function(reserved_dates) {
           console.log("success was cuaght with resrved dates passed to be used as " + reserved_dates)
-          // storedLogistics = JSON.parse(sessionStorage.getItem("logistics"), function(key, value) {
-          //   if (key.indexOf("date") > -1) { return new Date(value) }; // converts JSON back into time objects
-          //   return value;
-          // })
-          // if (storedLogistics) {
-          //   if (reserved_dates.indexOf(storedLogistics.start_date.getTime()) > -1) {
-          //     alert("Sorry! Looks like someone just reserved the toolkit for those dates, please select new dates & try again");
-          //     storedLogistics.start_date = null;
-          //     storedLogistics.end_date = null;
-          //   }
-          //   logistics = storedLogistics;
-          //   prefillLogistics();
-          // }
+          storedLogistics = JSON.parse(sessionStorage.getItem("logistics"), function(key, value) {
+            if (key.indexOf("date") > -1) { return new Date(value) }; // converts JSON back into time objects
+            return value;
+          })
+          if (storedLogistics) {
+            if (reserved_dates.indexOf(storedLogistics.start_date.getTime()) > -1) {
+              alert("Sorry! Looks like someone just reserved the toolkit for those dates, please select new dates & try again");
+              storedLogistics.start_date = null;
+              storedLogistics.end_date = null;
+            }
+            logistics = storedLogistics;
+            prefillLogistics();
+          }
         }, 
         function(error) { 
           // the getReservedDates shows the alert
           console.log(error) 
         }
       )
-      // promise.then(function(reserved_dates) {
-      //   // console.log("in initialize")
-      //   // reserved_dates = dateTimeFxns.getReservedDates()
-      //   console.log("reserved dates are =" + reserved_dates)
-      //   if (reserved_dates) {
-      //     storedLogistics = JSON.parse(sessionStorage.getItem("logistics"), function(key, value) {
-      //       if (key.indexOf("date") > -1) { return new Date(value) }; // converts JSON back into time objects
-      //       return value;
-      //     })
-      //     if (storedLogistics) {
-      //       if (reserved_dates.indexOf(storedLogistics.start_date.getTime()) > -1) {
-      //         alert("Sorry! Looks like someone just reserved the toolkit for those dates, please select new dates & try again");
-      //         storedLogistics.start_date = null;
-      //         storedLogistics.end_date = null;
-      //       }
-      //       logistics = storedLogistics;
-      //       prefillLogistics();
-      //     }
-      //   } else {
-      //     alert("Something isn't working right. Make sure you have JavaScript enabled in your browser, then refresh this page");
-      //   //   // what happens if user keeps going? then they may select a reserved date, and then the backend validation will fail
-      //   }
-      // })
     },
     setData: setData, // private function so that we can use it with setEnd, which is itself a private function
     cookify: function() {
@@ -232,20 +217,18 @@ var dateTimeFxns = {
     })
     .done(function(result){
       resolve(result)
-      // console.log("in success with result = ")
-      // console.log(result)
-      // this.reserved_dates = result;
-      // $("#start_date").datepicker({
-      //   minDate: new Date(),
-      //   beforeShowDay: this.disableSpecificDates,
-      //   dateFormat: "D, M d, yy"
-      // });
-      // return result
+      console.log("in success with result = ")
+      console.log(result)
+      this.reserved_dates = result;
+      $("#start_date").datepicker({
+        minDate: new Date(),
+        beforeShowDay: this.disableSpecificDates,
+        dateFormat: "D, M d, yy"
+      });
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
       reject(new Error(errorThrown))
-      alert("Something isn't working right. Make sure you have JavaScript enabled in your browser, then refresh this page");
-      // return null
+      // alert("Something isn't working right. Make sure you have JavaScript enabled in your browser, then refresh this page");
     })
   }),
   formatDateTime: function(type, value) {
@@ -316,9 +299,10 @@ $(document).ready(function() {
   logisticsModule.initialize(); // pulls reserved_dates from server and binds to an event handler for datepicker such that when datepicker is clicked, it will disable reserved_dates
 
   $(".add_on").on("change", function() {
+    console.log("clicked")
     name = $(this).data("name");
     value = $(this).prop("checked");
-    value == true ? cardModule.addItem(name) : cardModule.removeItem(name);
+    value == true ? cartModule.addItem(name) : cartModule.removeItem(name);
   })
 
   $(".logistics_field").on("change", function() {
@@ -351,5 +335,6 @@ $(document).ready(function() {
     }
   })
 })
+
 
     

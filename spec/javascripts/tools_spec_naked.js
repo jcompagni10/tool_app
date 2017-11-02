@@ -2,7 +2,7 @@
 // describe ('delivery end time', function(){
 //     beforeEach(function(){
 //         affix("#delivery_start_time");   
-//         affix("#delivery_end_time"); 
+//         affix("#delivery_end_time"); z
 //     })
 
 //     it ('is populated correctly',function(){
