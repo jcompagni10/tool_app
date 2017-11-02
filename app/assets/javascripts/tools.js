@@ -1,10 +1,6 @@
 // Module pattern, because definitely want to obscure priceList and cart and not make them visible to bad actors who can make their own modifications and save it
 // Module vs RMP? I mean, I guess if I wanted this to be super strict and have no one be able to change the public methods later I'd use RMP, but don't see a real need for htat yet (as I'm the only person working on this)
 
-$("#test").on("click", function() {
-  console.log("CLICKED TEST")
-});
-
 var cartModule = (function() {
   var cart = [];
   var priceList = { toolkit:1500, ladder:1000, light:1000, delivery:800 };
@@ -29,7 +25,6 @@ var cartModule = (function() {
       }
     },
     addItem: function(item) {
-      console.log("clicked with " +item)
       if (item == "delivery") { elementVisAndNav.deliverySection(true) } 
       cart.push(buildItem(item));
     },
@@ -299,9 +294,9 @@ $(document).ready(function() {
   logisticsModule.initialize(); // pulls reserved_dates from server and binds to an event handler for datepicker such that when datepicker is clicked, it will disable reserved_dates
 
   $(".add_on").on("change", function() {
-    console.log("clicked")
     name = $(this).data("name");
     value = $(this).prop("checked");
+    console.log("changed with " +name)
     value == true ? cartModule.addItem(name) : cartModule.removeItem(name);
   })
 

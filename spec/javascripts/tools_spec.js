@@ -2,8 +2,8 @@ describe ('cartModule', function(){
 	// do NOT need ot test getItems or clear because these are used in the actual tests here and things wouldn't be passing if they were failing
 	beforeEach(function() {
 		cartModule.clear();
-		// affix("input.add_on[data-name='ladder'][type='checkbox']");
-  //   affix("input.add_on[data-name='random'][type='checkbox']");
+		affix("input.add_on[data-name='ladder'][type='checkbox']");
+    affix("input.add_on[data-name='random'][type='checkbox']");
 	})
 	// describe ('without sessionStorage',function(){
 	// 	beforeEach(function() {
@@ -171,18 +171,21 @@ describe ('cartModule', function(){
 	// 	})
 	// })
 
+	// jasmine-jquery was not working in terms of trying to get the fixturse to load... 
 	describe('when .add_on is clicked 1st time', function() {
 		beforeEach(function() {
-			loadFixtures('cartModule.html')
 			spyOn(cartModule,'addItem')
 			spyOn(cartModule,'removeItem')
+			$('<input class="add_on" data-name="ladder" type="checkbox" />').appendTo('body');
+
+			$(".add_on[data-name='ladder']").trigger("change")
 		})
 		it ('triggers cartModule.addItem', function() {
 			expect(cartModule.addItem).toHaveBeenCalledWith("ladder")
 		})
-		// it ('does not trigger cartModule.removeItem', function() {
-		// 	expect(cartModule.removeItem).not.toHaveBeenCalled()
-		// })
+		it ('does not trigger cartModule.removeItem', function() {
+			expect(cartModule.removeItem).not.toHaveBeenCalled()
+		})
 		// describe('when .add_on is clicked 2nd time', function() {
 		// 	beforeEach(function() {
 		// 		$("input.add_on[data-name='ladder'][type='checkbox']").click()
