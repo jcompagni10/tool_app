@@ -1,48 +1,80 @@
 // Module pattern, because definitely want to obscure priceList and cart and not make them visible to bad actors who can make their own modifications and save it
 // Module vs RMP? I mean, I guess if I wanted this to be super strict and have no one be able to change the public methods later I'd use RMP, but don't see a real need for htat yet (as I'm the only person working on this)
+// in some cases, public method refers to private method (more RMP) IF that private method needs to be used by other private methods (e.g., getItems in cartModule is used by private function isUnique, so it must itself be a private function)
+
+// will be a gon object in regular LMG to preserve its privacy
+var itemPriceModule = (function() {
+  return {
+    toolkit:1500,
+    ladder:1000,
+    light:1000, 
+    delivery:800
+  }
+})
+
+class Item {
+  constructor(item_name) {
+    this.name = item_name
+    this.price = itemPriceModule()[item_name]
+  }
+
+  static isValid(item_name) {
+    return $.isNumeric(itemPriceModule()[item_name])
+  }
+}
+
+class Storage {
+  // maybe it doens't make sense and you should just have an object method Object.prototype.saveToStorage
+
+  static save(type, name, value) {
+    if (type === "sessionStorage") {
+      sessionStorage.setItem(name, JSON.stringify(value));
+    }
+  }
+}
 
 var cartModule = (function() {
   var cart = [];
-  var priceList = { toolkit:1500, ladder:1000, light:1000, delivery:800 };
 
-  function buildItem(item) { return { name:item, price:priceList[item] } };
   function preselectCart() {
     length = cart.length;
     for (i = 0; i < length; i++) { 
       // toolkit is default and actually is disabled
-      if (i.name !== "toolkit") { $(".add_on[data-name='"+cart[i].name+"']").prop("checked", true); }
+      if (i.name !== "toolkit") { $(".toggle_item[data-name='"+cart[i].name+"']").prop("checked", true); }
     }
   }
+
+  function getItems() { return cart.map( object => object.name ); }
+  // for this app, could just make cart a Set, but for LMG, good practice to do things in private functions
+  function isUnique(item_name) { return getItems().indexOf(item_name) === -1 }
   
   return {
-    initialize: function(default_item) {
+    initialize: function(default_item_name) {
       storedCart = JSON.parse(sessionStorage.getItem("cart"));
       if (storedCart && storedCart.length > 0) {
         cart = storedCart; // easier than calling buildItem on each item if this were part of preselectCart iterable
         preselectCart();
       } else { 
-        if (priceList[default_item] != null) { cart.push(buildItem(default_item)) }
+        if (Item.isValid(default_item_name)) { cartModule.toggleItem(default_item_name, true) }
       }
     },
-    addItem: function(item) {
-      if (item == "delivery") { elementVisAndNav.deliverySection(true) } 
-      cart.push(buildItem(item));
+    toggleItem: function(item_name, value) {
+      if (item_name == "delivery") { elementVisAndNav.deliverySection(value) } 
+      if (value) {
+        if (isUnique(item_name)) { cart.push(new Item(item_name)); }
+      } else {
+        index = cart.findIndex(object => object.name === item_name);
+        if (index > -1) { cart.splice(index, 1) }
+      }
     },
-    removeItem: function(item) {
-      if (item == "delivery") { elementVisAndNav.deliverySection(false) } 
-      index = cart.findIndex(object => object.name === item);
-      if (index > -1) { cart.splice(index, 1) }
-    },
-    getItems: function() {
-      return cart.map( object => object.name );
-    },
+    getItems: getItems,
     getTotal: function() {
       return cart.reduce((sum,object) => sum + object.price, 0);
     },
-    cookify: function() {
-      if (cart.length) { sessionStorage.setItem("cart", JSON.stringify(cart)); }
+    save: function() { 
+      if (cart.length) { Storage.save("sessionStorage", "cart", cart) }
     },
-    valid: function() {
+    isValid: function() {
       return cart.length > 0
     },
     clear: function() {
@@ -51,21 +83,28 @@ var cartModule = (function() {
   }
 })();
 
-var logisticsModule = (function() {
-  var logistics = {}; // dates are always stored as JS Date objects
+class Endpoint {
+  constructor(type, start_value) {
+    this.type = type // date or time
+    this.start_value = start_value
+  }
 
-  var calculateEndData = {
-    date: function(start_date) {
+  calculate() {
+    if (this.type == "date") {
       end_date = new Date(start_value);;
       end_date.setDate(end_date.getDate()+3);
       return end_date
-    },
-    time: function (start_time) {
+    } else {
       end_time = 1 + parseInt(start_value);
       suffix = (end_time < 12 )? "am" : "pm";
       return (end_time > 12 ? end_time - 12 : end_time) + ":00"+suffix;    
     }
   }
+}
+
+var logisticsModule = (function() {
+  var logistics = {}; // dates are always stored as JS Date objects
+
   // NEXT STEP USE TIMEPICKER
   var showEndText = {
     date: function(end_date = '3 days later') {
@@ -103,6 +142,7 @@ var logisticsModule = (function() {
 
   return {
     initialize: function() {
+      // assess storedLogistics first
       dateTimeFxns.getReservedDates.then(
         function(reserved_dates) {
           console.log("success was cuaght with resrved dates passed to be used as " + reserved_dates)
@@ -127,8 +167,8 @@ var logisticsModule = (function() {
       )
     },
     setData: setData, // private function so that we can use it with setEnd, which is itself a private function
-    cookify: function() {
-        sessionStorage.setItem("logistics", JSON.stringify(logistics));
+    save: function() {
+        new Storage("sessionStorage", logistics).save()
     },
     valid: function() {
       validations = new WeakSet(); // easier than array, because true/false only get added once, at the very end we can check if it has(false) versus go through and see if indexOf(false) exists
@@ -170,8 +210,8 @@ var paymentModule = (function() {
     setData: function(name, value) {
       payment[name] = value;
     },
-    cookify: function() {
-      sessionStorage.setItem("payment", JSON.stringify(payment));
+    save: function() {
+      new Storage("sessionStorage", cart).payment()
     },
     valid: function() {
       validations = new WeakSet(); // easier than array, because true/false only get added once, at the very end we can check if it has(false) versus go through and see if indexOf(false) exists
@@ -255,7 +295,7 @@ var elementVisAndNav = {
 
     if (delivery) {
       // for page re-renders
-      $(".add_on[data-type='delivery']").prop("checked", true)
+      $(".toggle_item[data-type='delivery']").prop("checked", true)
       $("#edit_delivery").removeClass("hide")
     }
     this.scrollTo("#page2");
@@ -272,32 +312,23 @@ var elementVisAndNav = {
 
 $(window).on('beforeunload', function(){
   if (cartModule.getItems().length > 1) {
-    cartModule.cookify();
+    cartModule.save();
   }
   if (logisticsModule.isPresent) {
-    logisticsModule.cookify();
+    logisticsModule.save();
   }
 });
 
 $(document).ready(function() {
-  // meta questions:
-  // 1) 
-  // // in theoery how would i rewrite a separate validations module that layered
-  // // interperlay between delivery in cart and delivery details in logistics
-  // // have it all in logistics, sepearate totals
-
-  // 2) is it good to have cart, logistics, and payment as 3 distinct modules, or would you combine? IF keep distinct, then challenge to write a more meta module object that has prototype functions for setData and these kinds of things
-
-  // 3) more minor, worth declaring main elements upfront and then using them throughout?
+  var end_date = $("#end_date")
 
   cartModule.initialize("toolkit");
   logisticsModule.initialize(); // pulls reserved_dates from server and binds to an event handler for datepicker such that when datepicker is clicked, it will disable reserved_dates
 
-  $(".add_on").on("change", function() {
-    name = $(this).data("name");
+  $(".toggle_item").on("change", function() {
+    item_name = $(this).data("name");
     value = $(this).prop("checked");
-    console.log("changed with " +name)
-    value == true ? cartModule.addItem(name) : cartModule.removeItem(name);
+    if (Item.isValid(item_name)) { cartModule.toggleItem(item_name, value); }
   })
 
   $(".logistics_field").on("change", function() {
