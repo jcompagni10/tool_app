@@ -1,38 +1,3 @@
-describe("Item class", function() {
-	describe("when constructor is called", function() {
-		it("should auto-set price", function() {
-			item = new Item("toolkit")
-			expect(item.price).toEqual(itemPriceModule()["toolkit"])
-		})
-	})
-
-	describe("when prototype.isValid is called", function() {
-		describe("with invalid item", function() {
-			it("should return false", function() {
-				test = Item.isValid("random")
-				expect(test).toEqual(false)
-			})
-		})
-		describe("with valid item", function() {
-			it("should return true", function() {
-				test = Item.isValid("ladder")
-				expect(test).toEqual(true)	
-			})
-		})
-	})
-})
-
-describe ("storageClass", function() {
-	describe("when prototype.save is called", function() {
-		describe("with sessionStorage", function() {
-			it("should save", function() {
-				Storage.save("sessionStorage", "test", "test")
-				expect(JSON.parse(sessionStorage.getItem("test"))).toEqual("test")
-			})
-		})
-	})
-})
-
 describe ('cartModule', function(){
 	// do NOT need ot test getItems or clear because these are used in the actual tests here and things wouldn't be passing if they were failing
 
@@ -228,29 +193,4 @@ describe ('cartModule', function(){
 			expect(cartModule.isValid()).toEqual(false)
 		})
 	})
-
-	// jasmine-jquery was not working in terms of trying to get the fixturse to load... 
-	describe('when .toggle_item is clicked 1st time', function() {
-		beforeEach(function() {
-			spyOn(cartModule,'toggleItem')
-			$('<input class="toggle_item" data-name="ladder" type="checkbox" />').appendTo('body');
-
-			$(".toggle_item[data-name='ladder']").trigger("change")
-		})
-		it ('triggers cartModule.toggleItem with true', function() {
-			expect(cartModule.toggle).toHaveBeenCalledWith("ladder", true)
-		})
-		// describe('when .toggle_item is clicked 2nd time', function() {
-		// 	beforeEach(function() {
-		// 		$("input.toggle_item[data-name='ladder'][type='checkbox']").click()
-		// 	})
-		// 	it ('triggers cartModule.removeItem', function() {
-		// 		expect(cartModule.removeItem).toHaveBeenCalledWith("ladder")
-		// 	})
-		// 	it ('does not trigger cartModule.addItem', function() {
-		// 		expect(cartModule.addItem).not.toHaveBeenCalled()
-		// 	})
-		// })
-	})
-
 });

@@ -29,7 +29,7 @@
                     <div class="col-xs-12">
                         <div class="start-date-input nowrap pull-left">
                             <%= form.label :start_date, "Get it: ", class: "dateLabel" %>
-                            <%= form.text_field :start_date, {:id => "start_date", class: "logistics_field"} %>
+                            <%= form.text_field :start_date, {:id => "start_date", class: "order_data_field", data: { name: "start_date" }} %>
                         </div>
                         <br class="visible-xs">
                         <div class="pull-left nowrap">
@@ -109,17 +109,17 @@
                 <div id= "deliveryInput" class="collapse">
                     <div class="form-group">
                         <%= form.label :phone, "Phone (for delivery contact): " %>
-                        <%= form.telephone_field :phone, id: :phone, class: "full-width logistics_field" %>
+                        <%= form.telephone_field :phone, id: :phone, class: "full-width delivery_modification" %>
                         <div id="phone_error" class="error hide"> Phone Number Required  </div>
                     </div>
                     <div class="form-group">
                         <%= form.label :address, "Address: " %>
-                        <%= form.text_field :address, id: :address, class: "full-width logistics_field" %>
+                        <%= form.text_field :address, id: :address, class: "full-width delivery_modification" %>
                         <div id="address_error" class="error hide"> Address Required </div>  
                     </div>
                     <div class="form-group">
                         <%= form.label :instructions, "Optional instructions: " %>
-                        <%= form.text_field :instructions, id: :instructions, class: "full-width logistics_field" %>
+                        <%= form.text_field :instructions, id: :instructions, class: "full-width delivery_modification" %>
                     </div>
                     <div class="form-group">
                         <%= form.label :delivery_start_time, "Time window for delivery: " %>
@@ -127,7 +127,7 @@
                             Select the start of a 1-hour window from 9:00am-9:00pm
                         </p>
                         <% delivery_times = {""=> {val: "", disabled: true, selected: true}, "9:00am" => 9, "10:00am" => 10, "11:00am" => 11, "12:00pm" => 12, "1:00pm" => 13, "2:00pm" => 14, "3:00pm" => 15, "4:00pm" => 16, "5:00pm" => 17, "6:00pm" => 18, "7:00pm" => 19, "8:00pm" => 20 } %>
-                        <%= form.select :delivery_start_time, delivery_times, {}, {:disabled => true, id: "delivery_start_time", class: "logistics_field"}  %>
+                        <%= form.select :delivery_start_time, delivery_times, {}, {:disabled => true, id: "delivery_start_time", class: "delivery_modification"}  %>
                         to <span id="delivery_end_time" class="generic-text">1 hour later</span>
                         <div id="delivery_start_time_error" class="error hide"> Delivery Time Required </div>          
                     </div>

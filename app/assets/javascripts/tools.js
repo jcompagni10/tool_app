@@ -2,6 +2,9 @@
 // Module vs RMP? I mean, I guess if I wanted this to be super strict and have no one be able to change the public methods later I'd use RMP, but don't see a real need for htat yet (as I'm the only person working on this)
 // in some cases, public method refers to private method (more RMP) IF that private method needs to be used by other private methods (e.g., getItems in cartModule is used by private function isUnique, so it must itself be a private function)
 
+// NEXT LEARNING: how would you do a publish/subscribe where methods like set check for changes to existing and THEN act
+// the only things that need to listen are NON inputs, because inputs already store the changes, and those are only needed on refresh
+
 // will be a gon object in regular LMG to preserve its privacy
 var itemPriceModule = (function() {
   return {
@@ -16,6 +19,12 @@ class Item {
   constructor(item_name) {
     this.name = item_name
     this.price = itemPriceModule()[item_name]
+    // all other attributes later added upon change in delivery_modification
+
+    if (item_name === "delivery") {
+      // set data object so that modifications can be directly made
+      $(".delivery_modification").data("itemobject", this)
+    }
   }
 
   static isValid(item_name) {
@@ -24,8 +33,6 @@ class Item {
 }
 
 class Storage {
-  // maybe it doens't make sense and you should just have an object method Object.prototype.saveToStorage
-
   static save(type, name, value) {
     if (type === "sessionStorage") {
       sessionStorage.setItem(name, JSON.stringify(value));
@@ -36,24 +43,32 @@ class Storage {
 var cartModule = (function() {
   var cart = [];
 
-  function preselectCart() {
+  function prefillCart() {
     length = cart.length;
     for (i = 0; i < length; i++) { 
       // toolkit is default and actually is disabled
       if (i.name !== "toolkit") { $(".toggle_item[data-name='"+cart[i].name+"']").prop("checked", true); }
+      if (i.name === "delivery") {
+        for (attribute in i) {
+          if (["delivery_start_time", "phone", "address", "instructions"].indexOf(attribute) > -1) {
+            $("#" + attribute).val(i[attribute]);             
+          } else if ("delivery_end_time" === attribute) {
+            Endpoint.prefill("time", orderData[attr])
+          }
+        }
+      }
     }
   }
 
   function getItems() { return cart.map( object => object.name ); }
-  // for this app, could just make cart a Set, but for LMG, good practice to do things in private functions
-  function isUnique(item_name) { return getItems().indexOf(item_name) === -1 }
+  function isUnique(item_name) { return getItems().indexOf(item_name) === -1 } // for this app, could just make cart a Set, but for LMG, good practice to do things in private functions
   
   return {
     initialize: function(default_item_name) {
       storedCart = JSON.parse(sessionStorage.getItem("cart"));
       if (storedCart && storedCart.length > 0) {
-        cart = storedCart; // easier than calling buildItem on each item if this were part of preselectCart iterable
-        preselectCart();
+        cart = storedCart; // easier than calling buildItem on each item if this were part of prefillCart iterable
+        prefillCart();
       } else { 
         if (Item.isValid(default_item_name)) { cartModule.toggleItem(default_item_name, true) }
       }
@@ -85,55 +100,50 @@ var cartModule = (function() {
 
 class Endpoint {
   constructor(type, start_value) {
+    var end_date, end_time, suffix; 
+
     this.type = type // date or time
-    this.start_value = start_value
+    if (start_value == null || start_value == "") {
+      this.end_value = null
+    } else {
+      if (type == "date") {
+        end_date = new Date(start_value);;
+        end_date.setDate(end_date.getDate()+3);
+        this.end_value = end_date
+      } else {
+        end_time = 1 + parseInt(start_value);
+        suffix = (end_time < 12 )? "am" : "pm";
+        this.end_value = (end_time > 12 ? end_time - 12 : end_time) + ":00"+suffix;    
+      }
+    }
+    this.constructor.prefill(type, this.end_value);
   }
 
-  calculate() {
-    if (this.type == "date") {
-      end_date = new Date(start_value);;
-      end_date.setDate(end_date.getDate()+3);
-      return end_date
+  static prefill(type, end_value) {
+    console.log("CALLED")
+    var end_field, end_text;
+
+    if (type === "date")  {
+      end_field = $("#end_date") 
+      end_text = (end_value == "" || end_value == null) ? "3 days later" : dateTimeFxns.formatDateTime("date", end_value)
     } else {
-      end_time = 1 + parseInt(start_value);
-      suffix = (end_time < 12 )? "am" : "pm";
-      return (end_time > 12 ? end_time - 12 : end_time) + ":00"+suffix;    
+      end_field = $("#delivery_end_time")
+      end_text = (end_value == "" || end_value == null) ? "1 hour later" : end_value
     }
+    end_field.text(end_text)
   }
 }
 
-var logisticsModule = (function() {
-  var logistics = {}; // dates are always stored as JS Date objects
+var orderDataModule = (function() {
+  var orderData = {}; // dates are always stored as JS Date objects
+  // will contain start/end date, email, tos
 
-  // NEXT STEP USE TIMEPICKER
-  var showEndText = {
-    date: function(end_date = '3 days later') {
-      $("#end_date").text(end_date)
-    },
-    time: function(end_time = '1 hour later') {
-      $("#delivery_end_time").text(end_time)
-    }
-  }
-
-  function setData(name, value) {
-    logistics[name] = value;
-    if (name.indexOf("start") > -1) {
-      type = name.indexOf("date") > -1 ? "date" : "time";
-      if (value == "" || value == null) {
-        showEndText[type]();
-      } else {
-        end_value = calculateEndData[type](value);
-        setData(name.replace("start", "end"), end_value);
-        showEndText[type](dateTimeFxns.formatDateTime(type,end_value));
-      }
-    }
-  }
-  function prefillLogistics() {
-    for (attr in logistics) {
-      if (attr.indexOf("end") > -1) {
-        showEndText[attr.indexOf("date") > -1 ? "date" : "time"](logistics[attr]);
-      } else if (attr === "start_date") {
-        $("#start_date").datepicker("setDate", logistics[attr]);
+  function prefillOrderData() {
+    for (attr in orderData) {
+      if (attr === "start_date") {
+        $("#start_date").datepicker("setDate", orderData[attr]);
+      } else if (attr === "end_date") {
+        Endpoint.prefill("date", orderData[attr])
       } else {
         $("#" + attr).val(logistics[attr]); 
       }
@@ -142,22 +152,22 @@ var logisticsModule = (function() {
 
   return {
     initialize: function() {
-      // assess storedLogistics first
+      // getreserveddates always needs to happen since this is what sets the datepicker defaults
       dateTimeFxns.getReservedDates.then(
         function(reserved_dates) {
           console.log("success was cuaght with resrved dates passed to be used as " + reserved_dates)
-          storedLogistics = JSON.parse(sessionStorage.getItem("logistics"), function(key, value) {
+          storedOrderData = JSON.parse(sessionStorage.getItem("orderData"), function(key, value) {
             if (key.indexOf("date") > -1) { return new Date(value) }; // converts JSON back into time objects
             return value;
           })
-          if (storedLogistics) {
-            if (reserved_dates.indexOf(storedLogistics.start_date.getTime()) > -1) {
+          if (storedOrderData) {
+            if (reserved_dates.indexOf(storedOrderData.start_date.getTime()) > -1) {
               alert("Sorry! Looks like someone just reserved the toolkit for those dates, please select new dates & try again");
-              storedLogistics.start_date = null;
-              storedLogistics.end_date = null;
+              storedOrderData.start_date = null;
+              storedOrderData.end_date = null;
             }
-            logistics = storedLogistics;
-            prefillLogistics();
+            orderData = storedOrderData;
+            prefillOrderData();
           }
         }, 
         function(error) { 
@@ -166,65 +176,28 @@ var logisticsModule = (function() {
         }
       )
     },
-    setData: setData, // private function so that we can use it with setEnd, which is itself a private function
+    set: function(name, value) {
+      orderData[name] = value;
+    },
     save: function() {
-        new Storage("sessionStorage", logistics).save()
+      if (Object.keys(orderData).length) { Storage.save("sessionStorage", "orderData", orderData) }
     },
     valid: function() {
       validations = new WeakSet(); // easier than array, because true/false only get added once, at the very end we can check if it has(false) versus go through and see if indexOf(false) exists
       // we do want to iterate through all fields rather than return the first false, because this process actually toggles error fields
 
-      start_date_valid = (logistics.start_date != null)
-      $("#start_date_error").toggleClass("hide", !start_date_valid)
-      validations.add(start_date_valid)
-
-      if (cartModule.getItems().indexOf("delivery") > -1) {
-        fields = ["phone", "delivery_start_time", "address"];
-        length = fields.length;
-        for (i = 0; i < length; i ++ ) {
-          valid = (logistics[fields[i]].length > 0);
-          $("#"+fields[i]+"_error").toggleClass("hide", valid);
-          validations.add(valid);
-        }
-      }
-
-      return !(validations.has(false)) // if validations has a false, then that means the logistics object is NOT valid 
-    }
-  }
-})();
-
-var paymentModule = (function() {
-  var payment = {};
-  function prefillPayment() {
-    for (attr in payment) { $("#" + attr).val(payment[attr]); }
-  }
-  
-  return {
-    initialize: function() {
-      storedPayment = JSON.parse(sessionStorage.getItem("payment"));
-      if (storedPayment) {
-        payment = storedPayment;
-        prefillPayment();
-      } 
-    },
-    setData: function(name, value) {
-      payment[name] = value;
-    },
-    save: function() {
-      new Storage("sessionStorage", cart).payment()
-    },
-    valid: function() {
-      validations = new WeakSet(); // easier than array, because true/false only get added once, at the very end we can check if it has(false) versus go through and see if indexOf(false) exists
-      // we do want to iterate through all fields rather than return the first false, because this process actually toggles error fields
-      fields = ["email", "tos"];
-      length = fields.length;
+      fields = ["start_date", "email", "tos"] // iterate over fields that are SUPPOSED to be captured, rather than what was captured (object.keys.orderData)
+      fields.length
       for (i = 0; i < length; i ++ ) {
-        valid = (logistics[fields[i]] != null && logistics[fields[i]].length > 0);
+        valid = (orderData[fields[i]] != null && orderData[fields[i]].length > 0);
         $("#"+fields[i]+"_error").toggleClass("hide", valid);
         validations.add(valid);
       }
 
       return !(validations.has(false)) // if validations has a false, then that means the logistics object is NOT valid 
+    },
+    get: function() {
+      return orderData
     }
   }
 })();
@@ -314,8 +287,8 @@ $(window).on('beforeunload', function(){
   if (cartModule.getItems().length > 1) {
     cartModule.save();
   }
-  if (logisticsModule.isPresent) {
-    logisticsModule.save();
+  if (orderDataModule.isPresent) {
+    orderDataModule.save();
   }
 });
 
@@ -323,7 +296,7 @@ $(document).ready(function() {
   var end_date = $("#end_date")
 
   cartModule.initialize("toolkit");
-  logisticsModule.initialize(); // pulls reserved_dates from server and binds to an event handler for datepicker such that when datepicker is clicked, it will disable reserved_dates
+  orderDataModule.initialize(); // pulls reserved_dates from server and binds to an event handler for datepicker such that when datepicker is clicked, it will disable reserved_dates
 
   $(".toggle_item").on("change", function() {
     item_name = $(this).data("name");
@@ -331,31 +304,40 @@ $(document).ready(function() {
     if (Item.isValid(item_name)) { cartModule.toggleItem(item_name, value); }
   })
 
-  $(".logistics_field").on("change", function() {
+  $(".delivery_modification").on("change", function() {
+    item_object = $(this).data("itemobject")
+    attr_name = $(this).data("name")
+    value = $(this).val()
+    item_object[attr_name] = value
+
+    if (name === "delivery_start_time") {
+      endpoint = new Endpoint("time", value)
+      item_object.delivery_end_time = endpoint.end_value
+    }
+  })
+
+  $(".order_data_field").on("change", function() {
     name = $(this).data("name");
     value = ( name == "start_date" ? $(this).datepicker('getDate') : $(this).val() )
-    logisticsModule.setData(name, value) // value gets passed even if null (for date) or blank string (for other fields) so that we can set the end values OR placeholder
+    orderDataModule.set(name, value) // value gets passed even if null (for date) or blank string (for other fields) so that we can set the end values OR placeholder
+
+    if (name === "start_date") {
+      endpoint = new Endpoint("date", value)
+      orderDataModule.set("end_date", endpoint.end_value)
+    }
   })
 
   $("#checkoutBtn").click(function() {
-    if (logisticsModule.valid() && cartModule.valid() ) {
+    if (orderDataModule.valid() && cartModule.valid() ) {
       mountStripe();
       if ( cartModule.getItems().indexOf("delivery") > -1 ) { elementVisAndNav.deliverySection(false,true); } // hides delivery section WHILE exposing the edit_delivery link
       elementVisAndNav.fullForm();
-
-      paymentModule.initialize();
-
-      $(".payment_field").on("change", function() {
-        name = $(this).data("name");
-        value = $(this).val();
-        paymentModule.setData(name, value) // value gets passed even if null (for date) or blank string (for other fields) so that we can set the end values OR placeholder
-      })
     }
   })
 
   $("#submitButton").click(function(e) {
     e.preventDefault();
-    if (logisticsModule.valid() && cartModule.valid() && paymentValid() ) { // is it overkill to validate AGAIN?
+    if (orderDataModule.valid() && cartModule.valid() && paymentValid() ) { // is it overkill to validate AGAIN?
       // no stripe validation because it's live and controlled by stripe widget
       tokenHandler();
     }
