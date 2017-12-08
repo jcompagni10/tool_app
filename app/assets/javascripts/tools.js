@@ -1,4 +1,5 @@
-// Module pattern, because definitely want to obscure priceList and cart and not make them visible to bad actors who can make their own modifications and save it
+// The reason we store input data in an object/array rather than just leaving it as is and leaving hte "submit" process to gather it up and submit to backend is we want the clean UX of data being preserved on accidental page refresh
+// Module pattern, because definitely want to obscure cart and not make them visible to bad actors who can make their own modifications and save it
 // Module vs RMP? I mean, I guess if I wanted this to be super strict and have no one be able to change the public methods later I'd use RMP, but don't see a real need for htat yet (as I'm the only person working on this)
 // in some cases, public method refers to private method (more RMP) IF that private method needs to be used by other private methods (e.g., getItems in cartModule is used by private function isUnique, so it must itself be a private function)
 // the Cart Proxy implementation still feels more callback-ish than watch-ish, since it's on the Cart object rather than a total object, but looks like this is the best to be done unless we want to do a full pub/sub implementation
@@ -258,10 +259,6 @@ var dateTimeFxns = {
   }
 }
 
-delivery_start_time = $("#delivery_start_time")
-delivery_input_section = $("#deliveryInput")
-edit_delivery_link = $("#edit_delivery")
-
 var elementVisAndNav = {
   deliverySection: function(show, show_link) {
     if (show == true) {
@@ -305,7 +302,6 @@ $(window).on('beforeunload', function(){
 });
 
 $(document).ready(function() {
-  var end_date = $("#end_date")
 
   cartModule.initialize("toolkit");
   orderDataModule.initialize(); // pulls reserved_dates from server and binds to an event handler for datepicker such that when datepicker is clicked, it will disable reserved_dates
