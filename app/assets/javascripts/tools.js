@@ -1,9 +1,7 @@
 // Module pattern, because definitely want to obscure priceList and cart and not make them visible to bad actors who can make their own modifications and save it
 // Module vs RMP? I mean, I guess if I wanted this to be super strict and have no one be able to change the public methods later I'd use RMP, but don't see a real need for htat yet (as I'm the only person working on this)
 // in some cases, public method refers to private method (more RMP) IF that private method needs to be used by other private methods (e.g., getItems in cartModule is used by private function isUnique, so it must itself be a private function)
-
-// NEXT LEARNING: how would you do a publish/subscribe where methods like set check for changes to existing and THEN act
-// the only things that need to listen are NON inputs, because inputs already store the changes, and those are only needed on refresh
+// the Cart Proxy implementation still feels more callback-ish than watch-ish, since it's on the Cart object rather than a total object, but looks like this is the best to be done unless we want to do a full pub/sub implementation
 
 // will be a gon object in regular LMG to preserve its privacy
 var itemPriceModule = (function() {
@@ -42,52 +40,63 @@ class Storage {
 
 var cartModule = (function() {
   var cart = [];
-
-  function prefillCart() {
-    length = cart.length;
-    for (i = 0; i < length; i++) { 
-      // toolkit is default and actually is disabled
-      if (i.name !== "toolkit") { $(".toggle_item[data-name='"+cart[i].name+"']").prop("checked", true); }
-      if (i.name === "delivery") {
-        for (attribute in i) {
-          if (["delivery_start_time", "phone", "address", "instructions"].indexOf(attribute) > -1) {
-            $("#" + attribute).val(i[attribute]);             
-          } else if ("delivery_end_time" === attribute) {
-            Endpoint.prefill("time", orderData[attr])
-          }
-        }
-      }
+  var cart_proxy = new Proxy(cart, {
+    set: function(target, property, value) {
+      $("#total").text(getTotal()) // opportunity: may run more than once, since some methods like push do a set value and a length (i.e., cart[0] = new_value, cart.length = 1), but if I were to ennumerate all the times I DIDN't want this to run, I'd have hte same kind of issue about enumerating properties being a drag. Best thing is probably to wait until I learn a framework to modify this
+      target[property] = value // default action to pass into cart
+      return true // always return true so that whatever is called just gets passed through
     }
-  }
+  })
 
-  function getItems() { return cart.map( object => object.name ); }
-  function isUnique(item_name) { return getItems().indexOf(item_name) === -1 } // for this app, could just make cart a Set, but for LMG, good practice to do things in private functions
+  function getTotal() { return cart.reduce((sum,object) => sum + object.price, 0); }
   
   return {
     initialize: function(default_item_name) {
       storedCart = JSON.parse(sessionStorage.getItem("cart"));
       if (storedCart && storedCart.length > 0) {
-        cart = storedCart; // easier than calling buildItem on each item if this were part of prefillCart iterable
-        prefillCart();
+        length = storedCart.length;
+        for (i = 0; i < length; i++) { 
+          this.toggleItem(storedCart[i].name, true)
+          // could straight set cart = storedCart, but if we did that, we'd have to set cart_proxy here, which still wouldn't trigger setter methods, and generally we want to keep cart & cart_proxy in closure
+          if (storedCart[i].name !== "toolkit") { this.showDOM(storedCart[i]) }
+        }
       } else { 
-        if (Item.isValid(default_item_name)) { cartModule.toggleItem(default_item_name, true) }
+        if (Item.isValid(default_item_name)) { 
+          this.toggleItem(default_item_name, true) 
+        }
+      }
+    },
+    showDOM: function(item) {
+      $(".toggle_item[data-name='"+item.name+"']").prop("checked", true)
+      if (item.name === "delivery") {
+        for (attribute in item) {
+          if (["delivery_start_time", "phone", "address", "instructions"].indexOf(attribute) > -1) {
+            $("#" + attribute).val(item[attribute]);             
+          } else if ("delivery_end_time" === attribute) {
+            order_data = orderDataModule.get()
+            Endpoint.prefill("time", order_data[attr])
+          }
+        }
       }
     },
     toggleItem: function(item_name, value) {
       if (item_name == "delivery") { elementVisAndNav.deliverySection(value) } 
       if (value) {
-        if (isUnique(item_name)) { cart.push(new Item(item_name)); }
+        cart_proxy.push(new Item(item_name)); 
       } else {
-        index = cart.findIndex(object => object.name === item_name);
-        if (index > -1) { cart.splice(index, 1) }
+        index = cart_proxy.findIndex(object => object.name === item_name);
+        if (index > -1) { cart_proxy.splice(index, 1) }
       }
     },
-    getItems: getItems,
-    getTotal: function() {
-      return cart.reduce((sum,object) => sum + object.price, 0);
+    getItems: function() { 
+      return cart.map( object => object.name ); 
     },
+    getTotal: getTotal,
     save: function() { 
       if (cart.length) { Storage.save("sessionStorage", "cart", cart) }
+    },
+    isUnique: function(item_name) {
+      return this.getItems().indexOf(item_name) === -1
     },
     isValid: function() {
       return cart.length > 0
@@ -249,16 +258,19 @@ var dateTimeFxns = {
   }
 }
 
+delivery_start_time = $("#delivery_start_time")
+delivery_input_section = $("#deliveryInput")
+edit_delivery_link = $("#edit_delivery")
 
 var elementVisAndNav = {
   deliverySection: function(show, show_link) {
     if (show == true) {
-      delivery_start_time.prop('disabled', false)
-      delivery_input_section.collapse("show")
+      $("#delivery_start_time").prop('disabled', false)
+      $("#deliveryInput").collapse("show")
     } else {
-      delivery_start_time.prop('disabled', true);
-      delivery_input_section.collapse("hide"); 
-      edit_delivery_link.toggleClass("hide", !show_link) // if show_link is true, then we removeClass hide
+      $("#delivery_start_time").prop('disabled', true);
+      $("#deliveryInput").collapse("hide"); 
+      $("#edit_delivery").toggleClass("hide", !show_link) // if show_link is true, then we removeClass hide
     }
   },
   fullForm: function() {
@@ -301,7 +313,7 @@ $(document).ready(function() {
   $(".toggle_item").on("change", function() {
     item_name = $(this).data("name");
     value = $(this).prop("checked");
-    if (Item.isValid(item_name)) { cartModule.toggleItem(item_name, value); }
+    if (Item.isValid(item_name) && cartModule.isUnique(item_name)) { cartModule.toggleItem(item_name, value); }
   })
 
   $(".delivery_modification").on("change", function() {
