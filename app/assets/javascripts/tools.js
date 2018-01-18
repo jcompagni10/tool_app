@@ -1,4 +1,4 @@
-// The reason we store input data in an object/array rather than just leaving it as is and leaving hte "submit" process to gather it up and submit to backend is we want the clean UX of data being preserved on accidental page refresh
+// The reason we store input data in an object/array rather than just leaving it as is and leaving hte "submit" process to gather up input fields and submit to backend is we want the clean UX of data being preserved on accidental page refresh
 // Module pattern, because definitely want to obscure cart and not make them visible to bad actors who can make their own modifications and save it
 // Module vs RMP? I mean, I guess if I wanted this to be super strict and have no one be able to change the public methods later I'd use RMP, but don't see a real need for htat yet (as I'm the only person working on this)
 // in some cases, public method refers to private method (more RMP) IF that private method needs to be used by other private methods (e.g., getItems in cartModule is used by private function isUnique, so it must itself be a private function)
@@ -43,7 +43,7 @@ var cartModule = (function() {
   var cart = [];
   var cart_proxy = new Proxy(cart, {
     set: function(target, property, value) {
-      $("#total").text(getTotal()) // opportunity: may run more than once, since some methods like push do a set value and a length (i.e., cart[0] = new_value, cart.length = 1), but if I were to ennumerate all the times I DIDN't want this to run, I'd have hte same kind of issue about enumerating properties being a drag. Best thing is probably to wait until I learn a framework to modify this
+      $("#total").text(getTotal()) // opportunity: may run more than once, since some methods like push do a set value and a length (i.e., cart[0] = new_value, cart.length = 1), but if I were to ennumerate all the times I DIDN't want this to run, I'd have hte same kind of issue about enumerating properties being a drag. Best thing is probably to wait until we implement a framework to modify this
       target[property] = value // default action to pass into cart
       return true // always return true so that whatever is called just gets passed through
     }
@@ -70,10 +70,12 @@ var cartModule = (function() {
     showDOM: function(item) {
       $(".toggle_item[data-name='"+item.name+"']").prop("checked", true)
       if (item.name === "delivery") {
+        // having the below in a separate method would be a little more SRP and somewhat easier for testing, we can just test that the separate method was called. HOWEVER to do this test, we'd have to make it a public method, which inherently it really shouldn't be. In this case, do not believe the slightly easier testing justifies making an additional public/private method combo, so keeping it here
         for (attribute in item) {
           if (["delivery_start_time", "phone", "address", "instructions"].indexOf(attribute) > -1) {
             $("#" + attribute).val(item[attribute]);             
           } else if ("delivery_end_time" === attribute) {
+            // NEXT STEP, can we merge this into delivery_modification field? seems silly to have this here
             order_data = orderDataModule.get()
             Endpoint.prefill("time", order_data[attr])
           }
@@ -89,6 +91,7 @@ var cartModule = (function() {
         if (index > -1) { cart_proxy.splice(index, 1) }
       }
     },
+    // below is purely for spec purposes, please see cart_module_spec.js for more info on why
     getItems: function() { 
       return cart.map( object => object.name ); 
     },
@@ -103,7 +106,25 @@ var cartModule = (function() {
       return cart.length > 0
     },
     clear: function() {
-      cart = []
+      cart = [];
+      cart_proxy = [];
+    },
+
+    // below is purely for spec purposes, because proxy doesn't run in, please see cart_module_spec.js for more info on why
+    getProxyTotal: function() {
+      return cart_proxy.reduce((sum,object) => sum + object.price, 0);
+    },
+    getProxyItems: function() { 
+      return cart_proxy.map( object => object.name )
+    },
+    saveProxy: function() {
+      if (cart_proxy.length) { Storage.save("sessionStorage", "cart", cart_proxy) }
+    },
+    isProxyValid: function() {
+      return cart_proxy.length > 0
+    },
+    isProxyUnique: function(item_name) {
+      return this.getProxyItems().indexOf(item_name) === -1
     }
   }
 })();
@@ -130,7 +151,6 @@ class Endpoint {
   }
 
   static prefill(type, end_value) {
-    console.log("CALLED")
     var end_field, end_text;
 
     if (type === "date")  {
@@ -226,7 +246,6 @@ var dateTimeFxns = {
     return [[this.reserved_dates].indexOf(timestamp) === -1];
   },
   getReservedDates: new Promise(function(resolve, reject) {
-    console.log("in get reserved dates")
     // technically could replace this with gon, since it's on initialize gon would be the fastest/ make most sense but gon is NOT TESTABLE omg... (that and I could always use more AJAX practice)
     $.ajax({
       url: "/getReservedDates",
@@ -235,8 +254,6 @@ var dateTimeFxns = {
     })
     .done(function(result){
       resolve(result)
-      console.log("in success with result = ")
-      console.log(result)
       this.reserved_dates = result;
       $("#start_date").datepicker({
         minDate: new Date(),

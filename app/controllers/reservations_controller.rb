@@ -6,8 +6,6 @@ class ReservationsController < ApplicationController
     @reservation = Reservation.new(email:"asdf")  
   end
 
-
-
   # POST /reservations
   # POST /reservations.json
   def create
