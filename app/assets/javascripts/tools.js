@@ -72,13 +72,7 @@ var cartModule = (function() {
       if (item.name === "delivery") {
         // having the below in a separate method would be a little more SRP and somewhat easier for testing, we can just test that the separate method was called. HOWEVER to do this test, we'd have to make it a public method, which inherently it really shouldn't be. In this case, do not believe the slightly easier testing justifies making an additional public/private method combo, so keeping it here
         for (attribute in item) {
-          if (["delivery_start_time", "phone", "address", "instructions"].indexOf(attribute) > -1) {
-            $("#" + attribute).val(item[attribute]);             
-          } else if ("delivery_end_time" === attribute) {
-            // NEXT STEP, can we merge this into delivery_modification field? seems silly to have this here
-            order_data = orderDataModule.get()
-            Endpoint.prefill("time", order_data[attr])
-          }
+          $("#" + attribute).val(item[attribute]);             
         }
       }
     },
@@ -108,6 +102,9 @@ var cartModule = (function() {
     clear: function() {
       cart = [];
       cart_proxy = [];
+    },
+    showadmin: function() {
+      return cart
     },
 
     // below is purely for spec purposes, because proxy doesn't run in, please see cart_module_spec.js for more info on why
@@ -160,7 +157,8 @@ class Endpoint {
       end_field = $("#delivery_end_time")
       end_text = (end_value == "" || end_value == null) ? "1 hour later" : end_value
     }
-    end_field.text(end_text)
+    end_field.val(end_text)
+    end_field.trigger("change")
   }
 }
 
@@ -331,13 +329,14 @@ $(document).ready(function() {
 
   $(".delivery_modification").on("change", function() {
     item_object = $(this).data("itemobject")
-    attr_name = $(this).data("name")
+    id = $(this).attr("id")
     value = $(this).val()
-    item_object[attr_name] = value
+    item_object[id] = value
+    console.log("modified delivery of id = " + id)
 
-    if (name === "delivery_start_time") {
+    if (id === "delivery_start_time") {
       endpoint = new Endpoint("time", value)
-      item_object.delivery_end_time = endpoint.end_value
+      // item_object.delivery_end_time = endpoint.end_value
     }
   })
 
