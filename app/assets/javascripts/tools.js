@@ -39,6 +39,12 @@ class Storage {
   }
 }
 
+class Alertion {
+  static show(message) {
+    alert(message)
+  }
+}
+
 var cartModule = (function() {
   var cart = [];
   var cart_proxy = new Proxy(cart, {
@@ -170,10 +176,8 @@ var orderDataModule = (function() {
     for (attr in orderData) {
       if (attr === "start_date") {
         $("#start_date").datepicker("setDate", orderData[attr]);
-      } else if (attr === "end_date") {
-        Endpoint.prefill("date", orderData[attr])
       } else {
-        $("#" + attr).val(logistics[attr]); 
+        $("#" + attr).val(orderData[attr]); 
       }
     }
   }
@@ -190,7 +194,7 @@ var orderDataModule = (function() {
           })
           if (storedOrderData) {
             if (reserved_dates.indexOf(storedOrderData.start_date.getTime()) > -1) {
-              alert("Sorry! Looks like someone just reserved the toolkit for those dates, please select new dates & try again");
+              Alertion.show("Sorry! Looks like someone just reserved the toolkit for those dates, please select new dates & try again");
               storedOrderData.start_date = null;
               storedOrderData.end_date = null;
             }
@@ -226,6 +230,9 @@ var orderDataModule = (function() {
     },
     get: function() {
       return orderData
+    },
+    clear: function() {
+      orderData = {}
     }
   }
 })();
@@ -251,6 +258,7 @@ var dateTimeFxns = {
       dataType: "json"
     })
     .done(function(result){
+      console.log(">>>>>")
       resolve(result)
       this.reserved_dates = result;
       $("#start_date").datepicker({
@@ -260,6 +268,7 @@ var dateTimeFxns = {
       });
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
+      console.log(">>>>>asdf")
       reject(new Error(errorThrown))
       // alert("Something isn't working right. Make sure you have JavaScript enabled in your browser, then refresh this page");
     })
