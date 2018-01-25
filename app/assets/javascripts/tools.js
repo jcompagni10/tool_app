@@ -332,8 +332,6 @@ var dateTimeFxns = {
 
 var elementVisAndNav = {
   deliverySection: function(show, show_link) {
-    console.log("starting, show = "+ show)
-    console.log($("#deliveryInput").css("display"))
     if (show == true) {
       $("#delivery_start_time").prop('disabled', false)
       $("#deliveryInput").collapse("show")
@@ -342,27 +340,23 @@ var elementVisAndNav = {
       $("#deliveryInput").collapse("hide"); 
       $("#edit_delivery").toggleClass("hide", !show_link) // if show_link is true, then we removeClass hide
     }
-    console.log("ending")
-    console.log($("#deliveryInput").css("display"))
   },
   fullForm: function() {
-    $("#page2").removeClass("collapse");
-    $(".hideInFullForm").addClass("hide")
-    $(".showInFullForm").removeClass("hide")
+    $("#page2").collapse("show");
+    $("#checkoutBtn").addClass("hide");
+    $("#totalRow").removeClass("hide");
 
-    if (delivery) {
-      // for page re-renders
-      $(".toggle_item[data-type='delivery']").prop("checked", true)
-      $("#edit_delivery").removeClass("hide")
+    if (cartModule.hasDelivery()) {
+      this.deliverySection(false,true)
     }
-    this.scrollTo("#page2");
+    this.scrollToAnchor("#page2");
   },
   confirmationPage: function() {
     $("#page1").addClass("hide");    
     $("#page2").addClass("hide");
     $("#confirmationPage").removeClass("hide");
   },
-  scrollTo: function(anchor) {
+  scrollToAnchor: function(anchor) {
     $('.mainContent').scrollTop($(anchor).offset().top);
   }
 }
