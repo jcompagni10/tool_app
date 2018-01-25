@@ -107,13 +107,13 @@ describe("Endpoint class", function() {
 				it("fills correctly", function(){
 					today = new Date()
 					Endpoint.prefill("date", today)
-					expect($("#end_date").text()).toEqual(dateTimeFxns.formatDateTime("date", today))
+					expect($("#end_date").val()).toEqual(dateTimeFxns.formatDateTime("date", today))
 				})
 			})
 			describe("with null", function() {
 				it("fills correctly", function(){
 					Endpoint.prefill("date")
-					expect($("#end_date").text()).toEqual("3 days later")
+					expect($("#end_date").val()).toEqual("3 days later")
 				})
 			})
 		})
@@ -121,13 +121,13 @@ describe("Endpoint class", function() {
 			describe("with real value", function() {
 				it("fills correctly", function(){
 					Endpoint.prefill("time", "6:00pm")
-					expect($("#delivery_end_time").text()).toEqual("6:00pm")
+					expect($("#delivery_end_time").val()).toEqual("6:00pm")
 				})
 			})
 			describe("with null", function() {
 				it("fills correctly", function(){
 					Endpoint.prefill("time")
-					expect($("#delivery_end_time").text()).toEqual("1 hour later")
+					expect($("#delivery_end_time").val()).toEqual("1 hour later")
 				})
 			})
 		})
