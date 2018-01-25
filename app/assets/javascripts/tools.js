@@ -401,7 +401,7 @@ $(document).ready(function() {
   $(".order_data_field").on("change", function() {
     id = $(this).attr("id")
     value = ( id == "start_date" ? $(this).datepicker('getDate') : $(this).val() )
-    orderDataModule.set(name, value) // value gets passed even if null (for date) or blank string (for other fields) so that we can set the end values OR placeholder
+    orderDataModule.set(id, value) // value gets passed even if null (for date) or blank string (for other fields) so that we can set the end values OR placeholder
 
     if (id.indexOf("start") > -1 ) {
       type = (id.indexOf("date") > -1 ? "date" : "time")

@@ -103,31 +103,41 @@ describe("Endpoint class", function() {
 			affix("#delivery_end_time");
 		})
 		describe("for date", function() {
+			beforeEach(function() {
+				spyOnEvent("#end_date", "change")
+			})
 			describe("with real value", function() {
 				it("fills correctly", function(){
 					today = new Date()
 					Endpoint.prefill("date", today)
 					expect($("#end_date").val()).toEqual(dateTimeFxns.formatDateTime("date", today))
+					expect('change').toHaveBeenTriggeredOn('#end_date');
 				})
 			})
 			describe("with null", function() {
 				it("fills correctly", function(){
 					Endpoint.prefill("date")
 					expect($("#end_date").val()).toEqual("3 days later")
+					expect('change').toHaveBeenTriggeredOn('#end_date');
 				})
 			})
 		})
 		describe("for time", function() {
+			beforeEach(function() {
+				spyOnEvent("#delivery_end_time", "change")
+			})
 			describe("with real value", function() {
 				it("fills correctly", function(){
 					Endpoint.prefill("time", "6:00pm")
 					expect($("#delivery_end_time").val()).toEqual("6:00pm")
+					expect('change').toHaveBeenTriggeredOn('#delivery_end_time');
 				})
 			})
 			describe("with null", function() {
 				it("fills correctly", function(){
 					Endpoint.prefill("time")
 					expect($("#delivery_end_time").val()).toEqual("1 hour later")
+					expect('change').toHaveBeenTriggeredOn('#delivery_end_time');
 				})
 			})
 		})
