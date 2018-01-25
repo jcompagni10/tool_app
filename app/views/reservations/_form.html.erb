@@ -85,7 +85,8 @@
                     </tr>
                     <tr>
                         <td class="checkboxCol">
-                            <%= form.check_box :delivery, class: "toggle_item", data: {name: "delivery"} %>
+                            <%= form.check_box :delivery, class: "toggle_item", data: {name: "delivery", toggle: "collapse", target: "#deliveryInput"} %>
+
                         </td>
                         <td class="priceCol">
                             +$8
@@ -106,7 +107,7 @@
                     </tr>
                 </table>
 
-                <div id= "deliveryInput" class="collapse">
+                <div id="deliveryInput" class="collapse">
                     <div class="form-group">
                         <%= form.label :phone, "Phone (for delivery contact): " %>
                         <%= form.telephone_field :phone, id: :phone, class: "full-width order_data_field" %>
