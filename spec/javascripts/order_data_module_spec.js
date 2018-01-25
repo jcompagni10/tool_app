@@ -61,9 +61,9 @@ describe ('orderDataModule', function(){
 
 				it("returns true and does NOT show any errors", function() {
 					expect(orderDataModule.isValid()).toEqual(true)	
-					expect($("#start_date_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#email_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#tos_error_msg").hasClass("hide")).toEqual(true)
+					expect($("#start_date_error_msg").toBeHidden();
+					expect($("#email_error_msg").toBeHidden();
+					expect($("#tos_error_msg").toBeHidden();
 				})	
 			})
 			describe("on a hash missing a field", function() {
@@ -78,9 +78,9 @@ describe ('orderDataModule', function(){
 
 				it("returns false and shows RIGHT error", function() {
 					expect(orderDataModule.isValid()).toEqual(false)	
-					expect($("#start_date_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#email_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#tos_error_msg").hasClass("hide")).toEqual(false)
+					expect($("#start_date_error_msg").toBeHidden();
+					expect($("#email_error_msg").toBeHidden();
+					expect($("#tos_error_msg").not.toBeHidden();
 				})	
 			})
 			describe("on a hash with all fields but an incorrect value for EMAIL", function() {
@@ -96,9 +96,9 @@ describe ('orderDataModule', function(){
 
 				it("returns false and shows RIGHT error", function() {
 					expect(orderDataModule.isValid()).toEqual(false)	
-					expect($("#start_date_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#email_error_msg").hasClass("hide")).toEqual(false)
-					expect($("#tos_error_msg").hasClass("hide")).toEqual(true)
+					expect($("#start_date_error_msg").toBeHidden();
+					expect($("#email_error_msg").not.toBeHidden();
+					expect($("#tos_error_msg").toBeHidden();
 				})	
 			})
 			describe("on a hash with all fields but an incorrect value for START DATE", function() {
@@ -114,9 +114,9 @@ describe ('orderDataModule', function(){
 
 				it("returns false and shows RIGHT error", function() {
 					expect(orderDataModule.isValid()).toEqual(false)	
-					expect($("#start_date_error_msg").hasClass("hide")).toEqual(false)
-					expect($("#email_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#tos_error_msg").hasClass("hide")).toEqual(true)
+					expect($("#start_date_error_msg").not.toBeHidden();
+					expect($("#email_error_msg").toBeHidden();
+					expect($("#tos_error_msg").toBeHidden();
 				})	
 			})
 			describe("on a hash with all fields but an incorrect value for END DATE", function() {
@@ -132,9 +132,9 @@ describe ('orderDataModule', function(){
 
 				it("returns false and shows NO errors", function() {
 					expect(orderDataModule.isValid()).toEqual(false)	
-					expect($("#start_date_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#email_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#tos_error_msg").hasClass("hide")).toEqual(true)
+					expect($("#start_date_error_msg").toBeHidden();
+					expect($("#email_error_msg").toBeHidden();
+					expect($("#tos_error_msg").toBeHidden();
 				})	
 			})
 			describe("on a hash with all fields but an incorrect value for TOS", function() {
@@ -150,9 +150,9 @@ describe ('orderDataModule', function(){
 
 				it("returns false and shows RIGHT error", function() {
 					expect(orderDataModule.isValid()).toEqual(false)
-					expect($("#start_date_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#email_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#tos_error_msg").hasClass("hide")).toEqual(false)
+					expect($("#start_date_error_msg").toBeHidden();
+					expect($("#email_error_msg").toBeHidden();
+					expect($("#tos_error_msg").not.toBeHidden();
 				})	
 			})
 		})
@@ -183,13 +183,13 @@ describe ('orderDataModule', function(){
 
 				it("returns true and does NOT show any errors", function() {
 					expect(orderDataModule.isValid()).toEqual(true)	
-					expect($("#start_date_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#email_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#tos_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#delivery_start_time_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#tos_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#phone_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#address_error_msg").hasClass("hide")).toEqual(true)
+					expect($("#start_date_error_msg").toBeHidden();
+					expect($("#email_error_msg").toBeHidden();
+					expect($("#tos_error_msg").toBeHidden();
+					expect($("#delivery_start_time_error_msg").toBeHidden();
+					expect($("#tos_error_msg").toBeHidden();
+					expect($("#phone_error_msg").toBeHidden();
+					expect($("#address_error_msg").toBeHidden();
 				})	
 			})
 			describe("on a hash missing a field", function() {
@@ -211,13 +211,13 @@ describe ('orderDataModule', function(){
 
 				it("returns false and shows RIGHT error", function() {
 					expect(orderDataModule.isValid()).toEqual(false)	
-					expect($("#start_date_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#email_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#tos_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#delivery_start_time_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#tos_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#phone_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#address_error_msg").hasClass("hide")).toEqual(false)
+					expect($("#start_date_error_msg").toBeHidden();
+					expect($("#email_error_msg").toBeHidden();
+					expect($("#tos_error_msg").toBeHidden();
+					expect($("#delivery_start_time_error_msg").toBeHidden();
+					expect($("#tos_error_msg").toBeHidden();
+					expect($("#phone_error_msg").toBeHidden();
+					expect($("#address_error_msg").not.toBeHidden();
 				})	
 			})
 			describe("on a hash with all fields but an incorrect value for PHONE", function() {
@@ -240,13 +240,13 @@ describe ('orderDataModule', function(){
 
 				it("returns false and shows RIGHT error", function() {
 					expect(orderDataModule.isValid()).toEqual(false)	
-					expect($("#start_date_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#email_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#tos_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#delivery_start_time_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#tos_error_msg").hasClass("hide")).toEqual(true)
-					expect($("#phone_error_msg").hasClass("hide")).toEqual(false)
-					expect($("#address_error_msg").hasClass("hide")).toEqual(true)
+					expect($("#start_date_error_msg").toBeHidden();
+					expect($("#email_error_msg").toBeHidden();
+					expect($("#tos_error_msg").toBeHidden();
+					expect($("#delivery_start_time_error_msg").toBeHidden();
+					expect($("#tos_error_msg").toBeHidden();
+					expect($("#phone_error_msg").not.toBeHidden();
+					expect($("#address_error_msg").toBeHidden();
 				})	
 			})
 		})
