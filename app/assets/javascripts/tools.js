@@ -20,10 +20,10 @@ class Item {
     this.price = itemPriceModule()[item_name]
     // all other attributes later added upon change in delivery_modification
 
-    if (item_name === "delivery") {
-      // set data object so that modifications can be directly made
-      $(".delivery_modification").data("itemobject", this)
-    }
+    // if (item_name === "delivery") {
+    //   // set data object so that modifications can be directly made
+    //   $(".delivery_modification").data("itemobject", this)
+    // }
   }
 
   static isValid(item_name) {
@@ -91,26 +91,21 @@ var cartModule = (function() {
         if (index > -1) { cart_proxy.splice(index, 1) }
       }
     },
-    // below is purely for spec purposes, please see cart_module_spec.js for more info on why
+    getTotal: getTotal,
     getItems: function() { 
       return cart.map( object => object.name ); 
-    },
-    getTotal: getTotal,
-    save: function() { 
-      if (cart.length) { Storage.save("sessionStorage", "cart", cart) }
     },
     isUnique: function(item_name) {
       return this.getItems().indexOf(item_name) === -1
     },
     isValid: function() {
-      return cart.length > 0
+      return (this.hasDelivery() ? cart.length > 1 : cart.length > 0)
     },
-    clear: function() {
-      cart = [];
-      cart_proxy = [];
+    hasDelivery: function() {
+      return this.getItems().indexOf("delivery") > -1
     },
-    showadmin: function() {
-      return cart
+    save: function() { 
+      if (cart.length) { Storage.save("sessionStorage", "cart", cart) }
     },
 
     // below is purely for spec purposes, because proxy doesn't run in, please see cart_module_spec.js for more info on why
@@ -120,15 +115,26 @@ var cartModule = (function() {
     getProxyItems: function() { 
       return cart_proxy.map( object => object.name )
     },
+    isProxyUnique: function(item_name) {
+      return this.getProxyItems().indexOf(item_name) === -1
+    },
+    isProxyValid: function() {
+      return (this.hasProxyDelivery() ? cart_proxy.length > 1 : cart_proxy.length > 0)
+    },
+    hasProxyDelivery: function() {
+      return this.getProxyItems().indexOf("delivery") > -1
+    },
     saveProxy: function() {
       if (cart_proxy.length) { Storage.save("sessionStorage", "cart", cart_proxy) }
     },
-    isProxyValid: function() {
-      return cart_proxy.length > 0
+
+    clear: function() {
+      cart = [];
+      cart_proxy = [];
     },
-    isProxyUnique: function(item_name) {
-      return this.getProxyItems().indexOf(item_name) === -1
-    }
+    showadmin: function() {
+      return cart
+    },
   }
 })();
 
@@ -144,7 +150,7 @@ class Endpoint {
         end_date = new Date(start_value);;
         end_date.setDate(end_date.getDate()+3);
         this.end_value = end_date
-      } else {
+      } else if (type == "time"){
         end_time = 1 + parseInt(start_value);
         suffix = (end_time < 12 )? "am" : "pm";
         this.end_value = (end_time > 12 ? end_time - 12 : end_time) + ":00"+suffix;    
@@ -165,6 +171,18 @@ class Endpoint {
     }
     end_field.val(end_text)
     end_field.trigger("change")
+  }
+}
+
+var validHelper = {
+  email: function(email) {
+    re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return re.test(email)
+  },
+  phone: function(phone) {
+    re = /\d/
+    // NEXT STEP: better regex, at least 4 numbers present (could add first trim all non-digits)
+    return re.test(phone)
   }
 }
 
@@ -214,25 +232,56 @@ var orderDataModule = (function() {
     save: function() {
       if (Object.keys(orderData).length) { Storage.save("sessionStorage", "orderData", orderData) }
     },
-    valid: function() {
-      validations = new WeakSet(); // easier than array, because true/false only get added once, at the very end we can check if it has(false) versus go through and see if indexOf(false) exists
+    isValid: function() {
+      validations = [] // can't use weakSet, because that cannot store primitives like boolean
       // we do want to iterate through all fields rather than return the first false, because this process actually toggles error fields
 
-      fields = ["start_date", "email", "tos"] // iterate over fields that are SUPPOSED to be captured, rather than what was captured (object.keys.orderData)
-      fields.length
+      // open debate:
+      // since delivery is a cart item, we should validate the item when we validate the cart, i.e., inside cartModule.isValid
+      // then again since its order fields feel like order data, we should validate here
+      // sticking with this for now just to make us not have analogous validation code in 2 places (and not have to extract the validation code into yet another function)
+      if (cartModule.hasDelivery()) {
+        fields = ["start_date", "end_date", "email", "tos", "delivery_start_time", "delivery_end_time", "phone", "address"] 
+      } else {
+        fields = ["start_date", "end_date", "email", "tos"] 
+      }
+      length = fields.length // iterate over fields that are SUPPOSED to be captured, rather than what was captured (object.keys.orderData)
       for (i = 0; i < length; i ++ ) {
-        valid = (orderData[fields[i]] != null && orderData[fields[i]].length > 0);
-        $("#"+fields[i]+"_error").toggleClass("hide", valid);
-        validations.add(valid);
+        present = (orderData[fields[i]] != null);
+
+        if (fields[i].indexOf("date") > -1) {
+          valid = (orderData[fields[i]] instanceof Date)
+          // end date COULD further check that it's 3 days later but given that this is programmatically built, as long as we have robust tests for the Endpoint class this is fine
+        } else if (fields[i] == "email") {
+          valid = validHelper.email(orderData[fields[i]])
+        } else if (fields[i] == "tos") {
+          valid = (orderData[fields[i]] == true)
+        } else if (fields[i] == "phone") {
+          valid = validHelper.phone(orderData[fields[i]])
+        } else {
+          valid = true
+          // no special validation:
+          // for start time (an integer for hte select method) or end time (a string that's programmatically calculated)
+          // for address
+        }
+
+        if ( (fields[i] != "end_date" ) && (fields[i] != "delivery_end_time") ) {
+          // no error fields for end_date/delivery_end_time since it's programmatically built
+          $("#"+fields[i]+"_error_msg").toggleClass("hide", (present && valid) );
+        }
+        validations.push(present && valid);
       }
 
-      return !(validations.has(false)) // if validations has a false, then that means the logistics object is NOT valid 
+      return !(validations.indexOf(false) > -1) // if validations has a false, then that means the orderData hash is NOT valid 
     },
     get: function() {
       return orderData
     },
     clear: function() {
       orderData = {}
+    },
+    isPresent: function() {
+      return (orderData != {})
     }
   }
 })();
@@ -258,7 +307,6 @@ var dateTimeFxns = {
       dataType: "json"
     })
     .done(function(result){
-      console.log(">>>>>")
       resolve(result)
       this.reserved_dates = result;
       $("#start_date").datepicker({
@@ -268,7 +316,6 @@ var dateTimeFxns = {
       });
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
-      console.log(">>>>>asdf")
       reject(new Error(errorThrown))
       // alert("Something isn't working right. Make sure you have JavaScript enabled in your browser, then refresh this page");
     })
@@ -333,35 +380,37 @@ $(document).ready(function() {
   $(".toggle_item").on("change", function() {
     item_name = $(this).data("name");
     value = $(this).prop("checked");
-    if (Item.isValid(item_name) && cartModule.isUnique(item_name)) { cartModule.toggleItem(item_name, value); }
-  })
-
-  $(".delivery_modification").on("change", function() {
-    item_object = $(this).data("itemobject")
-    id = $(this).attr("id")
-    value = $(this).val()
-    item_object[id] = value
-    console.log("modified delivery of id = " + id)
-
-    if (id === "delivery_start_time") {
-      endpoint = new Endpoint("time", value)
-      // item_object.delivery_end_time = endpoint.end_value
+    if (Item.isValid(item_name) && cartModule.isUnique(item_name)) { 
+      cartModule.toggleItem(item_name, value); 
     }
   })
 
+  // $(".delivery_modification").on("change", function() {
+  //   item_object = $(this).data("itemobject")
+  //   id = $(this).attr("id")
+  //   value = $(this).val()
+  //   item_object[id] = value
+  //   console.log("modified delivery of id = " + id)
+
+  //   if (id === "delivery_start_time") {
+  //     endpoint = new Endpoint("time", value)
+  //     // item_object.delivery_end_time = endpoint.end_value
+  //   }
+  // })
+
   $(".order_data_field").on("change", function() {
-    name = $(this).data("name");
-    value = ( name == "start_date" ? $(this).datepicker('getDate') : $(this).val() )
+    id = $(this).attr("id")
+    value = ( id == "start_date" ? $(this).datepicker('getDate') : $(this).val() )
     orderDataModule.set(name, value) // value gets passed even if null (for date) or blank string (for other fields) so that we can set the end values OR placeholder
 
-    if (name === "start_date") {
-      endpoint = new Endpoint("date", value)
-      orderDataModule.set("end_date", endpoint.end_value)
+    if (id.indexOf("start") > -1 ) {
+      type = (id.indexOf("date") > -1 ? "date" : "time")
+      endpoint = new Endpoint(type, value) // endpoint auto triggers a change in the end order_data_field, which is how the data gets passed to this function again and therefore set into the orderDataModule
     }
   })
 
   $("#checkoutBtn").click(function() {
-    if (orderDataModule.valid() && cartModule.valid() ) {
+    if (orderDataModule.isValid() && cartModule.isValid() ) {
       mountStripe();
       if ( cartModule.getItems().indexOf("delivery") > -1 ) { elementVisAndNav.deliverySection(false,true); } // hides delivery section WHILE exposing the edit_delivery link
       elementVisAndNav.fullForm();
@@ -370,7 +419,7 @@ $(document).ready(function() {
 
   $("#submitButton").click(function(e) {
     e.preventDefault();
-    if (orderDataModule.valid() && cartModule.valid() && paymentValid() ) { // is it overkill to validate AGAIN?
+    if (orderDataModule.isValid() && cartModule.isValid() ) { // is it overkill to validate AGAIN?
       // no stripe validation because it's live and controlled by stripe widget
       tokenHandler();
     }

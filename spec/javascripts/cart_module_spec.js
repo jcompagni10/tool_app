@@ -101,7 +101,7 @@ describe ('cartModule', function(){
 		})
 		describe("for regular item", function() {
 			beforeEach(function() {
-				affix("#.toggle_item[data-name='ladder']")
+				affix(".toggle_item[data-name='ladder']")
 				item = new Item("ladder")
 				cartModule.showDOM(item)
 			})
@@ -119,7 +119,7 @@ describe ('cartModule', function(){
 		})
 		describe("for delivery", function() {
 			beforeEach(function() {
-				affix("#.toggle_item[data-name='delivery']")
+				affix(".toggle_item[data-name='delivery']")
 				item = new Item("delivery")
 				item.delivery_start_time = 3
 				item.delivery_end_time = 5 // this would show up as a string formatted time rather than an integer, which is only for delivery_start_time since integer is easier as a input value
@@ -261,9 +261,18 @@ describe ('cartModule', function(){
 		})
 	})
 	describe("when isValid is called", function() {
-		it('returns true on a full cart', function() {
+		it('returns true on a cart with one regular item', function() {
 			cartModule.toggleItem("ladder", true)
 			expect(cartModule.isProxyValid()).toEqual(true)
+		})
+		it('returns true on a cart with one delivery item + one regular item', function() {
+			cartModule.toggleItem("delivery", true)
+			cartModule.toggleItem("ladder", true)
+			expect(cartModule.isProxyValid()).toEqual(true)
+		})
+		it('returns false on a cart with just one delivery item', function() {
+			cartModule.toggleItem("delivery", true)
+			expect(cartModule.isProxyValid()).toEqual(false)
 		})
 		it('returns false on an empty cart', function() {
 			expect(cartModule.isProxyValid()).toEqual(false)

@@ -34,9 +34,9 @@
                         <br class="visible-xs">
                         <div class="pull-left nowrap">
                             <%= form.label :end_date, "Return it: ", class: "dateLabel" %>
-                            <%= form.text_field :end_date, id: :end_date, class: "delivery_modification", placeholder: "3 days later", disabled: true %>
+                            <%= form.text_field :end_date, id: :end_date, class: "order_data_field", placeholder: "3 days later", disabled: true %>
                         </div> 
-                        <div id="start_date_error" class="error hide"> Start Date Required </div>        
+                        <div id="start_date_error_msg" class="error hide"> Start Date Required </div>        
                     </div>
                 </div>
             </div>
@@ -109,17 +109,17 @@
                 <div id= "deliveryInput" class="collapse">
                     <div class="form-group">
                         <%= form.label :phone, "Phone (for delivery contact): " %>
-                        <%= form.telephone_field :phone, id: :phone, class: "full-width delivery_modification" %>
-                        <div id="phone_error" class="error hide"> Phone Number Required  </div>
+                        <%= form.telephone_field :phone, id: :phone, class: "full-width order_data_field" %>
+                        <div id="phone_error_msg" class="error hide"> Valid Phone Number Required  </div>
                     </div>
                     <div class="form-group">
                         <%= form.label :address, "Address: " %>
-                        <%= form.text_field :address, id: :address, class: "full-width delivery_modification" %>
-                        <div id="address_error" class="error hide"> Address Required </div>  
+                        <%= form.text_field :address, id: :address, class: "full-width order_data_field" %>
+                        <div id="address_error_msg" class="error hide"> Address Required </div>  
                     </div>
                     <div class="form-group">
                         <%= form.label :instructions, "Optional instructions: " %>
-                        <%= form.text_field :instructions, id: :instructions, class: "full-width delivery_modification" %>
+                        <%= form.text_field :instructions, id: :instructions, class: "full-width order_data_field" %>
                     </div>
                     <div class="form-group">
                         <%= form.label :delivery_start_time, "Time window for delivery: " %>
@@ -127,9 +127,9 @@
                             Select the start of a 1-hour window from 9:00am-9:00pm
                         </p>
                         <% delivery_times = {""=> {val: "", disabled: true, selected: true}, "9:00am" => 9, "10:00am" => 10, "11:00am" => 11, "12:00pm" => 12, "1:00pm" => 13, "2:00pm" => 14, "3:00pm" => 15, "4:00pm" => 16, "5:00pm" => 17, "6:00pm" => 18, "7:00pm" => 19, "8:00pm" => 20 } %>
-                        <%= form.select :delivery_start_time, delivery_times, {}, {:disabled => true, id: "delivery_start_time", class: "delivery_modification"}  %>
-                        to <%= form.text_field :delivery_end_time, id: :delivery_end_time, class: "delivery_modification", placeholder: "1 hour later", disabled: true %>
-                        <div id="delivery_start_time_error" class="error hide"> Delivery Time Required </div>          
+                        <%= form.select :delivery_start_time, delivery_times, {}, {:disabled => true, id: "delivery_start_time", class: "order_data_field"}  %>
+                        to <%= form.text_field :delivery_end_time, id: :delivery_end_time, class: "order_data_field", placeholder: "1 hour later", disabled: true %>
+                        <div id="delivery_start_time_error_msg" class="error hide"> Delivery Start Time Required </div>          
                     </div>
                 </div>
                 <div class="text-center">
@@ -148,8 +148,8 @@
                 </div>
                 <div class="form-group">
                     <%= form.label :email, "Email (for confirmation & receipt): " %>
-                    <%= form.email_field :email, id: :reservation_email, class: "full-width payment_field"%>
-                    <div id="email_error" class="error hide"> Phone Number Required  </div>
+                    <%= form.email_field :email, id: :email, class: "full-width order_data_field"%>
+                    <div id="email_error_msg" class="error hide"> Valid Email Required  </div>
                 </div>
 
                 <div class="form-group">
@@ -162,9 +162,9 @@
                 </div>
 
                 <div class="termsOfService">
-                    <%= form.check_box :tos, id: :reservation_tos, class: "payment_field" %>
+                    <%= form.check_box :tos, id: :tos, class: "order_data_field" %>
                     <span>I agree to the <%= link_to "Terms of Service", terms_of_service_path, target: :_blank %></span> 
-                    <div id="tos_error" class="error hide"> Must agree to Terms of Service  </div>
+                    <div id="tos_error_msg" class="error hide"> Must agree to Terms of Service  </div>
                 </div>
 
                 <div class="text-center">

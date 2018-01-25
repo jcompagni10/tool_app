@@ -8,16 +8,16 @@ describe("Item class", function() {
 				item = new Item("toolkit")
 				expect(item.price).toEqual(itemPriceModule()["toolkit"])
 			})
-			it("shouldn't set data object on delivery_modification", function() {
-				expect($(".delivery_modification").data("itemobject")).not.toBeDefined(); 
-			})
+			// it("shouldn't set data object on delivery_modification", function() {
+			// 	expect($(".delivery_modification").data("itemobject")).not.toBeDefined(); 
+			// })
 		})
-		describe("with delivery", function() {
-			it("should set data object on delivery_modification", function() {
-				item = new Item("delivery")
-				expect($(".delivery_modification").data("itemobject")).toBe(item)
-			})
-		})
+		// describe("with delivery", function() {
+		// 	it("should set data object on delivery_modification", function() {
+		// 		item = new Item("delivery")
+		// 		expect($(".delivery_modification").data("itemobject")).toBe(item)
+		// 	})
+		// })
 	})
 	describe("when prototype.isValid is called", function() {
 		describe("with invalid item", function() {
