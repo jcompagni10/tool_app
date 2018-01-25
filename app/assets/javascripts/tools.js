@@ -336,10 +336,10 @@ var elementVisAndNav = {
     console.log($("#deliveryInput").css("display"))
     if (show == true) {
       $("#delivery_start_time").prop('disabled', false)
-      // $("#deliveryInput").collapse("show")
+      $("#deliveryInput").collapse("show")
     } else {
       $("#delivery_start_time").prop('disabled', true);
-      // $("#deliveryInput").collapse("hide"); 
+      $("#deliveryInput").collapse("hide"); 
       $("#edit_delivery").toggleClass("hide", !show_link) // if show_link is true, then we removeClass hide
     }
     console.log("ending")

@@ -34,18 +34,18 @@ describe ('elementVisAndNav object literal', function(){
 			expect($("#edit_delivery").hasClass("hide")).toEqual(true)
 		})
 	})
-	// describe("deliverySection with show == false, show_link == true", function() {
-	// 	beforeEach(function() {
-	// 		elementVisAndNav.deliverySection(false, false)
-	// 	})
-	// 	it("should disable delivery_start_time", function(){
-	// 		expect($("#delivery_start_time").prop("disabled")).toEqual(true)
-	// 	})
-	// 	it("should hide deliveryInput", function(){
-	// 		expect($("#deliveryInput")).toBeHidden();
-	// 	})
-	// 	it("should show edit_delivery", function(){
-	// 		expect($("#edit_delivery").hasClass("hide")).toEqual(false)
-	// 	})
-	// })
+	describe("deliverySection with show == false, show_link == true", function() {
+		beforeEach(function() {
+			elementVisAndNav.deliverySection(false, true)
+		})
+		it("should disable delivery_start_time", function(){
+			expect($("#delivery_start_time").prop("disabled")).toEqual(true)
+		})
+		it("should hide deliveryInput", function(){
+			expect($("#deliveryInput")).toBeHidden();
+		})
+		it("should show edit_delivery", function(){
+			expect($("#edit_delivery").hasClass("hide")).toEqual(false)
+		})
+	})
 });
