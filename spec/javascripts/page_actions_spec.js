@@ -13,7 +13,7 @@ describe("pageActions", function() {
 	})
 	describe("save", function() {
 		beforeEach(function() {
-			spyOn(cartDataModule, "save")
+			spyOn(cartModule, "save")
 			spyOn(orderDataModule, "save")
 		})
 
@@ -23,7 +23,7 @@ describe("pageActions", function() {
 				pageActions.save();
 			})	
 			it("should save cartData", function() {
-				expect(cartModule.save)toHaveBeenCalled()
+				expect(cartModule.save).toHaveBeenCalled()
 			})
 		})
 		describe("without item", function() {

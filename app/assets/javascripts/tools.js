@@ -372,10 +372,10 @@ var pageActions = {
     orderDataModule.initialize(); // pulls reserved_dates from server and binds to an event handler for datepicker such that when datepicker is clicked, it will disable reserved_dates
   },
   save: function() {
-    if (cartModule.getItems().length > 1) {
+    if (cartModule.getItems().length > 0) {
       cartModule.save();
     }
-    if (orderDataModule.isPresent) {
+    if (orderDataModule.isPresent()) {
       orderDataModule.save();
     }
   }
@@ -387,8 +387,9 @@ $(window).on('beforeunload', function(){
 
 $(document).ready(function() {
   pageActions.initialize();
-  
+
   $(".toggle_item").on("change", function() {
+    console.log("triggered change")
     item_name = $(this).data("name");
     value = $(this).prop("checked");
     if (Item.isValid(item_name) && cartModule.isUnique(item_name)) { 
