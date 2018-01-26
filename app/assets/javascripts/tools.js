@@ -361,20 +361,33 @@ var elementVisAndNav = {
   }
 }
 
+var pageActions = {
+  // cannot test what's directly wrapped in a document ready (unclear about window beforeunload, but likely similar situation), need another wrapper function
+  // i.e., the test is that calling initialize calls the statements below, there is NO test that document.ready calls this initialize function
+  // for a small app this makes no sense, because you're just as likely to mistype document.ready(inititialize) as you are to type the two simple lines below
+  // but again this is practice for something larger
+  // NOTE, this wrapper has to be a variable, not just a named function, no way to call that in a test (i.e., initialize() would throw an undefined error)
+  initialize: function() {
+    cartModule.initialize("toolkit");
+    orderDataModule.initialize(); // pulls reserved_dates from server and binds to an event handler for datepicker such that when datepicker is clicked, it will disable reserved_dates
+  },
+  save: function() {
+    if (cartModule.getItems().length > 1) {
+      cartModule.save();
+    }
+    if (orderDataModule.isPresent) {
+      orderDataModule.save();
+    }
+  }
+}
+
 $(window).on('beforeunload', function(){
-  if (cartModule.getItems().length > 1) {
-    cartModule.save();
-  }
-  if (orderDataModule.isPresent) {
-    orderDataModule.save();
-  }
+  pageActions.save()
 });
 
 $(document).ready(function() {
-
-  cartModule.initialize("toolkit");
-  orderDataModule.initialize(); // pulls reserved_dates from server and binds to an event handler for datepicker such that when datepicker is clicked, it will disable reserved_dates
-
+  pageActions.initialize();
+  
   $(".toggle_item").on("change", function() {
     item_name = $(this).data("name");
     value = $(this).prop("checked");
