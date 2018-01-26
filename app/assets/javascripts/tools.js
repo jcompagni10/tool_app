@@ -368,6 +368,7 @@ var pageActions = {
   // but again this is practice for something larger
   // NOTE, this wrapper has to be a variable, not just a named function, no way to call that in a test (i.e., initialize() would throw an undefined error)
   initialize: function() {
+    console.log("here in iitnialize")
     cartModule.initialize("toolkit");
     orderDataModule.initialize(); // pulls reserved_dates from server and binds to an event handler for datepicker such that when datepicker is clicked, it will disable reserved_dates
   },
@@ -378,65 +379,62 @@ var pageActions = {
     if (orderDataModule.isPresent()) {
       orderDataModule.save();
     }
+  },
+  testing: function() {
+    return 1
   }
 }
 
-$(window).on('beforeunload', function(){
-  pageActions.save()
-});
+$(window).on('beforeunload', pageActions.save);
+$(document).ready(pageActions.initialize);
 
-$(document).ready(function() {
-  pageActions.initialize();
-
-  $(".toggle_item").on("change", function() {
-    console.log("triggered change")
-    item_name = $(this).data("name");
-    value = $(this).prop("checked");
-    if (Item.isValid(item_name) && cartModule.isUnique(item_name)) { 
-      cartModule.toggleItem(item_name, value); 
-    }
-  })
-
-  // $(".delivery_modification").on("change", function() {
-  //   item_object = $(this).data("itemobject")
-  //   id = $(this).attr("id")
-  //   value = $(this).val()
-  //   item_object[id] = value
-  //   console.log("modified delivery of id = " + id)
-
-  //   if (id === "delivery_start_time") {
-  //     endpoint = new Endpoint("time", value)
-  //     // item_object.delivery_end_time = endpoint.end_value
-  //   }
-  // })
-
-  $(".order_data_field").on("change", function() {
-    id = $(this).attr("id")
-    value = ( id == "start_date" ? $(this).datepicker('getDate') : $(this).val() )
-    orderDataModule.set(id, value) // value gets passed even if null (for date) or blank string (for other fields) so that we can set the end values OR placeholder
-
-    if (id.indexOf("start") > -1 ) {
-      type = (id.indexOf("date") > -1 ? "date" : "time")
-      endpoint = new Endpoint(type, value) // endpoint auto triggers a change in the end order_data_field, which is how the data gets passed to this function again and therefore set into the orderDataModule
-    }
-  })
-
-  $("#checkoutBtn").click(function() {
-    if (orderDataModule.isValid() && cartModule.isValid() ) {
-      mountStripe();
-      if ( cartModule.getItems().indexOf("delivery") > -1 ) { elementVisAndNav.deliverySection(false,true); } // hides delivery section WHILE exposing the edit_delivery link
-      elementVisAndNav.fullForm();
-    }
-  })
-
-  $("#submitButton").click(function(e) {
-    e.preventDefault();
-    if (orderDataModule.isValid() && cartModule.isValid() ) { // is it overkill to validate AGAIN?
-      // no stripe validation because it's live and controlled by stripe widget
-      tokenHandler();
-    }
-  })
+$(".toggle_item").on("change", function() {
+  console.log("triggered change in actual js")
+  pageActions.testing()
+  // item_name = $(this).data("name");
+  // value = $(this).prop("checked");
+  // if (Item.isValid(item_name) && cartModule.isUnique(item_name)) { 
+  //   cartModule.toggleItem(item_name, value); 
+  // }
 })
 
+$(".order_data_field").on("change", function() {
+  id = $(this).attr("id")
+  value = ( id == "start_date" ? $(this).datepicker('getDate') : $(this).val() )
+  orderDataModule.set(id, value) // value gets passed even if null (for date) or blank string (for other fields) so that we can set the end values OR placeholder
 
-    
+  if (id.indexOf("start") > -1 ) {
+    type = (id.indexOf("date") > -1 ? "date" : "time")
+    endpoint = new Endpoint(type, value) // endpoint auto triggers a change in the end order_data_field, which is how the data gets passed to this function again and therefore set into the orderDataModule
+  }
+})
+
+$("#checkoutBtn").click(function() {
+  if (orderDataModule.isValid() && cartModule.isValid() ) {
+    mountStripe();
+    if ( cartModule.getItems().indexOf("delivery") > -1 ) { elementVisAndNav.deliverySection(false,true); } // hides delivery section WHILE exposing the edit_delivery link
+    elementVisAndNav.fullForm();
+  }
+})
+
+$("#submitButton").click(function(e) {
+  e.preventDefault();
+  if (orderDataModule.isValid() && cartModule.isValid() ) { // is it overkill to validate AGAIN?
+    // no stripe validation because it's live and controlled by stripe widget
+    tokenHandler();
+  }
+})
+
+// old code
+// $(".delivery_modification").on("change", function() {
+//   item_object = $(this).data("itemobject")
+//   id = $(this).attr("id")
+//   value = $(this).val()
+//   item_object[id] = value
+//   console.log("modified delivery of id = " + id)
+
+//   if (id === "delivery_start_time") {
+//     endpoint = new Endpoint("time", value)
+//     // item_object.delivery_end_time = endpoint.end_value
+//   }
+// })
