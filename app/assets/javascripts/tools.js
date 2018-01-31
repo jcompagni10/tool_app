@@ -388,14 +388,13 @@ var pageActions = {
 $(window).on('beforeunload', pageActions.save);
 $(document).ready(pageActions.initialize);
 
-$(".toggle_item").on("change", function() {
-  console.log("triggered change in actual js")
-  pageActions.testing()
-  // item_name = $(this).data("name");
-  // value = $(this).prop("checked");
-  // if (Item.isValid(item_name) && cartModule.isUnique(item_name)) { 
-  //   cartModule.toggleItem(item_name, value); 
-  // }
+$(".toggle_item").change(function() {
+  console.log("change triggered")
+  item_name = $(this).data("name");
+  value = $(this).prop("checked");
+  if (Item.isValid(item_name) && cartModule.isUnique(item_name)) { 
+    cartModule.toggleItem(item_name, value); 
+  }
 })
 
 $(".order_data_field").on("change", function() {
