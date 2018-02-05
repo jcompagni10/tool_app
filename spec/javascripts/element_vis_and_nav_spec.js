@@ -78,7 +78,7 @@ describe ('elementVisAndNav object literal', function(){
 	describe("fullForm", function() {
 		beforeEach(function() {
 			affix("#checkoutBtn") 
-			affix("#totalRow.hide")
+			affix("#totalRowcart.hide")
 			affix("#edit_delivery.hide") 
 			spyOn(elementVisAndNav, "deliverySection")
 			spyOn(elementVisAndNav, "scrollToAnchor").and.callFake(function() {return true})
@@ -92,7 +92,7 @@ describe ('elementVisAndNav object literal', function(){
 				expect($("#page2")).not.toBeHidden();
 			})
 			it("should show totalRow", function() {
-				expect($("#totalRow")).not.toBeHidden();
+				expect($("#totalRowcart")).not.toBeHidden();
 			})
 			it("should hide checkoutBtn", function() {
 				expect($("#checkoutBtn")).toBeHidden();
@@ -113,7 +113,7 @@ describe ('elementVisAndNav object literal', function(){
 				expect($("#page2")).not.toBeHidden();
 			})
 			it("should show totalRow", function() {
-				expect($("#totalRow")).not.toBeHidden();
+				expect($("#totalRowcart")).not.toBeHidden();
 			})
 			it("should hide checkoutBtn", function() {
 				expect($("#checkoutBtn")).toBeHidden();
