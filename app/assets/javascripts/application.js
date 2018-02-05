@@ -15,6 +15,4 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
-//= require stripe
-//= require tools
 //= require_tree .
