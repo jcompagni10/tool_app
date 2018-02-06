@@ -172,7 +172,7 @@ describe("user actions", function() {
 
 	describe("click submit button", function(){
 		let cartValidSpy, tokenHandlerSpy;
-		beforeEach(function(){
+		beforeAll(function(){
 			affix("#submitButton");
 			mountUserActions();
 			spyOn(orderDataModule, "isValid").and.returnValue(true);
@@ -192,9 +192,11 @@ describe("user actions", function() {
 			});
 		});
 		describe("when both conditions are not true", function(){
-			beforeAll(function(){
+			beforeEach(function(){
 				cartValidSpy.and.returnValue(false);
 				tokenHandlerSpy.calls.reset();
+				affix("#submitButton");
+				mountUserActions();
 				$("#submitButton").click();
 			});
 			it("should not call the tokenHandler", function(){
