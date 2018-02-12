@@ -28,7 +28,7 @@ class ReservationsController < ApplicationController
           ReservationMailer.reservation_confirmation(@reservation).deliver
         else
           #set flash to errors
-          flash.now[:error] = charge[1];
+          flash.now[:error] = charge[1]
           #reload page
           format.js{render :renderFullForm}
 

@@ -16,8 +16,5 @@ class Item {
   static isValid(item_name) {
     return $.isNumeric(itemPriceModule()[item_name]);
   }
-  
-  static doThing(item){
-    return true;
-  }
+
 }

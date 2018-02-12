@@ -4,16 +4,18 @@
             <div id="errorsWrapper">
                 <% if @reservation.errors.any? %>
                     <div id="error_explanation" class="bottom-spacer">
-                    <span class="text-header">Sorry! There were a few error(s): </span>
-                    <ul>
-                        <% @reservation.errors.messages.each do |message| %>
-                            <li><%= message[1][0] %></li>
-                        <% end %>
+                        <span class="text-header">Sorry! There were a few error(s): </span>
+                        <ul>
+                            <% @reservation.errors.messages.each do |message| %>
+                                <li>
+                                    <%= message[1][0] %>
+                                </li>
+                                <% end %>
                     </div>
-                <% end %>
+                    <% end %>
             </div>
             <div id="step-1">
-                <div class ="form-section-header">
+                <div class="form-section-header">
                     <span class="fa-stack fa-lg">
                         <i class="fa fa-circle fa-stack-2x"></i>
                         <i class="fa fa-inverse fa-stack-1x">1</i>
@@ -21,7 +23,7 @@
                     <span class="text-header"> Check dates </span>
                     <div class="unavailable caveat-text">
                         (unavailable = gray)
-                    </div>   
+                    </div>
                 </div>
 
 
@@ -29,26 +31,26 @@
                     <div class="col-xs-12">
                         <div class="start-date-input nowrap pull-left">
                             <%= form.label :start_date, "Get it: ", class: "dateLabel" %>
-                            <%= form.text_field :start_date, {:id => "start_date", class: "order_data_field", data: { name: "start_date" }} %>
+                                <%= form.text_field :start_date, {:id => "start_date", class: "order_data_field", data: { name: "start_date" }} %>
                         </div>
                         <br class="visible-xs">
                         <div class="pull-left nowrap">
                             <%= form.label :end_date, "Return it: ", class: "dateLabel" %>
-                            <%= form.text_field :end_date, id: :end_date, class: "order_data_field", placeholder: "3 days later", disabled: true %>
-                        </div> 
-                        <div id="start_date_error_msg" class="error hide"> Start Date Required </div>        
+                                <%= form.text_field :end_date, id: :end_date, class: "order_data_field", placeholder: "3 days later", disabled: true %>
+                        </div>
+                        <div id="start_date_error_msg" class="error hide"> Start Date Required </div>
                     </div>
                 </div>
             </div>
             <div id="step-2">
-                <div class ="form-section-header">
+                <div class="form-section-header">
                     <span class="fa-stack fa-lg">
                         <i class="fa fa-circle fa-stack-2x"></i>
                         <i class="fa fa-inverse fa-stack-1x">2</i>
                     </span>
                     <span class="text-header"> Select optional add-ons </span>
                 </div>
-                
+
                 <table class="add-on-table generic-text">
                     <tr>
                         <td class="checkboxCol">
@@ -58,7 +60,10 @@
                             $20
                         </td>
                         <td class="descriptionCol">
-                            Toolbox <a data-toggle="modal" data-target="#toolsModal "><span class="glyphicon glyphicon-question-sign"></span></a>
+                            Toolbox
+                            <a data-toggle="modal" data-target="#toolsModal ">
+                                <span class="glyphicon glyphicon-question-sign"></span>
+                            </a>
                         </td>
                     </tr>
                     <tr>
@@ -69,7 +74,10 @@
                             +$10
                         </td>
                         <td class="descriptionCol">
-                            Ladder <a data-toggle="modal" data-target="#ladderModal"><span class="glyphicon glyphicon-question-sign"></span></a>
+                            Ladder
+                            <a data-toggle="modal" data-target="#ladderModal">
+                                <span class="glyphicon glyphicon-question-sign"></span>
+                            </a>
                         </td>
                     </tr>
                     <tr>
@@ -80,7 +88,10 @@
                             +$10
                         </td>
                         <td class="descriptionCol">
-                            Work Light <a data-toggle="modal" data-target="#lightModal"><span class="glyphicon glyphicon-question-sign"></span></a>
+                            Work Light
+                            <a data-toggle="modal" data-target="#lightModal">
+                                <span class="glyphicon glyphicon-question-sign"></span>
+                            </a>
                         </td>
                     </tr>
                     <tr>
@@ -92,7 +103,11 @@
                             +$8
                         </td>
                         <td class="descriptionCol">
-                            Delivery <a data-toggle="modal" data-target="#deliveryModal"><span class="glyphicon glyphicon-question-sign"></span></a> <%= link_to "edit", "#", class: "link hide", id: "edit_delivery" %>
+                            Delivery
+                            <a data-toggle="modal" data-target="#deliveryModal">
+                                <span class="glyphicon glyphicon-question-sign"></span>
+                            </a>
+                            <%= link_to "edit", "#", class: "link hide", id: "edit_delivery" %>
                         </td>
                     </tr>
                     <tr class="hide" id="totalRowcart">
@@ -103,44 +118,45 @@
                         </td>
                         <td class="descriptionCol">
                             Total
-                        </td>   
+                        </td>
                     </tr>
                 </table>
 
                 <div id="deliveryInput" class="collapse">
                     <div class="form-group">
                         <%= form.label :phone, "Phone (for delivery contact): " %>
-                        <%= form.telephone_field :phone, id: :phone, class: "full-width order_data_field" %>
-                        <div id="phone_error_msg" class="error hide"> Valid Phone Number Required  </div>
+                            <%= form.telephone_field :phone, id: :phone, class: "full-width order_data_field" %>
+                                <div id="phone_error_msg" class="error hide"> Valid Phone Number Required </div>
                     </div>
                     <div class="form-group">
                         <%= form.label :address, "Address: " %>
-                        <%= form.text_field :address, id: :address, class: "full-width order_data_field" %>
-                        <div id="address_error_msg" class="error hide"> Address Required </div>  
+                            <%= form.text_field :address, id: :address, class: "full-width order_data_field" %>
+                                <div id="address_error_msg" class="error hide"> Address Required </div>
                     </div>
                     <div class="form-group">
                         <%= form.label :instructions, "Optional instructions: " %>
-                        <%= form.text_field :instructions, id: :instructions, class: "full-width order_data_field" %>
+                            <%= form.text_field :instructions, id: :instructions, class: "full-width order_data_field" %>
                     </div>
                     <div class="form-group">
                         <%= form.label :delivery_start_time, "Time window for delivery: " %>
-                        <p class="caveat-text">
-                            Select the start of a 1-hour window from 9:00am-9:00pm
-                        </p>
-                        <% delivery_times = {""=> {val: "", disabled: true, selected: true}, "9:00am" => 9, "10:00am" => 10, "11:00am" => 11, "12:00pm" => 12, "1:00pm" => 13, "2:00pm" => 14, "3:00pm" => 15, "4:00pm" => 16, "5:00pm" => 17, "6:00pm" => 18, "7:00pm" => 19, "8:00pm" => 20 } %>
-                        <%= form.select :delivery_start_time, delivery_times, {}, {:disabled => true, id: "delivery_start_time", class: "order_data_field"}  %>
-                        to <%= form.text_field :delivery_end_time, id: :delivery_end_time, class: "order_data_field", placeholder: "1 hour later", disabled: true %>
-                        <div id="delivery_start_time_error_msg" class="error hide"> Delivery Start Time Required </div>          
+                            <p class="caveat-text">
+                                Select the start of a 1-hour window from 9:00am-9:00pm
+                            </p>
+                            <% delivery_times = {""=> {val: "", disabled: true, selected: true}, "9:00am" => 9, "10:00am" => 10, "11:00am" => 11, "12:00pm" => 12, "1:00pm" => 13, "2:00pm" => 14, "3:00pm" => 15, "4:00pm" => 16, "5:00pm" => 17, "6:00pm" => 18, "7:00pm" => 19, "8:00pm" => 20 } %>
+                                <%= form.select :delivery_start_time, delivery_times, {}, {:disabled => true, id: "delivery_start_time", class: "order_data_field"}  %>
+                                    to
+                                    <%= form.text_field :delivery_end_time, id: :delivery_end_time, class: "order_data_field", placeholder: "1 hour later", disabled: true %>
+                                        <div id="delivery_start_time_error_msg" class="error hide"> Delivery Start Time Required </div>
                     </div>
                 </div>
                 <div class="text-center">
                     <button id="checkoutBtn" class="btn btn-primary text-header top-spacer" type="button"> Reserve Now </button>
-                </div>  
+                </div>
             </div>
-        </div>    
+        </div>
         <div id="page2" class="collapse">
             <div id="step-3">
-                <div class ="form-section-header">
+                <div class="form-section-header">
                     <span class="fa-stack fa-lg">
                         <i class="fa fa-circle fa-stack-2x"></i>
                         <i class="fa fa-inverse fa-stack-1x">3</i>
@@ -149,23 +165,27 @@
                 </div>
                 <div class="form-group">
                     <%= form.label :email, "Email (for confirmation & receipt): " %>
-                    <%= form.email_field :email, id: :email, class: "full-width order_data_field"%>
-                    <div id="email_error_msg" class="error hide"> Valid Email Required  </div>
+                        <%= form.email_field :email, id: :email, class: "full-width order_data_field"%>
+                            <div id="email_error_msg" class="error hide"> Valid Email Required </div>
                 </div>
 
                 <div class="form-group">
                     <%= form.label :stripe, "Credit or Debit Card: " %>
-                    <div id="card-element">
-                        <!-- a Stripe Element will be inserted here. -->
-                    </div>
-                    <div id="card-errors" role="alert"><%=flash[:error]%></div>    
-                    <%= text_field_tag  "reservation[stripe]", nil, type: 'hidden', id: "reservation_stripe" %>
+                        <div id="card-element">
+                            <!-- a Stripe Element will be inserted here. -->
+                        </div>
+                        <div id="card-errors" role="alert">
+                            <%=flash[:error]%>
+                        </div>
+                        <%= text_field_tag  "reservation[stripe]", nil, type: 'hidden', id: "reservation_stripe" %>
                 </div>
 
                 <div class="termsOfService">
                     <%= form.check_box :tos, id: :tos, class: "order_data_field" %>
-                    <span>I agree to the <%= link_to "Terms of Service", terms_of_service_path, target: :_blank %></span> 
-                    <div id="tos_error_msg" class="error hide"> Must agree to Terms of Service  </div>
+                        <span>I agree to the
+                            <%= link_to "Terms of Service", terms_of_service_path, target: :_blank %>
+                        </span>
+                        <div id="tos_error_msg" class="error hide"> Must agree to Terms of Service </div>
                 </div>
 
                 <div class="text-center">
@@ -174,23 +194,23 @@
             </div>
         </div>
     </div>
-<% end %>
-<div id="confirmationPage" class="text-center hide">
-    <div class="text-header top-spacer bottom-spacer">
-    Thanks, you're all set
-    </div>
-    <div class="text-generic">
-        Email confirmation on its way
-    </div>
-    <hr>
-    <div class="text-header">
-        Refer a friend, get $10 back!
-    </div>
-    <div class="text-generic">
-        For each friend you refer who uses our service, you’ll get a $10 refund! 
-    </div>
-    <button class="btn btn-primary top-spacer bottom-spacer">James Mystery content</button>
-    <div class="caveat-text">
-        <%= link_to "Full Details", terms_of_service_path, target: :_blank %>
-    </div>
-</div>
+    <% end %>
+        <div id="confirmationPage" class="text-center hide">
+            <div class="text-header top-spacer bottom-spacer">
+                Thanks, you're all set
+            </div>
+            <div class="text-generic">
+                Email confirmation on its way
+            </div>
+            <hr>
+            <div class="text-header">
+                Refer a friend, get $10 back!
+            </div>
+            <div class="text-generic">
+                For each friend you refer who uses our service, you’ll get a $10 refund!
+            </div>
+            <button class="btn btn-primary top-spacer bottom-spacer">James Mystery content</button>
+            <div class="caveat-text">
+                <%= link_to "Full Details", terms_of_service_path, target: :_blank %>
+            </div>
+        </div>

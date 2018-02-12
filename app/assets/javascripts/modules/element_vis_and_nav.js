@@ -12,7 +12,7 @@ var elementVisAndNav = {
   fullForm: function() {
     $("#page2").collapse("show");
     $("#checkoutBtn").addClass("hide");
-    $("#totalRow").removeClass("hide");
+    $("#totalRowcart").removeClass("hide");
 
     if (cartModule.hasDelivery()) {
       this.deliverySection(false,true)

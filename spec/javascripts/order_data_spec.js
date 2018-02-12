@@ -208,7 +208,7 @@ describe ('orderDataModule', function(){
 					orderDataModule.set("delivery_end_time", "4:00pm")
 					orderDataModule.set("phone", "322135")
 				})
-
+							
 				it("returns false and shows RIGHT error", function() {
 					expect(orderDataModule.isValid()).toEqual(false)	
 					expect($("#start_date_error_msg")).toBeHidden();

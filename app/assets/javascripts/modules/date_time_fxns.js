@@ -9,29 +9,35 @@ var dateTimeFxns = {
     // console.log("for date " + date + " :: " + [reserved_dates] + " " + " indexOf " + timestamp + " result is " + [reserved_dates].indexOf(timestamp))
     // console.log([!([reserved_dates].indexOf(timestamp) > -1)])
     // console.log([reserved_dates].indexOf(timestamp) === -1)
+    debugger
     return [[this.reserved_dates].indexOf(timestamp) === -1];
   },
-  getReservedDates: new Promise(function(resolve, reject) {
-    // technically could replace this with gon, since it's on initialize gon would be the fastest/ make most sense but gon is NOT TESTABLE omg... (that and I could always use more AJAX practice)
-    $.ajax({
+  // switch to function for easier testing
+  getReservedDates: function(){
+    // julian: no need to make a new promise. Calling functions can just chain to existing ajax promise
+    // return new Promise(function(resolve, reject) {
+      // technically could replace this with gon, since it's on initialize gon would be the fastest/ make most sense but gon is NOT TESTABLE omg... (that and I could always use more AJAX practice)
+    return $.ajax({
       url: "/getReservedDates",
-      method: "GET",
+      method: "get",
       dataType: "json"
     })
-    .done(function(result){
-      resolve(result)
-      this.reserved_dates = result;
-      $("#start_date").datepicker({
-        minDate: new Date(),
-        beforeShowDay: this.disableSpecificDates,
-        dateFormat: "D, M d, yy"
-      });
-    })
-    .fail(function(jqXHR, textStatus, errorThrown) {
-      reject(new Error(errorThrown))
-      // alert("Something isn't working right. Make sure you have JavaScript enabled in your browser, then refresh this page");
-    })
-  }),
+    .then(
+      function(result){
+        this.reserved_dates = result;
+        $("#start_date").datepicker({
+          minDate: new Date(),
+          beforeShowDay: this.disableSpecificDates,
+          dateFormat: "D, M d, yy"
+        });
+        return result;
+      },
+      function(jqXHR, textStatus, errorThrown){
+        // all error handling can happen here. No need to bubble up. If you do want it to bubble up then do nothing here catch error in second arg to then in calling FXN
+        console.log("caught error: ", errorThrown);
+      }
+    );
+  },
   formatDateTime: function(type, value) {
     if (type == "date") {
       days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];

@@ -37,7 +37,7 @@ var cartModule = (function() {
     },
     toggleItem: function(item_name, value) {
       if (item_name == "delivery") { elementVisAndNav.deliverySection(value) } 
-      if (value) {
+      if (value && this.isUnique(item_name)) {
         cart_proxy.push(new Item(item_name)); 
       } else {
         index = cart_proxy.findIndex(object => object.name === item_name);
