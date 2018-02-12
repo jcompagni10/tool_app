@@ -3,14 +3,13 @@ var dateTimeFxns = {
   // date parameter is auto fed as part of beforeShowDay
   // FIX THIS LATER
   disableSpecificDates: function(date) {
-    var timestamp = parseInt(jQuery.datepicker.formatDate('@', date));
+    var timestamp = parseInt(jQuery.datepicker.formatDate('@', date)).toString();
     // console.log($.type(timestamp))
     // console.log($.type(reserved_dates[0]))
     // console.log("for date " + date + " :: " + [reserved_dates] + " " + " indexOf " + timestamp + " result is " + [reserved_dates].indexOf(timestamp))
     // console.log([!([reserved_dates].indexOf(timestamp) > -1)])
     // console.log([reserved_dates].indexOf(timestamp) === -1)
-    debugger
-    return [[this.reserved_dates].indexOf(timestamp) === -1];
+    return [this.reserved_dates.indexOf(timestamp) === -1];
   },
   // switch to function for easier testing
   getReservedDates: function(){

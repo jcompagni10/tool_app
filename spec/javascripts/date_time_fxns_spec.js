@@ -52,8 +52,6 @@ describe("date and time functions", function(){
       expect(dateTimeFxns.disableSpecificDates(date3)).toEqual([true]);
     });
     it("should return should return false for reserved dates", function(){
-      const date3 = new Date(1,3,2020);
-      debugger
       expect(dateTimeFxns.disableSpecificDates(date2)).toEqual([false]);
     });
   }); 

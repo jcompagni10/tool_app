@@ -28,9 +28,8 @@ var orderDataModule = (function() {
     initialize: function() {
       // getreserveddates always needs to happen since this is what sets the datepicker defaults
       dateTimeFxns.getReservedDates().then(function(reserved_dates) {
-          console.log("success was cuaght with resrved dates passed to be used as " + reserved_dates)
           storedOrderData = JSON.parse(sessionStorage.getItem("orderData"), function(key, value) {
-            if (key.indexOf("date") > -1) { return new Date(value) }; // converts JSON back into time objects
+            if (key.indexOf("date") > -1) { return new Date(value); } // converts JSON back into time objects
             return value;
           })
           if (storedOrderData) {
@@ -43,10 +42,10 @@ var orderDataModule = (function() {
             prefillOrderData();
           }
         }, 
-        // I don't see a reason for having this Any error should be caught in `getReservedDates`.
+        // julian: I don't see a reason for having this Any error should be caught in `getReservedDates`.
         function(error) { 
-          // the getReservedDates shows the alert
-          console.log(error) 
+          // julian: getReservedDates shows the alert
+          // console.log(error) 
         }
       )
     },

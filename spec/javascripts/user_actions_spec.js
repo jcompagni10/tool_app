@@ -10,7 +10,7 @@ describe("user actions", function() {
 		describe("to true", function() {
 			beforeEach(function() {
 				spyOn(Item, "isValid").and.callThrough();
-				// more realistic simulation of changing to true
+				// julian: using $.lcik() for more realistic simulation of changing to true
 				$(".toggle_item").click();
 			});
 			it("checks if it's valid before calling toggleItem", function() {
@@ -22,7 +22,7 @@ describe("user actions", function() {
 		});
 		describe("to false", function() {
 			beforeEach(function() {
-				// this is would be a much strong test if we could use the cart that we know has a ladder from the previous spec and then remove it
+				// julian: this is would be a much strong test if we could use the cart that we know has a ladder from the previous spec and then remove it
 				// but because of the proxy issue isUnqiue doesn't work properly and the cart ends up with 3 ladders
 				cartModule.clear();
 				spyOn(Item, "isValid").and.callThrough();
@@ -38,7 +38,6 @@ describe("user actions", function() {
 		});
 	});
 
-	// fields = ["start_date", "end_date", "email", "tos", "delivery_start_time", "delivery_end_time", "phone", "address"] 
 
 	describe("changing order data field", function(){
 		beforeEach(function(){
@@ -64,7 +63,7 @@ describe("user actions", function() {
 			// 	expect(endpointSpy).toHaveBeenCalledWith("date", testDate);
 			// });
 			it("updates the end date feild and orderDate for the end date", function(){
-				// This test could be improved. It is a bit brittle as is. Ideally it would use datepicker to determine what the text should be. 
+				// julian: This test could be improved. It is a bit brittle as is. Ideally it would use datepicker to determine what the text should be. 
 				let endDate = "Mon, Jul 9, 2018";
 				expect($("#end_date").val()).toEqual(endDate);
 				expect(orderDataModule.get().end_date).toEqual(endDate);
@@ -76,7 +75,6 @@ describe("user actions", function() {
 				affix("input#delivery_start_time.order_data_field");
 				affix("input#delivery_end_time.order_data_field");
 				mountUserActions();
-				// $("#start_date").val(testDate);
 				$("#delivery_start_time").val(startTime);
 				$("#delivery_start_time").change();
 			});
@@ -85,7 +83,6 @@ describe("user actions", function() {
 			});
 			// also should test constructor here. See above.
 			it("updates the end date feild and orderDate for the end date", function(){
-				// This test could be improved. It is a bit brittle as is. Ideally it would use datepicker to determine what the text should be. 
 				let endTime = "11:00am";
 				expect($("#delivery_end_time").val()).toEqual(endTime);
 				expect(orderDataModule.get().delivery_end_time).toEqual(endTime);
@@ -161,7 +158,7 @@ describe("user actions", function() {
 		describe("when there is delivery in the cart", function(){
 			beforeEach(function(){
 				spyOn(cartModule, "getItems").and.returnValue(['delivery']);
-				// need to reclick button so that new stubbed function will be called
+				// julian: need to reclick button so that new stubbed function will be called
 				$("#checkoutBtn").click();
 			});
 			it("hides the delivery section and exposes the delivery edit link", function(){
