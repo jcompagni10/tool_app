@@ -18,7 +18,9 @@ var orderDataModule = (function() {
     for (attr in orderData) {
       if (attr === "start_date") {
         $("#start_date").datepicker("setDate", orderData[attr]);
-      } else {
+      } if (attr === "tos"){
+        $("#tos").prop('checked', orderData[attr]);
+      }else {
         $("#" + attr).val(orderData[attr]); 
       }
     }
@@ -27,27 +29,28 @@ var orderDataModule = (function() {
   return {
     initialize: function() {
       // getreserveddates always needs to happen since this is what sets the datepicker defaults
-      dateTimeFxns.getReservedDates().then(function(reserved_dates) {
-          storedOrderData = JSON.parse(sessionStorage.getItem("orderData"), function(key, value) {
-            if (key.indexOf("date") > -1) { return new Date(value); } // converts JSON back into time objects
-            return value;
-          })
-          if (storedOrderData) {
-            if (reserved_dates.indexOf(storedOrderData.start_date.getTime()) > -1) {
-              Alertion.show("Sorry! Looks like someone just reserved the toolkit for those dates, please select new dates & try again");
-              storedOrderData.start_date = null;
-              storedOrderData.end_date = null;
-            }
-            orderData = storedOrderData;
+      // julian: return promise for easier chaining/testing
+      return dateTimeFxns.getReservedDates().then(function(reserved_dates) {
+        storedOrderData = JSON.parse(sessionStorage.getItem("orderData"), function(key, value) {
+          if (key.indexOf("date") > -1) { return new Date(value); } // converts JSON back into time objects
+          return value;
+        });
+        if (storedOrderData) {
+          // julian: depending on reserved date implementation you probably need to check if both start or end date are included in reserveddates
+          if (reserved_dates.indexOf(storedOrderData.start_date.getTime()) > -1) {
+            Alertion.show("Sorry! Looks like someone just reserved the toolkit for those dates, please select new dates & try again");
+            storedOrderData.start_date = null;
+            storedOrderData.end_date = null;
+          }
+          orderData = storedOrderData;
             prefillOrderData();
           }
         }, 
         // julian: I don't see a reason for having this Any error should be caught in `getReservedDates`.
         function(error) { 
-          // julian: getReservedDates shows the alert
-          // console.log(error) 
+          console.log(error);
         }
-      )
+      );
     },
     set: function(name, value) {
       orderData[name] = value;
@@ -98,7 +101,7 @@ var orderDataModule = (function() {
       return !(validations.indexOf(false) > -1) // if validations has a false, then that means the orderData hash is NOT valid 
     },
     get: function() {
-      return orderData
+      return orderData;
     },
     clear: function() {
       orderData = {}
